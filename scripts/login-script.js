@@ -1,46 +1,48 @@
 /**
  * Project: Smart Household
- * Script: login-script.js
- * Logic: Toggles between Login and Signup forms using Flexbox
+ * File: scripts/login-script.js
+ * Description: Handles the interactive toggling between Login and Sign Up forms.
+ * Using 'defer' in HTML ensures this runs after the DOM is ready.
  */
 
 document.addEventListener('DOMContentLoaded', () => {
-    // Select the tabs and forms
+    // 1. Grab all necessary UI elements
     const loginTab = document.getElementById('loginTab');
     const signupTab = document.getElementById('signupTab');
     const loginForm = document.getElementById('loginForm');
     const signupForm = document.getElementById('signupForm');
 
-    // Verification check to prevent console errors
+    // 2. Safety Check: Only run logic if all elements are found on the page
     if (loginTab && signupTab && loginForm && signupForm) {
         
-        // --- SWITCH TO SIGNUP ---
+        // --- FUNCTIONALITY FOR THE SIGN UP TAB ---
         signupTab.addEventListener('click', () => {
             console.log("Navigating to Signup...");
             
-            // Toggle visibility
+            // Hide Login, Show Signup
             loginForm.style.display = 'none';
-            signupForm.style.display = 'flex';
+            signupForm.style.display = 'flex'; // Uses flex to maintain card alignment
             
-            // Toggle active styling
+            // Update Tab Styling
             signupTab.classList.add('active');
             loginTab.classList.remove('active');
         });
 
-        // --- SWITCH TO LOGIN ---
+        // --- FUNCTIONALITY FOR THE LOGIN TAB ---
         loginTab.addEventListener('click', () => {
             console.log("Navigating to Login...");
             
-            // Toggle visibility
+            // Hide Signup, Show Login
             signupForm.style.display = 'none';
             loginForm.style.display = 'flex';
             
-            // Toggle active styling
+            // Update Tab Styling
             loginTab.classList.add('active');
             signupTab.classList.remove('active');
         });
 
     } else {
-        console.error("Smart Household Error: Auth components not found in DOM.");
+        // This helps you debug in the browser console if you accidentally change an ID
+        console.error("Smart Household Error: One or more form elements were not found in the DOM.");
     }
 });
