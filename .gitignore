@@ -1,0 +1,18 @@
+# OS generated files
+
+.DS_Store
+Thumbs.db
+
+# XAMPP/Local environment specifics
+
+php_errors.log
+.htaccess
+
+# Text editor settings
+
+.vscode/
+.idea/
+
+# Database exports (optional - prevents huge .sql dumps from cluttering the repo)
+
+\*.sql
