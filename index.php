@@ -17,7 +17,6 @@
                         </div>
                     <h1>Smart<br>Household</h1>
                     <p>Small steps for you, big leaps for the planet.</p>
-                    <div class="project-tag">SHU Computer Science Project</div>
                 </div>
             </div>
 
@@ -49,7 +48,7 @@
                     </div>
                     <div class="input-group">
                         <label for="signup-email">Email</label>
-                        <input type="email" id="signup-email" name="EMAIL" placeholder="student@shu.ac.uk" required>
+                        <input type="email" id="signup-email" name="EMAIL" placeholder="you@example.com" required>
                     </div>
                     <div class="input-group">
                         <label for="signup-pass">Password</label>
