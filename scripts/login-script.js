@@ -1,48 +1,46 @@
 /**
- * Project: Smart Household Carbon Footprint Calculator
- * Script: Auth Toggle Logic
- * Purpose: Handles the smooth transition between Login and Signup forms.
+ * Project: Smart Household
+ * Script: login-script.js
+ * Logic: Toggles between Login and Signup forms using Flexbox
  */
 
 document.addEventListener('DOMContentLoaded', () => {
-    // 1. Element Selectors
+    // Select the tabs and forms
     const loginTab = document.getElementById('loginTab');
     const signupTab = document.getElementById('signupTab');
     const loginForm = document.getElementById('loginForm');
     const signupForm = document.getElementById('signupForm');
 
-    // 2. Safety Check: Ensure elements exist before adding listeners
+    // Verification check to prevent console errors
     if (loginTab && signupTab && loginForm && signupForm) {
         
         // --- SWITCH TO SIGNUP ---
         signupTab.addEventListener('click', () => {
-            // UI Feedback
             console.log("Navigating to Signup...");
             
-            // Toggle form visibility
+            // Toggle visibility
             loginForm.style.display = 'none';
             signupForm.style.display = 'flex';
             
-            // Toggle active tab classes for CSS styling
+            // Toggle active styling
             signupTab.classList.add('active');
             loginTab.classList.remove('active');
         });
 
         // --- SWITCH TO LOGIN ---
         loginTab.addEventListener('click', () => {
-            // UI Feedback
             console.log("Navigating to Login...");
             
-            // Toggle form visibility
+            // Toggle visibility
             signupForm.style.display = 'none';
             loginForm.style.display = 'flex';
             
-            // Toggle active tab classes for CSS styling
+            // Toggle active styling
             loginTab.classList.add('active');
             signupTab.classList.remove('active');
         });
 
     } else {
-        console.error("EcoTracker Error: One or more Auth elements missing from the DOM.");
+        console.error("Smart Household Error: Auth components not found in DOM.");
     }
 });

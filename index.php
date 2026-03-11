@@ -13,8 +13,6 @@
             
             <div class="auth-visual">
                 <div class="visual-content">
-                    <div class="logo-container">
-                        </div>
                     <h1>Smart<br>Household</h1>
                     <p>Small steps for you, big leaps for the planet.</p>
                 </div>
