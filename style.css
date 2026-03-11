@@ -1,91 +1,172 @@
+/* Project: Smart Household Carbon Footprint Calculator 
+   Description: Sheffield Hallam CS Project - Auth Styles
+*/
+
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
 }
 
 body {
-    background-color: #F3F4F6; /* Light gray background */
+    background-color: #f0f2f5; /* Light grey-blue background */
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 100vh;
+    min-height: 100vh;
+}
+
+/* The Main 1100x700 Card */
+.main-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    padding: 20px;
 }
 
 .auth-card {
     width: 1100px;
     height: 700px;
-    background: white;
+    background: #ffffff;
     display: flex;
-    border-radius: 20px;
+    border-radius: 24px;
     overflow: hidden;
-    box-shadow: 0 15px 35px rgba(0,0,0,0.1);
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.1);
 }
 
+/* Left Side: Branding Visual */
 .auth-visual {
     flex: 1;
-    background-color: #22C55E; /* Your signature green */
+    background: linear-gradient(135deg, #22c55e 0%, #16a34a 100%);
     color: white;
+    padding: 60px;
     display: flex;
     flex-direction: column;
     justify-content: center;
-    padding: 60px;
 }
 
-.auth-visual h1 { font-size: 3.5rem; line-height: 1; margin-bottom: 20px; }
+.auth-visual h1 {
+    font-size: 3.8rem;
+    font-weight: 800;
+    line-height: 1.1;
+    margin-bottom: 15px;
+    letter-spacing: -1px;
+}
 
+.auth-visual p {
+    font-size: 1.2rem;
+    opacity: 0.9;
+    margin-bottom: 30px;
+}
+
+.project-tag {
+    background: rgba(255, 255, 255, 0.2);
+    padding: 8px 15px;
+    border-radius: 50px;
+    font-size: 0.85rem;
+    align-self: flex-start;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+/* Right Side: Form Content */
 .auth-form-container {
     flex: 1.2;
-    padding: 80px;
+    padding: 60px 80px;
     display: flex;
     flex-direction: column;
 }
 
-.form-toggle { margin-bottom: 40px; }
+.form-toggle {
+    margin-bottom: 50px;
+    display: flex;
+    gap: 30px;
+}
+
 .form-toggle button {
     background: none;
     border: none;
     font-size: 1.1rem;
-    margin-right: 20px;
+    font-weight: 600;
     cursor: pointer;
-    color: #9CA3AF;
-    padding-bottom: 5px;
+    color: #9ca3af;
+    padding-bottom: 8px;
+    transition: all 0.3s ease;
+    border-bottom: 3px solid transparent;
+}
+
+.form-toggle button:hover {
+    color: #4b5563;
 }
 
 .form-toggle button.active {
-    color: #1F2937;
-    border-bottom: 3px solid #22C55E;
-    font-weight: bold;
+    color: #16a34a;
+    border-bottom: 3px solid #22c55e;
 }
 
 .auth-form {
     display: flex;
     flex-direction: column;
-    gap: 20px;
+    gap: 25px;
 }
 
-.auth-form h2 { margin-bottom: 10px; color: #1F2937; }
+.auth-form h2 {
+    font-size: 2rem;
+    color: #1f2937;
+    margin-bottom: 10px;
+}
+
+.input-group {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.input-group label {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: #4b5563;
+}
 
 input {
-    padding: 15px;
-    border: 1px solid #E5E7EB;
-    border-radius: 8px;
-    background: #F9FAFB;
+    padding: 14px 18px;
+    border: 2px solid #e5e7eb;
+    border-radius: 12px;
     font-size: 1rem;
+    transition: all 0.3s ease;
+    background: #f9fafb;
 }
 
+input:focus {
+    outline: none;
+    border-color: #22c55e;
+    background: #ffffff;
+    box-shadow: 0 0 0 4px rgba(34, 197, 94, 0.1);
+}
+
+/* Button & Hover States */
 .btn-primary {
-    background-color: #22C55E;
+    background-color: #22c55e;
     color: white;
     border: none;
-    padding: 18px;
-    border-radius: 8px;
+    padding: 16px;
+    border-radius: 12px;
     font-size: 1.1rem;
-    font-weight: bold;
+    font-weight: 700;
     cursor: pointer;
-    margin-top: 10px;
-    transition: 0.3s;
+    margin-top: 15px;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
 }
 
-.btn-primary:hover { background-color: #16a34a; }
+.btn-primary:hover {
+    background-color: #16a34a;
+    transform: translateY(-2px);
+    box-shadow: 0 10px 20px rgba(22, 163, 74, 0.2);
+}
+
+.btn-primary:active {
+    transform: translateY(0);
+}

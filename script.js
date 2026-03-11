@@ -1,34 +1,48 @@
 /**
- * Carbon Tracker - Auth Toggle Logic
- * Sheffield Hallam University Project
+ * Project: Smart Household Carbon Footprint Calculator
+ * Script: Auth Toggle Logic
+ * Purpose: Handles the smooth transition between Login and Signup forms.
  */
 
 document.addEventListener('DOMContentLoaded', () => {
-    // 1. Grab the elements
+    // 1. Element Selectors
     const loginTab = document.getElementById('loginTab');
     const signupTab = document.getElementById('signupTab');
     const loginForm = document.getElementById('loginForm');
     const signupForm = document.getElementById('signupForm');
 
-    // 2. Function to switch to Signup
-    signupTab.addEventListener('click', () => {
-        console.log("Switching to Signup... Let's save some carbon!");
+    // 2. Safety Check: Ensure elements exist before adding listeners
+    if (loginTab && signupTab && loginForm && signupForm) {
         
-        loginForm.style.display = 'none';
-        signupForm.style.display = 'flex';
-        
-        signupTab.classList.add('active');
-        loginTab.classList.remove('active');
-    });
+        // --- SWITCH TO SIGNUP ---
+        signupTab.addEventListener('click', () => {
+            // UI Feedback
+            console.log("Navigating to Signup...");
+            
+            // Toggle form visibility
+            loginForm.style.display = 'none';
+            signupForm.style.display = 'flex';
+            
+            // Toggle active tab classes for CSS styling
+            signupTab.classList.add('active');
+            loginTab.classList.remove('active');
+        });
 
-    // 3. Function to switch to Login
-    loginTab.addEventListener('click', () => {
-        console.log("Switching to Login... Welcome back, twin.");
-        
-        signupForm.style.display = 'none';
-        loginForm.style.display = 'flex';
-        
-        loginTab.classList.add('active');
-        signupTab.classList.remove('active');
-    });
+        // --- SWITCH TO LOGIN ---
+        loginTab.addEventListener('click', () => {
+            // UI Feedback
+            console.log("Navigating to Login...");
+            
+            // Toggle form visibility
+            signupForm.style.display = 'none';
+            loginForm.style.display = 'flex';
+            
+            // Toggle active tab classes for CSS styling
+            loginTab.classList.add('active');
+            signupTab.classList.remove('active');
+        });
+
+    } else {
+        console.error("EcoTracker Error: One or more Auth elements missing from the DOM.");
+    }
 });
