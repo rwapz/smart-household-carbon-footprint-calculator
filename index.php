@@ -55,6 +55,12 @@
                     <button type="submit" class="btn-primary">Start Tracking</button>
                 </form>
 
+                <div class="test-navigation" style="margin-top: 20px; text-align: center; border-top: 1px solid #eee; padding-top: 15px;">
+                    <a href="dashboard.php" style="color: #2ecc71; font-size: 0.85rem; text-decoration: none; font-weight: 600;">
+                        ← Skip to Dashboard Menu
+                    </a>
+                </div>
+
             </div> 
         </div> 
     </div> 
