@@ -20,6 +20,10 @@
                 <button class="menu-btn primary" onclick="window.location.href='calculator.php'">
                     Carbon Calculator
                 </button>
+
+                <button class="menu-btn primary" onclick="window.location.href='history.php'">
+                    Activity History
+                </button>
                 
                 <button class="menu-btn secondary" disabled>
                     Household Stats
