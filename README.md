@@ -23,5 +23,6 @@ This project provides a "Smart" interface for users to calculate environmental i
 3. Access the project via: `http://localhost/task/smart-household-carbon-footprint-calculator/`
 
 ## 👥 Team
-- **UI/Frontend Logic:** [Your Name/Twin]
-- **Database/SQL:** [Teammate's Name]
+- [Rhys Jenkins]
+- [Harry Mathews]
+- [Kyle Kent]
