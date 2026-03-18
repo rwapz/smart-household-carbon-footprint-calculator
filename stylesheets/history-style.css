@@ -1,214 +1,108 @@
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap');
+/**
+ * ECOTRACKER PRO - HISTORY STYLESHEET
+ * Refactored for Readability & Theme Management
+ */
 
+/* 1. --- Design Tokens (Variables) --- */
+:root {
+    --primary-green: #2ecc71;
+    --primary-dark: #27ae60;
+    --bg-gray: #f4f7f6;
+    --white: #ffffff;
+    --text-main: #333333;
+    --text-muted: #666666;
+    
+    /* Functional Colors */
+    --success-bg: #f0fdf4;
+    --success-border: #bbf7d0;
+    --success-text: #166534;
+    --danger-bg: #fef2f2;
+    --danger-text: #991b1b;
+    
+    /* Layout Constants */
+    --shadow: 0 15px 35px rgba(0,0,0,0.1);
+    --radius: 20px;
+    --transition: 0.2s ease-in-out;
+}
+
+/* 2. --- Reset & Base Styles --- */
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    font-family: 'Poppins', sans-serif;
 }
 
 body {
-    background: #f4f7f6;
-    min-height: 100vh;
+    background: var(--bg-gray);
+    font-family: 'Poppins', sans-serif;
+    color: var(--text-main);
     display: flex;
-    align-items: flex-start;
     justify-content: center;
     padding: 40px 20px;
 }
 
+/* 3. --- Layout Containers --- */
 .main-container {
     width: 100%;
     max-width: 760px;
 }
 
 .history-card {
-    background: #ffffff;
+    background: var(--white);
     padding: 40px;
-    border-radius: 20px;
-    box-shadow: 0 15px 35px rgba(0,0,0,0.1);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
 }
 
-/* Header */
+/* 4. --- Header & Navigation --- */
 .history-header {
     display: flex;
     justify-content: space-between;
     align-items: flex-start;
     margin-bottom: 28px;
-    flex-wrap: wrap;
     gap: 14px;
 }
 
 .history-header h1 {
-    color: #2ecc71;
+    color: var(--primary-green);
     font-size: 1.8rem;
-    font-weight: 600;
-}
-
-.history-header p {
-    color: #777;
-    font-size: 0.85rem;
-    margin-top: 4px;
 }
 
 .header-controls {
     display: flex;
     align-items: center;
-    gap: 8px;
+    gap: 10px;
 }
 
-.date-input {
-    padding: 8px 12px;
-    border-radius: 10px;
-    border: 1px solid #ddd;
-    font-size: 0.82rem;
-    font-family: 'Poppins', sans-serif;
-    color: #444;
-    background: #f9f9f9;
-}
-
-.page-btn {
-    width: 36px;
-    height: 36px;
-    border-radius: 10px;
-    border: 1px solid #ddd;
-    background: #f9f9f9;
-    cursor: pointer;
-    font-size: 0.8rem;
-    font-weight: 600;
-    transition: all 0.2s;
-}
-
-.page-btn:hover:not(:disabled) { background: #2ecc71; color: white; border-color: #2ecc71; }
-.page-btn:disabled { opacity: 0.3; cursor: not-allowed; }
-
-/* Stats */
+/* 5. --- Stats Dashboard --- */
 .stats-row {
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 12px;
-    margin-bottom: 28px;
+    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+    gap: 15px;
+    margin-bottom: 30px;
 }
 
 .stat-box {
-    background: #f4f7f6;
-    border-radius: 14px;
-    padding: 16px;
+    background: var(--bg-gray);
+    padding: 20px;
+    border-radius: 15px;
     text-align: center;
 }
 
 .stat-val {
-    font-size: 1.4rem;
+    font-size: 1.5rem;
     font-weight: 600;
-    color: #2ecc71;
+    color: var(--primary-dark);
 }
 
 .stat-label {
-    font-size: 0.68rem;
-    color: #999;
-    text-transform: uppercase;
-    font-weight: 600;
-    margin-top: 4px;
-}
-
-/* Table */
-.history-table {
-    width: 100%;
-    border-collapse: collapse;
-}
-
-.history-table th {
-    text-align: left;
-    font-size: 0.72rem;
-    font-weight: 600;
-    color: #aaa;
-    text-transform: uppercase;
-    padding-bottom: 12px;
-    border-bottom: 2px solid #f0f0f0;
-}
-
-.history-table td {
-    padding: 16px 0;
-    border-bottom: 1px solid #f0f0f0;
-    font-size: 0.88rem;
-    color: #444;
-}
-
-.history-table tr:last-child td { border-bottom: none; }
-
-.grade-pill {
-    display: inline-block;
-    padding: 3px 14px;
-    border-radius: 20px;
     font-size: 0.75rem;
-    font-weight: 600;
-    color: white;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 1px;
 }
 
-.total-good { color: #2ecc71; font-weight: 600; }
-.total-bad  { color: #e74c3c; font-weight: 600; }
-
-/* Empty state */
-.empty-state {
-    text-align: center;
-    padding: 50px 0;
-    color: #aaa;
-}
-.empty-icon { font-size: 3rem; margin-bottom: 12px; }
-.empty-state p { font-size: 0.88rem; line-height: 1.6; }
-
-/* Showing text */
-.showing-text {
-    color: #aaa;
-    font-size: 0.78rem;
-    margin-top: 14px;
-}
-
-/* Chart */
-.chart-title {
-    font-size: 0.95rem;
-    font-weight: 600;
-    color: #444;
-    margin-bottom: 14px;
-}
-
-/* Actions */
-.action-row {
-    margin-top: 24px;
-    display: flex;
-    justify-content: flex-end;
-}
-
-.clear-btn {
-    padding: 9px 20px;
-    background: white;
-    color: #e74c3c;
-    border: 1px solid #fca5a5;
-    border-radius: 10px;
-    font-size: 0.82rem;
-    font-weight: 600;
-    cursor: pointer;
-    font-family: 'Poppins', sans-serif;
-    transition: all 0.2s;
-}
-.clear-btn:hover { background: #fef2f2; }
-
-/* Footer */
-.footer-nav {
-    margin-top: 28px;
-    padding-top: 20px;
-    border-top: 1px solid #eee;
-    text-align: center;
-}
-
-.back-link {
-    color: #7f8c8d;
-    text-decoration: none;
-    font-size: 0.85rem;
-    transition: color 0.2s;
-}
-.back-link:hover { color: #2ecc71; }
-
-/* ===== BADGES ===== */
+/* 6. --- Badge Components --- */
 .badges-container {
     display: flex;
     flex-wrap: wrap;
@@ -220,58 +114,81 @@ body {
     display: flex;
     align-items: center;
     gap: 6px;
-    background: #f0fdf4;
-    border: 1px solid #bbf7d0;
+    background: var(--success-bg);
+    border: 1px solid var(--success-border);
     border-radius: 20px;
     padding: 6px 14px;
-    cursor: default;
-    transition: transform 0.2s;
+    transition: transform var(--transition);
 }
 
-.badge-pill:hover { transform: translateY(-2px); }
-
-.badge-emoji { font-size: 1.1rem; }
+.badge-pill:hover {
+    transform: translateY(-2px);
+}
 
 .badge-label {
     font-size: 0.78rem;
     font-weight: 600;
-    color: #166534;
+    color: var(--success-text);
 }
 
-/* ===== ROW HIGHLIGHTING ===== */
-.row-best  td { background: #f0fdf4; }
-.row-worst td { background: #fef2f2; }
+/* 7. --- Data Table --- */
+#table-container {
+    margin-top: 20px;
+    overflow-x: auto;
+}
 
-/* ===== DELETE BUTTON ===== */
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+th {
+    text-align: left;
+    padding: 12px;
+    border-bottom: 2px solid var(--bg-gray);
+    color: var(--text-muted);
+    font-size: 0.85rem;
+}
+
+td {
+    padding: 15px 12px;
+    border-bottom: 1px solid #eee;
+}
+
+/* Row Contextual Highlighting */
+.row-best td  { background-color: var(--success-bg); }
+.row-worst td { background-color: var(--danger-bg); }
+
+/* 8. --- Action Buttons --- */
+.action-row {
+    display: flex;
+    justify-content: flex-end;
+    gap: 12px;
+    margin-top: 25px;
+}
+
 .delete-btn {
     background: none;
     border: none;
     cursor: pointer;
-    font-size: 0.9rem;
-    opacity: 0.4;
-    transition: opacity 0.2s;
-    padding: 4px;
-}
-.delete-btn:hover { opacity: 1; }
-
-/* ===== ACTION ROW ===== */
-.action-row {
-    margin-top: 24px;
-    display: flex;
-    gap: 10px;
-    justify-content: flex-end;
+    font-size: 1.1rem;
+    transition: transform var(--transition);
 }
 
-.export-btn {
-    padding: 9px 20px;
-    background: #2ecc71;
-    color: white;
-    border: none;
+.delete-btn:hover { transform: scale(1.2); }
+
+.clear-btn {
+    background: var(--danger-bg);
+    color: var(--danger-text);
+    border: 1px solid #fecaca;
+    padding: 10px 20px;
     border-radius: 10px;
-    font-size: 0.82rem;
-    font-weight: 600;
     cursor: pointer;
-    font-family: 'Poppins', sans-serif;
-    transition: all 0.2s;
+    font-weight: 600;
 }
-.export-btn:hover { background: #27ae60; transform: translateY(-1px); }
+
+/* 9. --- Responsive Adjustments --- */
+@media (max-width: 600px) {
+    .history-card { padding: 20px; }
+    .history-header { flex-direction: column; }
+}
