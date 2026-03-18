@@ -1,10 +1,11 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="light">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard | Smart Household</title>
     <link rel="stylesheet" href="stylesheets/dashboard-style.css">
+    <link rel="stylesheet" href="stylesheets/accessibility-global.css">
 </head>
 <body>
 
@@ -32,6 +33,10 @@
                 <button class="menu-btn secondary" disabled>
                     Eco Settings
                 </button>
+
+                <button class="menu-btn primary" onclick="window.location.href='accessibility-settings.php'">
+                    ♿ Accessibility
+                </button>
             </div>
 
             <div class="footer-nav">
@@ -41,5 +46,6 @@
         </div>
     </div>
 
+    <script src="scripts/accessibility.js"></script>
 </body>
 </html>

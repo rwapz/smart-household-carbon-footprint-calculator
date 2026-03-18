@@ -1,10 +1,11 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="light">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Smart Household | Carbon Footprint Calculator</title>
     <link rel="stylesheet" href="stylesheets/login-style.css">
+    <link rel="stylesheet" href="stylesheets/accessibility-global.css">
 </head>
 <body>
 
@@ -65,6 +66,7 @@
         </div> 
     </div> 
 
-    <script src="scripts/login-script.js" defer></script>
+    <script src="scripts/accessibility.js"></script>
+        <script src="scripts/login-script.js" defer></script>
 </body>
 </html>

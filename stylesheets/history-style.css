@@ -1,194 +1,143 @@
 /**
- * ECOTRACKER PRO - HISTORY STYLESHEET
- * Refactored for Readability & Theme Management
+ * ECOTRACKER PRO - MASTER STYLES
+ * FIXED: Scrolling and Container visibility
  */
 
-/* 1. --- Design Tokens (Variables) --- */
 :root {
-    --primary-green: #2ecc71;
-    --primary-dark: #27ae60;
-    --bg-gray: #f4f7f6;
+    --primary: #10b981;
+    --dark: #0f172a;
+    --slate: #f8fafc;
+    --border: #e2e8f0;
     --white: #ffffff;
-    --text-main: #333333;
-    --text-muted: #666666;
-    
-    /* Functional Colors */
-    --success-bg: #f0fdf4;
-    --success-border: #bbf7d0;
-    --success-text: #166534;
-    --danger-bg: #fef2f2;
-    --danger-text: #991b1b;
-    
-    /* Layout Constants */
-    --shadow: 0 15px 35px rgba(0,0,0,0.1);
-    --radius: 20px;
-    --transition: 0.2s ease-in-out;
+    --btn-bg: #f1f5f9;
+    --btn-color: #0f172a;
+    --btn-border: #e2e8f0;
 }
 
-/* 2. --- Reset & Base Styles --- */
+/* 1. Global Reset & Scroll Fix */
 * {
+    box-sizing: border-box;
     margin: 0;
     padding: 0;
-    box-sizing: border-box;
 }
 
-body {
-    background: var(--bg-gray);
-    font-family: 'Poppins', sans-serif;
-    color: var(--text-main);
-    display: flex;
-    justify-content: center;
-    padding: 40px 20px;
-}
-
-/* 3. --- Layout Containers --- */
-.main-container {
+html, body {
+    min-height: 100vh;
     width: 100%;
-    max-width: 760px;
+    font-family: 'Inter', sans-serif;
+    background-color: var(--slate);
+    color: var(--dark);
+    /* Allow scrolling! */
+    overflow-x: hidden;
+    overflow-y: auto;
 }
 
-.history-card {
-    background: var(--white);
-    padding: 40px;
-    border-radius: var(--radius);
-    box-shadow: var(--shadow);
+.app-wrapper {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
 }
 
-/* 4. --- Header & Navigation --- */
-.history-header {
+/* 2. Header */
+.main-header {
     display: flex;
     justify-content: space-between;
-    align-items: flex-start;
-    margin-bottom: 28px;
-    gap: 14px;
-}
-
-.history-header h1 {
-    color: var(--primary-green);
-    font-size: 1.8rem;
-}
-
-.header-controls {
-    display: flex;
     align-items: center;
-    gap: 10px;
+    padding: 1rem 2rem;
+    background: var(--white);
+    border-bottom: 1px solid var(--border);
+    position: sticky;
+    top: 0;
+    z-index: 100;
 }
 
-/* 5. --- Stats Dashboard --- */
-.stats-row {
+.main-logo { font-weight: 900; font-size: 1.3rem; }
+.main-logo span { color: var(--primary); }
+
+/* 3. Main Layout Grid */
+.main-content {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
-    gap: 15px;
-    margin-bottom: 30px;
+    grid-template-columns: 1.2fr 1fr;
+    gap: 24px;
+    padding: 24px;
+    max-width: 1400px;
+    margin: 0 auto;
+    width: 100%;
 }
 
-.stat-box {
-    background: var(--bg-gray);
-    padding: 20px;
-    border-radius: 15px;
+/* 4. Cards & Components */
+.card {
+    background: var(--white);
+    padding: 24px;
+    border-radius: 16px;
+    border: 1px solid var(--border);
+    box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);
+    margin-bottom: 20px;
+}
+
+.hidden { display: none !important; }
+
+/* 5. Inputs & Forms */
+.input-group { margin-bottom: 15px; }
+label { display: block; font-size: 0.85rem; font-weight: 600; margin-bottom: 5px; }
+input, select {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    outline: none;
+}
+
+/* 6. Action Buttons */
+/* Action buttons (header) */
+.action-btn {
+    background: var(--btn-bg) !important;
+    color: var(--btn-color) !important;
+    border: 1px solid var(--btn-border);
+    padding: 8px 14px;
+    border-radius: 8px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    cursor: pointer;
+    text-decoration: none;
+    transition: 0.2s;
+}
+.action-btn:hover { filter: brightness(90%); }
+
+.sync-btn {
+    background: var(--primary);
+    color: white;
+    border: none;
+    padding: 12px 24px;
+    border-radius: 10px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.sync-btn:hover { transform: translateY(-2px); filter: brightness(95%); }
+
+/* 7. Result Visuals */
+.total-display {
+    font-size: 3rem;
+    font-weight: 900;
+    color: var(--primary);
     text-align: center;
 }
 
-.stat-val {
-    font-size: 1.5rem;
+/* Responsive */
+@media (max-width: 1000px) {
+    .main-content { grid-template-columns: 1fr; }
+}
+.mini-btn {
+    background: var(--btn-bg) !important;
+    color: var(--btn-color) !important;
+    border: 1px solid var(--btn-border);
+    padding: 6px 12px;
+    border-radius: 8px;
+    font-size: 0.8rem;
     font-weight: 600;
-    color: var(--primary-dark);
-}
-
-.stat-label {
-    font-size: 0.75rem;
-    color: var(--text-muted);
-    text-transform: uppercase;
-    letter-spacing: 1px;
-}
-
-/* 6. --- Badge Components --- */
-.badges-container {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 10px;
-    margin: 12px 0 24px;
-}
-
-.badge-pill {
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    background: var(--success-bg);
-    border: 1px solid var(--success-border);
-    border-radius: 20px;
-    padding: 6px 14px;
-    transition: transform var(--transition);
-}
-
-.badge-pill:hover {
-    transform: translateY(-2px);
-}
-
-.badge-label {
-    font-size: 0.78rem;
-    font-weight: 600;
-    color: var(--success-text);
-}
-
-/* 7. --- Data Table --- */
-#table-container {
-    margin-top: 20px;
-    overflow-x: auto;
-}
-
-table {
-    width: 100%;
-    border-collapse: collapse;
-}
-
-th {
-    text-align: left;
-    padding: 12px;
-    border-bottom: 2px solid var(--bg-gray);
-    color: var(--text-muted);
-    font-size: 0.85rem;
-}
-
-td {
-    padding: 15px 12px;
-    border-bottom: 1px solid #eee;
-}
-
-/* Row Contextual Highlighting */
-.row-best td  { background-color: var(--success-bg); }
-.row-worst td { background-color: var(--danger-bg); }
-
-/* 8. --- Action Buttons --- */
-.action-row {
-    display: flex;
-    justify-content: flex-end;
-    gap: 12px;
-    margin-top: 25px;
-}
-
-.delete-btn {
-    background: none;
-    border: none;
     cursor: pointer;
-    font-size: 1.1rem;
-    transition: transform var(--transition);
+    transition: 0.2s;
 }
-
-.delete-btn:hover { transform: scale(1.2); }
-
-.clear-btn {
-    background: var(--danger-bg);
-    color: var(--danger-text);
-    border: 1px solid #fecaca;
-    padding: 10px 20px;
-    border-radius: 10px;
-    cursor: pointer;
-    font-weight: 600;
-}
-
-/* 9. --- Responsive Adjustments --- */
-@media (max-width: 600px) {
-    .history-card { padding: 20px; }
-    .history-header { flex-direction: column; }
-}
+.mini-btn:hover { filter: brightness(90%); }
