@@ -1,7 +1,4 @@
-/**
- * ECOTRACKER PRO - CORE ENGINE
- * Sheffield Hallam Group Project
- */
+
 
 // 1. --- Configuration & Data ---
 const FACTORS = {
