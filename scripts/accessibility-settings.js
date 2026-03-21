@@ -1,8 +1,4 @@
-/**
- * accessibility-settings.js
- * Handles the UI for the accessibility settings page.
- * Depends on accessibility.js (EcoAccess) being loaded first.
- */
+
 
 function showStatus(msg) {
     const el = document.getElementById('status-msg');
