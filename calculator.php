@@ -8,7 +8,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <style>
-/* Two column layout — left scrolls, right sticks */
+
 .content-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -16,13 +16,13 @@
     height: calc(100vh - 70px);
     overflow: hidden;
 }
-/* Left panel: scrollable */
+
 .content-grid > .ui-panel:first-child {
     overflow-y: auto;
     height: 100%;
     padding: 24px;
 }
-/* Right panel: sticky, centered */
+
 #output-side {
     overflow-y: auto;
     height: 100%;
@@ -36,7 +36,7 @@
     width: 100%;
     text-align: center;
 }
-/* Fix the big number */
+
 #total-output {
     font-size: 3rem;
     font-weight: 900;
