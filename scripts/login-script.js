@@ -1,8 +1,4 @@
-/**
- * Project: Smart Household
- * File: scripts/login-script.js
- * Description: Manages form toggling for Auth.
- */
+
 
 document.addEventListener('DOMContentLoaded', () => {
     // Select elements
