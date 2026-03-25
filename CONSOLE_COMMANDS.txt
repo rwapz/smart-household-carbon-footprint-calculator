@@ -1,0 +1,577 @@
+================================================================================
+🌍 EcoTracker Pro — Complete Console Commands Reference
+================================================================================
+
+QUICK START
+Open your browser's Developer Console (F12 or Ctrl+Shift+I) and paste any of 
+these commands to debug the calculator and test features.
+
+Type: showConsoleHelp() to see this menu anytime!
+
+================================================================================
+⚙️  CALCULATOR ENGINE & FACTORS
+================================================================================
+
+viewCalculationFactors()
+------------------------
+Shows all emission calculation factors used by the calculator
+
+Running: viewCalculationFactors()
+Output: 
+  Electricity: 0.233 kg CO2/kWh
+  Gas: 0.183 kg CO2/kWh
+  Water: 0.000298 kg CO2/litre
+  Petrol: 0.300 kg CO2/mile
+  Diesel: 0.290 kg CO2/mile
+  EV: 0.052 kg CO2/mile
+  Public Transport: 0.089 kg CO2/mile
+  Waste: 20.0 kg CO2/bag
+  UK Average: 170 kg CO2e/week
+
+
+viewLifestyleOptions()
+----------------------
+Show all lifestyle category emission values
+
+Running: viewLifestyleOptions()
+Output shows:
+  DIET: vegan(3.5), veggie(7.0), average(14.0), meatheavy(24.5) kg/week
+  SHOPPING: minimal(5.0), average(15.0), heavy(30.0) kg/week
+  FLIGHTS: none(0), occasional(8.0), frequent(20.0) kg/week
+
+
+getScoreGrade(score)
+--------------------
+Convert a numerical CO2e score to a performance grade
+
+Parameters:
+  score (number) - CO2 emission value in kg
+
+Examples:
+  getScoreGrade(45)   → "Excellent"
+  getScoreGrade(85)   → "Average"
+  getScoreGrade(200)  → "Awful"
+
+Grade scale:
+  < 50 kg:     Excellent 🌟
+  50-80 kg:    Good ✅
+  80-130 kg:   Average 📊
+  130-170 kg:  Bad ⚠️
+  > 170 kg:    Awful 🔴
+
+
+calculateQuick(elec, gas, water, waste, diet, shopping, flights)
+-----------------------------------------------------------------
+Quickly test the calculation engine without touching the form
+Perfect for verifying the math works correctly
+
+Parameters (all optional, defaults shown):
+  elec (number) - Electricity in kWh (default: 0)
+  gas (number) - Gas in kWh (default: 0)
+  water (number) - Water in litres (default: 0)
+  waste (number) - Number of bags per week (default: 0)
+  diet (string) - 'vegan'|'veggie'|'average'|'meatheavy' (default: 'average')
+  shopping (string) - 'minimal'|'average'|'heavy' (default: 'average')
+  flights (string) - 'none'|'occasional'|'frequent' (default: 'none')
+
+Examples:
+  calculateQuick(50, 100, 200, 2, "vegan", "average", "none")
+  calculateQuick(80, 150, 300, 3, "meatheavy", "heavy", "frequent")
+  calculateQuick()  // Uses all defaults
+  calculateQuick(60, 120, 250)  // Only energy and water
+
+Output: Detailed breakdown for each category
+Returns: {total: number, grade: string} object
+
+
+getCurrentFormValues()
+----------------------
+Snapshot of all current form field values
+Shows exactly what the user has entered in the calculator
+
+Running: getCurrentFormValues()
+Output shows:
+  Electricity, Gas, Water values
+  Waste (bags), Diet, Shopping, Flights
+  Selected area
+  Current calculation period (weekly/monthly)
+  Current total score
+
+
+================================================================================
+📊 LEADERBOARD TESTING
+================================================================================
+
+testDaily()
+-----------
+View ALL daily leaderboards for every area
+Shows 5 areas × 5 users each with scores and performance grades
+
+Running: testDaily()
+Output: 5 tables for Sheffield, Chesterfield, Rotherham, Barnsley, Doncaster
+
+
+testMonthly()
+--------------
+View ALL monthly leaderboards for every area
+Shows different users and much higher scores (4-5x daily)
+
+Running: testMonthly()
+Output: 5 tables with monthly aggregated data
+
+
+testAllAreas()
+--------------
+Get a quick summary of all 5 areas and their users
+Compact view showing which users appear in daily vs monthly
+
+Running: testAllAreas()
+Output: Summary list with user counts and grades
+
+
+quickLeaderboardTest(area)
+--------------------------
+Compare daily vs monthly leaderboards side-by-side for one area
+
+Parameters:
+  area (string) - 'Sheffield'|'Chesterfield'|'Rotherham'|'Barnsley'|'Doncaster'
+                  (default: 'Sheffield')
+
+Examples:
+  quickLeaderboardTest("Sheffield")
+  quickLeaderboardTest("Doncaster")
+
+Output: Side-by-side tables for easy comparison
+
+
+compareLeaderboards()
+---------------------
+Compare daily vs monthly scores across all areas
+Shows multiplier ratio (monthly ÷ daily) for each area
+
+Running: compareLeaderboards()
+Example output:
+  Sheffield: Daily Top 67kg | Monthly Top 234kg | Multiplier: 3.49x
+  Chesterfield: Daily Top 71kg | Monthly Top 256kg | Multiplier: 3.61x
+
+
+getAreaUsers(area, period)
+---------------------------
+Get leaderboard data for a specific area and time period
+
+Parameters:
+  area (string) - 'Sheffield'|'Chesterfield'|'Rotherham'|'Barnsley'|'Doncaster'
+  period (string) - 'daily' or 'monthly' (default: 'daily')
+
+Examples:
+  getAreaUsers("Sheffield", "daily")
+  getAreaUsers("Rotherham", "monthly")
+  getAreaUsers("Sheffield")  // Defaults to daily
+
+Output: Formatted table for that area/period
+Returns: Array of user objects
+
+
+================================================================================
+🎮 APP CONTROLS
+================================================================================
+
+switchToDaily()
+---------------
+Programmatically switch to WEEKLY (daily) calculation mode
+Updates all form labels and recalculates the result
+
+Running: switchToDaily()
+Output: ✅ Switched to DAILY view
+Changes: Period labels, calculation, visible leaderboard
+
+
+switchToMonthly()
+-----------------
+Programmatically switch to MONTHLY calculation mode
+Updates all form labels and recalculates the result
+
+Running: switchToMonthly()
+Output: ✅ Switched to MONTHLY view
+Changes: Period labels, calculation, visible leaderboard
+
+
+debugForm()
+-----------
+Check the current state of all form fields and button visibility
+Shows which fields are filled, if post button is visible
+
+Running: debugForm()
+Output: Table with all field values + post button status
+Returns: Object with form state
+
+
+================================================================================
+🔥 ADVANCED TESTING
+================================================================================
+
+testFormValidation()
+--------------------
+(If implemented) Test the form completion checker
+Shows which fields are required and current completion status
+
+
+createTestScenario(name)
+------------------------
+(If implemented) Load a predefined test scenario
+Examples: "eco-warrior", "average-user", "high-pollution"
+
+
+exportLeaderboardData()
+-----------------------
+(If implemented) Export all leaderboard data as JSON
+Useful for backup or analysis
+
+
+================================================================================
+COMMON TESTING WORKFLOWS
+================================================================================
+
+WORKFLOW 1: Verify Calculator Math
+  viewCalculationFactors()
+  viewLifestyleOptions()
+  calculateQuick(50, 100, 200, 2, "vegan", "average", "none")
+  calculateQuick(80, 150, 300, 3, "meatheavy", "heavy", "frequent")
+  ✅ Output: Confirms math engine works with various inputs
+
+
+WORKFLOW 2: Test Period Switching
+  getCurrentFormValues()          // Note current state
+  switchToDaily()
+  getCurrentFormValues()          // Check labels changed
+  switchToMonthly()
+  getCurrentFormValues()          // Check labels changed again
+  ✅ Output: Verifies switching works correctly
+
+
+WORKFLOW 3: Inspect All Leaderboards
+  testDaily()
+  testMonthly()
+  compareLeaderboards()
+  ✅ Output: All leaderboard data loads and displays
+
+
+WORKFLOW 4: Check Form Values
+  getCurrentFormValues()
+  // Manually fill form fields
+  getCurrentFormValues()          // Check values updated
+  debugForm()                     // Check button state
+  ✅ Output: Form inputs are properly registered
+
+
+WORKFLOW 5: Area-Specific Deep Dive
+  quickLeaderboardTest("Sheffield")
+  quickLeaderboardTest("Doncaster")
+  getAreaUsers("Sheffield", "daily")
+  getAreaUsers("Sheffield", "monthly")
+  ✅ Output: Compare areas and periods
+
+
+================================================================================
+COMMAND QUICK REFERENCE TABLE
+================================================================================
+
+CALCULATOR MATH
+
+Command                                | Purpose                   | Returns
+---------------------------------------|---------------------------|------------------
+viewCalculationFactors()               | Show all CO2 factors      | FACTORS object
+viewLifestyleOptions()                 | Show lifestyle emission   | LIFESTYLE object
+getScoreGrade(95)                      | Convert score to grade    | "Average"
+calculateQuick(50, 100, 200, 2)        | Test calculation          | {total, grade}
+getCurrentFormValues()                 | Get all form values       | values object
+
+
+LEADERBOARD DATA
+
+Command                                | Purpose                   | Output
+---------------------------------------|---------------------------|------------------
+testDaily()                            | View all daily boards     | 5 tables
+testMonthly()                          | View all monthly boards   | 5 tables
+testAllAreas()                         | Browse all areas          | Summary
+quickLeaderboardTest("Sheffield")      | Compare one area          | 2 tables
+compareLeaderboards()                  | Show multipliers          | Ratios
+getAreaUsers("Sheffield", "daily")     | Get area data             | User table
+
+
+APP CONTROLS
+
+Command                                | Purpose                   | Effect
+---------------------------------------|---------------------------|------------------
+switchToDaily()                        | Switch to weekly          | Updates UI
+switchToMonthly()                      | Switch to monthly         | Updates UI
+debugForm()                            | Check form state          | Status table
+showConsoleHelp()                      | Show this reference       | Display menu
+
+
+================================================================================
+TIPS & TRICKS
+================================================================================
+
+1. CHAIN MULTIPLE COMMANDS
+   calculateQuick(50, 100); calculateQuick(80, 150);
+   Or separate with semicolons: cmd1(); cmd2(); cmd3()
+
+2. STORE RESULTS IN VARIABLES
+   let result = calculateQuick(60, 120, 250, 2, "vegan");
+   let form = getCurrentFormValues();
+   let users = getAreaUsers("Sheffield", "monthly");
+
+3. PRETTY PRINT ANYTHING
+   console.table(result)  // Format as table
+   console.log(JSON.stringify(result, null, 2))  // Formatted JSON
+
+4. INSPECT SPECIFIC PROPERTIES
+   let calc = calculateQuick(50, 100);
+   console.log(calc.total)  // 52.15
+   console.log(calc.grade)  // "Good"
+
+5. COPY COMMANDS FOR SHARING
+   All commands formatted for easy copy-paste
+   No special characters needed
+   Works in any browser console
+
+6. RUN TESTS BACK-TO-BACK
+   console.clear();
+   viewCalculationFactors();
+   viewLifestyleOptions();
+   calculateQuick(70, 130, 275, 2);
+
+7. CHECK FOR ERRORS
+   All commands use try-catch internally
+   Look for error messages if something breaks
+   Check browser console for warnings
+
+
+================================================================================
+PERFORMANCE GRADES EXPLAINED
+================================================================================
+
+GRADE           | RANGE            | MEANING
+----------------|------------------|--------------------------------------------
+Excellent 🌟    | < 50 kg/week     | Top eco warrior! Very sustainable lifestyle
+Good ✅         | 50-80 kg/week    | Well below UK average, good efforts
+Average 📊      | 80-130 kg/week   | About typical UK level (±40kg variance)
+Bad ⚠️          | 130-170 kg/week  | Above average, room for improvement
+Awful 🔴        | > 170 kg/week    | High carbon footprint, needs action
+
+UK BASELINE: 170 kg CO2e per week (average person)
+Monthly equivalent: 740 kg CO2e per month
+
+
+================================================================================
+EXAMPLE SCENARIOS
+================================================================================
+
+ECO WARRIOR (Low Carbon):
+  calculateQuick(30, 40, 100, 1, "vegan", "minimal", "none")
+  Expected: ~45-55 kg | Grade: Excellent
+
+AVERAGE USER (UK Typical):
+  calculateQuick(60, 110, 300, 2, "average", "average", "occasional")
+  Expected: ~160-180 kg | Grade: Bad/Average
+
+HIGH IMPACT (Heavy Footprint):
+  calculateQuick(90, 180, 450, 4, "meatheavy", "heavy", "frequent")
+  Expected: ~250+ kg | Grade: Awful
+
+
+================================================================================
+LAST UPDATED: March 2026
+ECOTRACKER PRO v2.0 | Sheffield Hallam University
+================================================================================
+
+
+================================================================================
+LEADERBOARD DEBUGGING
+================================================================================
+
+testDaily()
+-----------
+View all DAILY leaderboards by area
+- Displays 5 areas with all users and their daily scores
+- Perfect for checking daily competition data
+
+Running: testDaily()
+Output: Beautiful formatted tables for Sheffield, Chesterfield, Rotherham, 
+        Barnsley, Doncaster
+
+
+testMonthly()
+-----------
+View all MONTHLY leaderboards by area
+- Displays 5 areas with all users and their monthly scores
+- Shows mix of daily users + new monthly competitors
+
+Running: testMonthly()
+Output: Tables with higher scores reflecting monthly aggregations
+
+
+compareLeaderboards()
+--------------------
+Compare daily vs monthly scores side-by-side
+- Shows top user in each area for both periods
+- Calculates multiplier (monthly score ÷ daily score)
+- Helps verify the score ratios between periods
+
+Running: compareLeaderboards()
+Example output:
+    Sheffield
+      Daily Top: 67 kg | Monthly Top: 234 kg | Multiplier: 3.49x
+    Chesterfield
+      Daily Top: 71 kg | Monthly Top: 256 kg | Multiplier: 3.61x
+
+================================================================================
+AREA-SPECIFIC QUERIES
+================================================================================
+
+getAreaUsers(area, period)
+--------------------------
+Get users for a specific area and time period
+
+Parameters:
+- area: 'Sheffield' | 'Chesterfield' | 'Rotherham' | 'Barnsley' | 'Doncaster'
+- period: 'daily' | 'monthly'
+
+Examples:
+  getAreaUsers("Sheffield", "daily")      // Sheffield daily leaderboard
+  getAreaUsers("Rotherham", "monthly")    // Rotherham monthly leaderboard
+
+================================================================================
+UI CONTROL COMMANDS
+================================================================================
+
+switchToDaily()
+---------------
+Programmatically switch the app to DAILY leaderboard view
+- Updates the period toggle buttons
+- Re-renders the leaderboard with daily data
+- Changes all labels to "Daily"
+
+Running: switchToDaily()
+Output: ✅ Switched to DAILY view
+
+
+switchToMonthly()
+-----------------
+Programmatically switch the app to MONTHLY leaderboard view
+- Updates the period toggle buttons
+- Re-renders the leaderboard with monthly data
+- Changes all labels to "Monthly"
+
+Running: switchToMonthly()
+Output: ✅ Switched to MONTHLY view
+
+================================================================================
+FORM VALIDATION DEBUGGING
+================================================================================
+
+debugForm()
+-----------
+Check the current state of all form fields & post button
+- Shows values for: electricity, gas, water, waste, diet, shopping, flights
+- Indicates if "Post to Leaderboard" button is visible
+- Returns object with all values
+
+Running: debugForm()
+Example output:
+    ⚡ Electricity: 8
+    🔥 Gas: 5
+    💧 Water: 150
+    🗑️ Waste: Paper
+    🍽️ Diet: vegan
+    🛒 Shopping: average
+    ✈️ Flights: occasional
+    Post Button: VISIBLE ✓
+
+================================================================================
+HELP & REFERENCE
+================================================================================
+
+showConsoleHelp()
+-----------------
+Display all available console commands with descriptions
+- Pretty-formatted list with emojis
+- Shows examples and usage tips
+- Appears at the top of your console on page load automatically!
+
+Running: showConsoleHelp()
+
+================================================================================
+COMMON TESTING WORKFLOWS
+================================================================================
+
+WORKFLOW 1: Verify Data Integrity
+  testDaily()
+  testMonthly()
+  compareLeaderboards()
+  ✅ Checks all leaderboard data is loaded and properly formatted
+
+
+WORKFLOW 2: Test UI Switching
+  switchToDaily()
+  (Check the UI updates)
+  switchToMonthly()
+  (Check the UI updates again)
+  compareLeaderboards()
+  ✅ Verifies daily/monthly toggle works correctly
+
+
+WORKFLOW 3: Debug Form Issues
+  debugForm()
+  (Fill some form fields)
+  debugForm()
+  (Compare the output)
+  ✅ Track which fields are complete and button visibility
+
+
+WORKFLOW 4: Area-Specific Analysis
+  getAreaUsers("Sheffield", "daily")
+  getAreaUsers("Sheffield", "monthly")
+  getAreaUsers("Doncaster", "daily")
+  getAreaUsers("Doncaster", "monthly")
+  ✅ Compare same area across periods, or different areas
+
+================================================================================
+COMMAND SUMMARY TABLE
+================================================================================
+
+Command                              | Purpose                           | Output
+------------------------------------|-----------------------------------|------------------
+testDaily()                          | View all daily leaderboards       | 5 formatted tables
+testMonthly()                        | View all monthly leaderboards     | 5 formatted tables
+compareLeaderboards()                | Compare daily vs monthly          | Multiplier ratios
+getAreaUsers('Sheffield', 'daily')   | Get area-specific data            | User table for area
+switchToDaily()                      | Switch UI to daily mode           | ✅ Confirmation
+switchToMonthly()                    | Switch UI to monthly mode         | ✅ Confirmation
+debugForm()                          | Check form field values           | Field status report
+showConsoleHelp()                    | Display all commands              | Pretty command list
+
+================================================================================
+PRO TIPS
+================================================================================
+
+1. AUTO-LOAD HELP ON STARTUP
+   The console will show a hint about showConsoleHelp() when you open the page
+
+2. CHAIN COMMANDS
+   Run multiple commands to test workflows: testDaily(); compareLeaderboards()
+
+3. INSPECT RETURN VALUES
+   Commands return useful data: let data = getAreaUsers('Sheffield', 'daily')
+
+4. COPY+PASTE FRIENDLY
+   All commands are ready to paste directly into console
+
+5. NO SIDE EFFECTS
+   Debug commands only log data, don't modify the app state 
+   (except for switch/setPeriod)
+
+================================================================================
+Last Updated: March 2026 | EcoTracker Pro v2.0 🌱
+================================================================================

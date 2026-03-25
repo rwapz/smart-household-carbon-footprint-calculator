@@ -301,9 +301,11 @@
                 </div>
 
                 <div id="history-row" class="hidden">
-                    <button class="mini-btn" onclick="saveToHistory()" style="padding:7px 14px;">� Save Entry</button>
+                    <button class="mini-btn" onclick="saveToHistory()" style="padding:7px 14px;">💾 Save Entry</button>
                     <span id="history-saved-msg" class="hidden" style="font-size:0.74rem;color:#10b981;margin-left:6px;">✅ Saved!</span>
                 </div>
+
+                <button id="post-leaderboard-btn" class="download-btn hidden" onclick="postToLeaderboard()">🏆 Post to Leaderboard</button>
 
                 <button id="download-report-btn" class="download-btn hidden" onclick="downloadData()">📥 Export Report</button>
 
@@ -312,6 +314,12 @@
             <!-- Leaderboard -->
             <div id="rankings-display" class="hidden full-height">
                 <h2 id="area-title">Rankings</h2>
+                
+                <div class="period-toggle" style="margin-bottom:16px;margin-top:8px;">
+                    <button class="period-btn active" id="lb-btn-weekly"  onclick="setPeriod('weekly')">📅 Daily</button>
+                    <button class="period-btn"        id="lb-btn-monthly" onclick="setPeriod('monthly')">🗓️ Monthly</button>
+                </div>
+                
                 <div id="leaderboard-list"></div>
                 <button class="action-btn" onclick="goToCalc()" style="margin-top:14px;">↩ Return to Calculator</button>
             </div>
