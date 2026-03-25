@@ -208,6 +208,23 @@ function calculateTotal() {
     const hr = document.getElementById('history-row');
     if (hr) hr.classList.toggle('hidden', total <= 0);
     if (currentChartType === 'pie' && total > 0) drawPie(e, g, w, other);
+    
+    /* Save current entry to localStorage */
+    try {
+        const entry = {
+            elec: document.getElementById('input-elec').value || '',
+            gas: document.getElementById('input-gas').value || '',
+            water: document.getElementById('input-water').value || '',
+            waste: document.getElementById('input-waste').value || '0',
+            diet: document.getElementById('input-diet').value || '0',
+            shopping: document.getElementById('input-shopping').value || '0',
+            flights: document.getElementById('input-flights').value || 'none',
+            area: document.getElementById('user-area').value || '',
+            period: currentPeriod,
+            timestamp: new Date().toISOString()
+        };
+        localStorage.setItem('eco-last-entry', JSON.stringify(entry));
+    } catch(e) {}
     checkFormCompletion();
 }
 
@@ -607,6 +624,23 @@ window.addEventListener('load', () => {
     } catch(e) {
         applyTheme(true);
     }
+    
+    /* Load last saved score and values */
+    try {
+        const lastEntry = JSON.parse(localStorage.getItem('eco-last-entry') || 'null');
+        if (lastEntry) {
+            document.getElementById('input-elec').value = lastEntry.elec || '';
+            document.getElementById('input-gas').value = lastEntry.gas || '';
+            document.getElementById('input-water').value = lastEntry.water || '';
+            document.getElementById('input-waste').value = lastEntry.waste || '0';
+            document.getElementById('input-diet').value = lastEntry.diet || '0';
+            document.getElementById('input-shopping').value = lastEntry.shopping || '0';
+            document.getElementById('input-flights').value = lastEntry.flights || 'none';
+            document.getElementById('user-area').value = lastEntry.area || '';
+            if (lastEntry.period) setPeriod(lastEntry.period);
+        }
+    } catch(e) {}
+    
     calculateTotal();
 });
 

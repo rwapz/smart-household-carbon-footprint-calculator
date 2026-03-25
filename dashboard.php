@@ -1,4 +1,15 @@
-<?php session_start(); ?>
+<?php 
+session_start();
+
+// Check if user is logged in
+if (!isset($_SESSION['user_id']) || !isset($_SESSION['username'])) {
+    header('Location: index.php');
+    exit;
+}
+
+$username = htmlspecialchars($_SESSION['username']);
+$initial = strtoupper(substr($username, 0, 1));
+?>
 <!DOCTYPE html>
 <html lang="en" data-theme="light">
 <head>
@@ -10,9 +21,28 @@
 </head>
 <body>
 
+    <!-- TOP DASHBOARD HEADER -->
+    <div class="dashboard-header">
+        <div class="dashboard-welcome">
+            <h1>Welcome back, <span><?php echo $username; ?></span>! 👋</h1>
+            <p>Select a calculator or view your activity history</p>
+        </div>
+
+        <div class="dashboard-user-section">
+            <div class="user-avatar"><?php echo $initial; ?></div>
+            <div class="user-info">
+                <p>Logged in as</p>
+                <h3><?php echo $username; ?></h3>
+            </div>
+            <form method="POST" action="logout.php" style="margin: 0;">
+                <button type="submit" class="logout-btn">Logout</button>
+            </form>
+        </div>
+    </div>
+
     <div class="main-container">
         <div class="menu-card">
-            
+
             <div class="menu-header">
                 <h1>Smart Hub</h1>
                 <p>Welcome back! Select an option below.</p>
@@ -26,7 +56,7 @@
                 <button class="menu-btn primary" onclick="window.location.href='history.php'">
                     Activity History
                 </button>
-                
+
                 <button class="menu-btn secondary" disabled>
                     Household Stats
                 </button>
@@ -38,10 +68,6 @@
                 <button class="menu-btn primary" onclick="window.location.href='accessibility-settings.php'">
                     ♿ Accessibility
                 </button>
-            </div>
-
-            <div class="footer-nav">
-                <a href="index.php" class="back-link">← Back to Login Page</a>
             </div>
 
         </div>

@@ -521,3 +521,23 @@ input:focus, select:focus { outline: none; border-color: var(--primary); box-sha
 *:focus-visible { outline: 2px solid var(--primary); outline-offset: 2px; border-radius: 4px; }
 
 .mini-btn:hover { filter: brightness(90%); }
+
+/* ══ ACHIEVEMENT BADGES ══ */
+.achievement-badge {
+    display: inline-block;
+    background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+    color: white;
+    padding: 8px 14px;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    margin-right: 8px;
+    margin-bottom: 8px;
+    box-shadow: 0 2px 8px rgba(16, 185, 129, 0.3);
+    animation: badgePop 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+[data-theme="dark"] .achievement-badge {
+    background: linear-gradient(135deg, #059669 0%, #047857 100%);
+    box-shadow: 0 2px 8px rgba(16, 185, 129, 0.2);
+}

@@ -3,14 +3,28 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Accessibility Settings | EcoTracker</title>
+    <title>Accessibility Settings | Smart Household</title>
     <link rel="stylesheet" href="stylesheets/accessibility-style.css">
+    <link rel="stylesheet" href="stylesheets/accessibility-global.css">
+
+    <!-- Apply saved theme BEFORE paint to prevent flash -->
+    <script>
+        (function() {
+            const theme    = localStorage.getItem('eco-theme')    || 'light';
+            const contrast = localStorage.getItem('eco-contrast') === 'true' ? 'high' : 'normal';
+            const font     = localStorage.getItem('eco-fontsize') || 'normal';
+            const fontMap  = { small: '14px', normal: '16px', large: '19px' };
+            document.documentElement.setAttribute('data-theme', theme);
+            document.documentElement.setAttribute('data-contrast', contrast);
+            document.documentElement.style.fontSize = fontMap[font] || '16px';
+        })();
+    </script>
 </head>
 <body>
 
 <div class="card">
     <h1>Accessibility</h1>
-    <p class="subtitle">Customise your EcoTracker experience.</p>
+    <p class="subtitle">Customise your Smart Household experience.</p>
 
     <div class="section-label">Display</div>
 
@@ -37,7 +51,6 @@
     <a href="dashboard.php" class="back-link">← Back to Dashboard</a>
 </div>
 
-<!-- Load accessibility.js first (no defer), then settings JS -->
 <script src="scripts/accessibility.js"></script>
 <script src="scripts/accessibility-settings.js"></script>
 </body>

@@ -300,6 +300,10 @@
                     <div id="tips-list"></div>
                 </div>
 
+                <div id="achievement-badges" class="hidden" style="margin-top:16px;">
+                    <span class="section-tag" style="margin-bottom:6px;display:block;">🏅 Achievements</span>
+                </div>
+
                 <div id="history-row" class="hidden">
                     <button class="mini-btn" onclick="saveToHistory()" style="padding:7px 14px;">💾 Save Entry</button>
                     <span id="history-saved-msg" class="hidden" style="font-size:0.74rem;color:#10b981;margin-left:6px;">✅ Saved!</span>
