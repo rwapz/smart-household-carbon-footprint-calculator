@@ -1,12 +1,10 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="light">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Activity History | Smart Household</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="stylesheets/history-style.css">
-    <link rel="stylesheet" href="stylesheets/accessibility-global.css">
+    <link rel="stylesheet" href="stylesheets/test.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
@@ -26,6 +24,7 @@
             </div>
         </div>
 
+        <!-- Stats -->
         <div class="stats-row">
             <div class="stat-box">
                 <div class="stat-val" id="stat-entries">0</div>
@@ -45,34 +44,26 @@
             </div>
         </div>
 
+        <!-- Badges -->
         <div id="badges-section" style="display:none;">
             <h3 class="chart-title">🏅 Your Badges</h3>
             <div id="badges-container" class="badges-container"></div>
         </div>
 
-        <div id="table-container">
-            <table class="history-table">
-                <thead>
-                    <tr>
-                        <th>Date</th>
-                        <th>CO2 (kg)</th>
-                        <th>Grade</th>
-                        <th>Delete</th>
-                    </tr>
-                </thead>
-                <tbody id="table-body"></tbody>
-            </table>
-        </div>
+        <!-- Table -->
+        <div id="table-container"></div>
         <p class="showing-text" id="showing-text"></p>
 
+        <!-- Trend chart -->
         <div id="trend-section" style="display:none; margin-top:24px;">
             <h3 class="chart-title">📈 CO2 Trend Over Time</h3>
             <canvas id="trend-chart"></canvas>
         </div>
 
+        <!-- Actions -->
         <div class="action-row">
-            <button class="export-btn" onclick="exportCSV()">📥 Export CSV</button>
-            <button class="clear-btn" onclick="clearAllHistory()">🗑️ Clear All</button>
+            <button class="export-btn" onclick="exportCSV()">📥 Export PDF</button>
+            <button class="clear-btn" onclick="clearHistory()">🗑️ Clear All</button>
         </div>
 
         <div class="footer-nav">
@@ -82,8 +73,6 @@
     </div>
 </div>
 
-<script src="scripts/accessibility.js"></script>
-<script src="scripts/history-logic.js"></script>
-
+<script src="scripts/history-test.js"></script>
 </body>
 </html>

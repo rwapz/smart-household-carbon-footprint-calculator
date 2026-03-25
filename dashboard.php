@@ -1,3 +1,4 @@
+<?php session_start(); ?>
 <!DOCTYPE html>
 <html lang="en" data-theme="light">
 <head>
@@ -46,6 +47,14 @@
         </div>
     </div>
 
+    <!-- EmailJS -->
+    <span id="eco-user"
+        data-name="<?php echo htmlspecialchars($_SESSION['username'] ?? ''); ?>"
+        data-email="<?php echo htmlspecialchars($_SESSION['email'] ?? ''); ?>"
+        style="display:none;">
+    </span>
+    <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+    <script src="scripts/emailjs-handler.js"></script>
     <script src="scripts/accessibility.js"></script>
 </body>
 </html>

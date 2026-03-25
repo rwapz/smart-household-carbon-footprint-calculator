@@ -13,7 +13,7 @@ const EcoAccess = {
         document.documentElement.setAttribute('data-theme', on ? 'dark' : 'light');
         const btn = document.getElementById('dark-btn');
         if (btn) btn.textContent = on ? '☀️ Light' : '🌙 Dark';
-        localStorage.setItem('eco-darkmode', on);
+        localStorage.setItem('eco-theme', on ? 'dark' : 'light');
     },
 
     setFontSize(size) {
@@ -50,10 +50,11 @@ eco('/help')           — show this list
 
     // Restore saved prefs on load
     init() {
-        const dark = localStorage.getItem('eco-darkmode') === 'true';
+        const savedTheme = localStorage.getItem('eco-theme');
+        const dark = savedTheme ? savedTheme === 'dark' : true; /* default dark for polished theme */
         const font = localStorage.getItem('eco-fontsize') || 'normal';
         const contrast = localStorage.getItem('eco-contrast') === 'true';
-        if (dark) this.setDark(true);
+        this.setDark(dark);
         if (font !== 'normal') this.setFontSize(font);
         if (contrast) this.setContrast(true);
         console.log('%cEcoTracker accessibility loaded. Type eco(\'/help\') for commands.', 'color:#10b981;');

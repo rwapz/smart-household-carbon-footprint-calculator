@@ -11,7 +11,6 @@
 
     <div class="main-container">
         <div class="auth-card">
-            
             <div class="auth-visual">
                 <div class="visual-content">
                     <h1>Smart<br>Household</h1>
@@ -20,13 +19,12 @@
             </div>
 
             <div class="auth-form-container">
-                
                 <div class="form-toggle">
                     <button id="loginTab" class="active">Login</button>
                     <button id="signupTab">Sign Up</button>
                 </div>
 
-                <form id="loginForm" action="login_logic.php" method="POST" class="auth-form">
+                <form id="loginForm" action="login-logic.php" method="POST" class="auth-form">
                     <h2>Welcome Back</h2>
                     <div class="input-group">
                         <label for="login-user">Username</label>
@@ -39,15 +37,11 @@
                     <button type="submit" class="btn-primary">Login to Dashboard</button>
                 </form>
 
-                <form id="signupForm" action="signup_logic.php" method="POST" class="auth-form" style="display: none;">
+                <form id="signupForm" action="signup-logic.php" method="POST" class="auth-form" style="display: none;">
                     <h2>Create Account</h2>
                     <div class="input-group">
                         <label for="signup-user">Username</label>
                         <input type="text" id="signup-user" name="USERNAME" placeholder="Choose a username" required>
-                    </div>
-                    <div class="input-group">
-                        <label for="signup-email">Email</label>
-                        <input type="email" id="signup-email" name="EMAIL" placeholder="you@example.com" required>
                     </div>
                     <div class="input-group">
                         <label for="signup-pass">Password</label>
@@ -61,12 +55,11 @@
                         ← Skip to Dashboard Menu
                     </a>
                 </div>
-
             </div> 
         </div> 
     </div> 
 
     <script src="scripts/accessibility.js"></script>
-        <script src="scripts/login-script.js" defer></script>
+    <script src="scripts/login-script.js" defer></script>
 </body>
 </html>

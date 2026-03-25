@@ -55,9 +55,10 @@ const getRowClass = (total) => {
 
 const updateStatsUI = (data) => {
     const stats = calculateStats(data);
-    document.getElementById("stat-entries").innerText = stats.count;
-    document.getElementById("stat-avg").innerText = stats.avg;
-    document.getElementById("stat-best").innerText = stats.best;
+    document.getElementById("stat-entries").innerText = stats.count || 0;
+    document.getElementById("stat-avg").innerText = stats.avg || '--';
+    document.getElementById("stat-best").innerText = stats.best || '--';
+    document.getElementById("stat-worst").innerText = stats.worst || '--';
 };
 
 // --- 3. Actions ---
