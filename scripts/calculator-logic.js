@@ -1,10 +1,6 @@
-<<<<<<< HEAD
 /**
  * ECOTRACKER PRO — CORE ENGINE
  */
-=======
-
->>>>>>> 8a01b8fae81aab8bea1de5c2d6f70c4d18e869c4
 
 const FACTORS = {
     elec: 0.233, gas: 0.183, water_l: 0.000298,
@@ -341,17 +337,15 @@ function sendToDatabaseTable() {
     alert(`Sync ready: ${document.getElementById('total-output').textContent} kg CO2e\n(PHP handles DB sync server-side)`);
 }
 
-<<<<<<< HEAD
 /* ══ INIT ══ */
 window.addEventListener('load', () => {
     try {
-        const saved = localStorage.getItem('eco-theme') || 'light';
+        const saved = localStorage.getItem('eco-theme') || 'dark';
         applyTheme(saved === 'dark');
     } catch(e) {
-        applyTheme(false);
+        applyTheme(true);
     }
     calculateTotal();
 });
-=======
+
 function resetAll() { window.location.reload(); }
->>>>>>> 8a01b8fae81aab8bea1de5c2d6f70c4d18e869c4

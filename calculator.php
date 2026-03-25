@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="dark">
+<html lang="en" data-theme="light">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,7 +8,6 @@
     <link rel="stylesheet" href="stylesheets/accessibility-global.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-<<<<<<< HEAD
 
     <style>
         /*
@@ -61,53 +60,11 @@
         /* 6. DARK MODE — only recolour, never change display/grid */
         [data-theme="dark"] .content-grid > section:first-child {
             background: var(--bg, #0f172a);
-            border-right-color: var(--border, #334155);
+            border-right-color: var(--border, #1f2a3d);
         }
-        [data-theme="dark"] #output-side { background: var(--right-bg, #0c1628); }
-        [data-theme="dark"] .main-header { background: var(--card, #1e293b); border-bottom-color: var(--border, #334155); }
+        [data-theme="dark"] #output-side { background: var(--bg, #0f172a); }
+        [data-theme="dark"] .main-header { background: linear-gradient(90deg, #0f1d35, #111c3f); border-bottom-color: var(--border, #1f2a3d); }
     </style>
-=======
-<style>
-
-.content-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 0;
-    height: calc(100vh - 70px);
-    overflow: hidden;
-}
-
-.content-grid > .ui-panel:first-child {
-    overflow-y: auto;
-    height: 100%;
-    padding: 24px;
-}
-
-#output-side {
-    overflow-y: auto;
-    height: 100%;
-    padding: 24px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: flex-start;
-}
-#calc-display {
-    width: 100%;
-    text-align: center;
-}
-
-#total-output {
-    font-size: 3rem;
-    font-weight: 900;
-    line-height: 1;
-}
-.result-box {
-    text-align: center;
-    margin: 8px 0;
-}
-</style>
->>>>>>> 8a01b8fae81aab8bea1de5c2d6f70c4d18e869c4
 </head>
 <body>
 

@@ -47,7 +47,7 @@ eco('/help')           — show this list
     // Restore saved prefs on load
     init() {
         const savedTheme = localStorage.getItem('eco-theme');
-        const dark = savedTheme ? savedTheme === 'dark' : true; /* default dark for polished theme */
+        const dark = savedTheme ? savedTheme === 'dark' : false; /* default light for screenshot style */
         const font = localStorage.getItem('eco-fontsize') || 'normal';
         const contrast = localStorage.getItem('eco-contrast') === 'true';
         this.setDark(dark);

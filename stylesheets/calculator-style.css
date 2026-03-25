@@ -1,32 +1,28 @@
-<<<<<<< HEAD
 /**
  * ECOTRACKER PRO — CALCULATOR STYLES
  * Premium design with dark mode support.
  * Gradient buttons, shimmer effects, smooth animations.
  */
-=======
-
->>>>>>> 8a01b8fae81aab8bea1de5c2d6f70c4d18e869c4
 
 /* ══ TOKENS ══ */
 :root {
-    --primary:     #10b981;
-    --primary-dark: #059669;
-    --primary-darker: #047857;
-    --bg:          #f8fafc;
-    --card:        #ffffff;
-    --border:      #e2e8f0;
-    --text:        #0f172a;
-    --muted:       #64748b;
-    --right-bg:    #f8fafc;
-    --input-bg:    #ffffff;
-    --ring-track:  #e2e8f0;
-    --btn-bg:      #ffffff;
-    --btn-text:    #0f172a;
-    --btn-border:  #e2e8f0;
-    --tip-bg:      #f0fdf4;
-    --tip-border:  #bbf7d0;
-    --tip-text:    #065f46;
+    --primary:       #10b981;
+    --primary-dark:  #12b886;
+    --primary-darker:#0c946f;
+    --bg:            #f8fbff;
+    --card:          #ffffff;
+    --border:        #d9e2ee;
+    --text:          #0f172a;
+    --muted:         #64748b;
+    --right-bg:      #ffffff;
+    --input-bg:      #ffffff;
+    --ring-track:    #e2e8f0;
+    --btn-bg:        #ffffff;
+    --btn-text:      #0f172a;
+    --btn-border:    #e2e8f0;
+    --tip-bg:        #f0fdf4;
+    --tip-border:    #bbf7d0;
+    --tip-text:      #065f46;
 }
 
 [data-theme="dark"] {
@@ -83,29 +79,45 @@ body, html {
 
 /* ══ HEADER ══ */
 .main-header {
-    height: 60px;
+    height: 64px;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 0 1.5rem;
-    background: var(--card);
-    border-bottom: 1px solid var(--border);
-    transition: all 0.3s ease;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+    padding: 0 1.25rem;
+    background: #ffffff;
+    border-bottom: 1px solid #dce4ed;
+    transition: all 0.25s ease;
+    box-shadow: 0 3px 12px rgba(10, 25, 80, 0.08);
 }
 
-.main-logo { font-weight: 900; font-size: 1.2rem; color: var(--text); letter-spacing: -0.5px; }
+[data-theme="dark"] .main-header {
+    background: linear-gradient(90deg, #0f1d35, #111c3f);
+    border-bottom-color: #1f2a3d;
+    box-shadow: 0 0 16px rgba(0,0,0,0.4);
+}
+
+.main-logo { font-weight: 900; font-size: 1.3rem; color: #0e1b3a; letter-spacing: -0.5px; }
 .main-logo span { color: var(--primary); }
 
-.header-right { display: flex; gap: 8px; align-items: center; }
+.header-right { display: flex; gap: 10px; align-items: center; }
+
+.content-grid > section:first-child,
+#output-side {
+    background: var(--card);
+    border-right: 1px solid var(--border);
+}
+
+#output-side { padding: 46px 30px; }
+
+body, html { background: var(--bg); }
 
 .action-btn {
-    padding: 9px 16px;
-    border-radius: 10px;
-    border: 1.5px solid var(--btn-border);
-    background: var(--btn-bg);
-    color: var(--btn-text);
-    font-size: 0.82rem;
+    padding: 10px 14px;
+    border-radius: 12px;
+    border: 1px solid #e8eff8;
+    background: #ffffff;
+    color: #1f2a3f;
+    font-size: 0.85rem;
     font-weight: 700;
     cursor: pointer;
     text-decoration: none;
@@ -113,7 +125,7 @@ body, html {
     align-items: center;
     gap: 6px;
     white-space: nowrap;
-    transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+    transition: all 0.25s ease;
     position: relative;
     overflow: hidden;
 }
@@ -217,7 +229,6 @@ label {
     margin-bottom: 6px;
     color: var(--muted);
 }
-<<<<<<< HEAD
 
 input, select {
     width: 100%;
@@ -390,11 +401,12 @@ input:focus, select:focus { outline: none; border-color: var(--primary); box-sha
 .trees-section:hover { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(16, 185, 129, 0.15); }
 
 /* ══ COMPARISON BAR ══ */
-#comparison-section { width: 100%; max-width: 280px; margin: 8px auto 12px; }
-.comparison-labels { display: flex; justify-content: space-between; font-size: 0.72rem; font-weight: 700; color: var(--muted); margin-bottom: 6px; }
-.comparison-track { position: relative; height: 12px; background: var(--border); border-radius: 6px; overflow: hidden; transition: width 0.5s ease; }
-.comparison-marker { position: absolute; top: 0; bottom: 0; width: 2px; background: #ef4444; left: 50%; }
-.comparison-text { font-size: 0.74rem; color: var(--muted); margin-top: 6px; text-align: center; font-weight: 500; }
+#comparison-section { width: 100%; max-width: 300px; margin: 12px auto 14px; padding: 14px; background: var(--tip-bg); border: 1.5px solid var(--tip-border); border-radius: 12px; }
+.comparison-labels { display: flex; justify-content: space-between; font-size: 0.75rem; font-weight: 800; color: var(--text); margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.05em; }
+.comparison-track { position: relative; height: 14px; background: var(--border); border-radius: 7px; overflow: hidden; transition: width 0.5s ease; box-shadow: inset 0 1px 3px rgba(0,0,0,0.1); }
+.comparison-marker { position: absolute; top: 0; bottom: 0; width: 3px; background: #ef4444; left: 50%; }
+.comparison-bar-you { position: absolute; left: 0; top: 0; bottom: 0; background: linear-gradient(90deg, var(--primary), var(--primary-dark)); border-radius: 7px; transition: width 0.5s ease; }
+.comparison-text { font-size: 0.75rem; color: var(--tip-text); margin-top: 8px; text-align: center; font-weight: 600; }
 
 /* ══ CHART TOGGLE ══ */
 .chart-toggle-row { display: flex; gap: 12px; justify-content: center; margin: 14px 0 10px; }
@@ -498,6 +510,5 @@ input:focus, select:focus { outline: none; border-color: var(--primary); box-sha
 
 /* ══ FOCUS ══ */
 *:focus-visible { outline: 2px solid var(--primary); outline-offset: 2px; border-radius: 4px; }
-=======
+
 .mini-btn:hover { filter: brightness(90%); }
->>>>>>> 8a01b8fae81aab8bea1de5c2d6f70c4d18e869c4

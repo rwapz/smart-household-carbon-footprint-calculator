@@ -1,10 +1,6 @@
-<<<<<<< HEAD
 /**
  * ECOTRACKER PRO - HISTORY PAGE STYLES
  */
-=======
-
->>>>>>> 8a01b8fae81aab8bea1de5c2d6f70c4d18e869c4
 
 :root {
     --primary: #10b981;
@@ -200,11 +196,9 @@ html, body {
     color: #f1f5f9 !important;
     border-color: #334155 !important;
 }
-<<<<<<< HEAD
 [data-theme="dark"] .back-link  { color: #64748b !important; }
 [data-theme="dark"] .showing-text { color: #475569 !important; }
 [data-theme="dark"] .chart-title { color: #94a3b8 !important; }
 [data-theme="dark"] .footer-nav, [data-theme="dark"] .action-row { border-color: #334155 !important; }
-=======
+
 .mini-btn:hover { filter: brightness(90%); }
->>>>>>> 8a01b8fae81aab8bea1de5c2d6f70c4d18e869c4

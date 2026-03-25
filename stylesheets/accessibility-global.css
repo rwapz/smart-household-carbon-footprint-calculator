@@ -1,11 +1,7 @@
 /**
-<<<<<<< HEAD
  * ECOTRACKER PRO — ACCESSIBILITY-GLOBAL
  * Loaded after calculator-style.css.
- * Only job: lock the two-column layout.
-=======
  * Handles: dark mode, high contrast, font sizes
->>>>>>> 8a01b8fae81aab8bea1de5c2d6f70c4d18e869c4
  */
 
 /* Responsive fallback for mobile */
@@ -16,12 +12,11 @@
     #output-side { min-height: 420px; border-left: none !important; border-top: 1px solid var(--border); }
 }
 
-<<<<<<< HEAD
 /* Reduced motion */
 @media (prefers-reduced-motion: reduce) {
     *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
 }
-=======
+
 [data-theme="dark"] h1,
 [data-theme="dark"] h2,
 [data-theme="dark"] h3,
@@ -176,4 +171,4 @@ html { font-size: 16px; }
 [data-theme="dark"] .showing-text { color: #64748b !important; }
 [data-theme="dark"] .chart-title { color: #f1f5f9 !important; }
 [data-theme="dark"] .date-input { background: #1e293b !important; color: #f1f5f9 !important; border-color: #334155 !important; }
->>>>>>> 8a01b8fae81aab8bea1de5c2d6f70c4d18e869c4
+
