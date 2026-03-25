@@ -1,8 +1,4 @@
-/**
- * ECOTRACKER - Accessibility & Dev Console Commands
- * Type commands in browser console e.g. eco('/darkmode')
- * Will hook into Settings/Dashboard in future.
- */
+
 
 const EcoAccess = {
 

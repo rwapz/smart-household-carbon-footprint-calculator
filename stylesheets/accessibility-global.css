@@ -1,7 +1,11 @@
 /**
+<<<<<<< HEAD
  * ECOTRACKER PRO — ACCESSIBILITY-GLOBAL
  * Loaded after calculator-style.css.
  * Only job: lock the two-column layout.
+=======
+ * Handles: dark mode, high contrast, font sizes
+>>>>>>> 8a01b8fae81aab8bea1de5c2d6f70c4d18e869c4
  */
 
 /* Responsive fallback for mobile */
@@ -12,7 +16,164 @@
     #output-side { min-height: 420px; border-left: none !important; border-top: 1px solid var(--border); }
 }
 
+<<<<<<< HEAD
 /* Reduced motion */
 @media (prefers-reduced-motion: reduce) {
     *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
 }
+=======
+[data-theme="dark"] h1,
+[data-theme="dark"] h2,
+[data-theme="dark"] h3,
+[data-theme="dark"] p,
+[data-theme="dark"] label,
+[data-theme="dark"] span,
+[data-theme="dark"] li {
+    color: #f1f5f9;
+}
+
+/* Cards / panels */
+[data-theme="dark"] .card,
+[data-theme="dark"] .menu-card,
+[data-theme="dark"] .history-card,
+[data-theme="dark"] .main-header {
+    background: #1e293b !important;
+    border-color: #334155 !important;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.4) !important;
+}
+
+/* Inputs & selects */
+[data-theme="dark"] input,
+[data-theme="dark"] select,
+[data-theme="dark"] textarea {
+    background: #1e293b !important;
+    color: #f1f5f9 !important;
+    border-color: #334155 !important;
+}
+
+/* Buttons */
+[data-theme="dark"] .menu-btn.secondary {
+    background: #334155 !important;
+    color: #64748b !important;
+}
+
+[data-theme="dark"] .action-btn {
+    background: #1e293b !important;
+    color: #f1f5f9 !important;
+    border-color: #334155 !important;
+}
+
+[data-theme="dark"] .mini-btn,
+[data-theme="dark"] .period-btn:not(.active),
+[data-theme="dark"] .page-btn {
+    background: #1e293b !important;
+    color: #f1f5f9 !important;
+    border-color: #334155 !important;
+}
+
+/* Tips / misc boxes */
+[data-theme="dark"] .tip-item {
+    background: #1e293b !important;
+    color: #f1f5f9 !important;
+}
+
+/* Borders & dividers */
+[data-theme="dark"] .footer-nav,
+[data-theme="dark"] hr {
+    border-color: #334155 !important;
+}
+
+[data-theme="dark"] .back-link,
+[data-theme="dark"] .section-tag {
+    color: #94a3b8 !important;
+}
+
+/* =====================
+   HIGH CONTRAST
+   ===================== */
+[data-contrast="high"] body {
+    background: #000000 !important;
+    color: #ffffff !important;
+}
+
+[data-contrast="high"] h1,
+[data-contrast="high"] h2,
+[data-contrast="high"] h3 {
+    color: #00ff88 !important;
+}
+
+[data-contrast="high"] p,
+[data-contrast="high"] label,
+[data-contrast="high"] span,
+[data-contrast="high"] li {
+    color: #ffffff !important;
+}
+
+[data-contrast="high"] .card,
+[data-contrast="high"] .menu-card,
+[data-contrast="high"] .history-card,
+[data-contrast="high"] .main-header {
+    background: #000 !important;
+    border: 2px solid #ffffff !important;
+}
+
+[data-contrast="high"] input,
+[data-contrast="high"] select {
+    background: #000 !important;
+    color: #fff !important;
+    border: 2px solid #fff !important;
+}
+
+[data-contrast="high"] .menu-btn.primary,
+[data-contrast="high"] .sync-btn,
+[data-contrast="high"] .period-btn.active {
+    background: #00ff88 !important;
+    color: #000 !important;
+}
+
+[data-contrast="high"] .menu-btn.secondary {
+    background: #000 !important;
+    color: #fff !important;
+    border: 2px solid #fff !important;
+}
+
+[data-contrast="high"] .action-btn,
+[data-contrast="high"] .mini-btn,
+[data-contrast="high"] .period-btn:not(.active) {
+    background: #000 !important;
+    color: #fff !important;
+    border: 2px solid #fff !important;
+}
+
+[data-contrast="high"] .back-link { color: #00ff88 !important; }
+
+/* =====================
+   FONT SIZES
+   (set via JS on html element)
+   ===================== */
+html { font-size: 16px; }
+
+/* Login page */
+[data-theme="dark"] .auth-card { background: #1e293b !important; }
+[data-theme="dark"] .auth-form-container { background: #1e293b !important; }
+[data-theme="dark"] .auth-form h2 { color: #f1f5f9 !important; }
+[data-theme="dark"] .form-toggle button { color: #64748b !important; }
+[data-theme="dark"] .form-toggle button.active { color: #2ecc71 !important; }
+[data-theme="dark"] .input-group label { color: #94a3b8 !important; }
+
+/* History page — stat boxes, table, badges */
+[data-theme="dark"] .stat-box { background: #0f172a !important; }
+[data-theme="dark"] .stat-val { color: #2ecc71 !important; }
+[data-theme="dark"] .stat-label { color: #64748b !important; }
+[data-theme="dark"] th { color: #64748b !important; border-color: #1e293b !important; }
+[data-theme="dark"] td { border-color: #1e293b !important; color: #f1f5f9 !important; }
+[data-theme="dark"] .row-best td { background: #0f2918 !important; }
+[data-theme="dark"] .row-worst td { background: #1f0f0f !important; }
+[data-theme="dark"] .badge-pill { background: #0f2918 !important; border-color: #166534 !important; }
+[data-theme="dark"] .badge-label { color: #2ecc71 !important; }
+[data-theme="dark"] .export-btn { background: #1e293b !important; color: #f1f5f9 !important; border-color: #334155 !important; }
+[data-theme="dark"] .clear-btn { background: #1f0f0f !important; color: #fca5a5 !important; border-color: #7f1d1d !important; }
+[data-theme="dark"] .showing-text { color: #64748b !important; }
+[data-theme="dark"] .chart-title { color: #f1f5f9 !important; }
+[data-theme="dark"] .date-input { background: #1e293b !important; color: #f1f5f9 !important; border-color: #334155 !important; }
+>>>>>>> 8a01b8fae81aab8bea1de5c2d6f70c4d18e869c4

@@ -1,7 +1,4 @@
-/**
- * ECOTRACKER PRO - HISTORY ENGINE
- * Refactored for Group Project Submission
- */
+
 
 const SETTINGS = {
     itemsPerPage: 5,

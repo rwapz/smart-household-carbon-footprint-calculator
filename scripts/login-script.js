@@ -1,8 +1,12 @@
+<<<<<<< HEAD
 /**
  * Project: Smart Household
  * File: scripts/login-script.js
  * Description: Manages form toggling and error messages for Auth.
  */
+=======
+
+>>>>>>> 8a01b8fae81aab8bea1de5c2d6f70c4d18e869c4
 
 const ERROR_MESSAGES = {
     empty:    'Please fill in all fields.',

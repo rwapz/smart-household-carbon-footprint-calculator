@@ -1,8 +1,12 @@
+<<<<<<< HEAD
 /**
  * ECOTRACKER PRO — CALCULATOR STYLES
  * Premium design with dark mode support.
  * Gradient buttons, shimmer effects, smooth animations.
  */
+=======
+
+>>>>>>> 8a01b8fae81aab8bea1de5c2d6f70c4d18e869c4
 
 /* ══ TOKENS ══ */
 :root {
@@ -213,6 +217,7 @@ label {
     margin-bottom: 6px;
     color: var(--muted);
 }
+<<<<<<< HEAD
 
 input, select {
     width: 100%;
@@ -493,3 +498,6 @@ input:focus, select:focus { outline: none; border-color: var(--primary); box-sha
 
 /* ══ FOCUS ══ */
 *:focus-visible { outline: 2px solid var(--primary); outline-offset: 2px; border-radius: 4px; }
+=======
+.mini-btn:hover { filter: brightness(90%); }
+>>>>>>> 8a01b8fae81aab8bea1de5c2d6f70c4d18e869c4
