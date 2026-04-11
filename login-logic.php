@@ -11,7 +11,7 @@ $username = trim($_POST['USERNAME'] ?? '');
 $password = trim($_POST['PASSWORD'] ?? '');
 
 if (empty($username) || empty($password)) {
-    header('Location: index.php?error=empty');
+    header('Location: index.php?error=empty&tab=login');
     exit;
 }
 
@@ -28,11 +28,11 @@ try {
         header('Location: dashboard.php');
         exit;
     } else {
-        header('Location: index.php?error=invalid');
+        header('Location: index.php?error=invalid&tab=login');
         exit;
     }
 
 } catch (PDOException $e) {
-    header('Location: index.php?error=db');
+    header('Location: index.php?error=db&tab=login');
     exit;
 }
