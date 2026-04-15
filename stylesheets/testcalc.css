@@ -4,7 +4,7 @@
  */
 
 :root {
-    --primary: #10b981;
+    --primary: #2b8ad9;
     --dark: #0f172a;
     --slate: #f8fafc;
     --border: #e2e8f0;
@@ -228,7 +228,7 @@ input, select {
     height: 100%;
     border-radius: 10px;
     transition: width 0.5s cubic-bezier(0.4, 0, 0.2, 1);
-    background: #10b981;
+    background: #2b8ad9;
 }
 /* UK average marker line at 50% (= 89kg on a 178kg scale) */
 .comparison-marker {
@@ -295,7 +295,7 @@ input, select {
 }
 .ring-fill {
     fill: none;
-    stroke: #10b981;
+    stroke: #2b8ad9;
     stroke-width: 10;
     stroke-linecap: round;
     transition: stroke-dashoffset 0.6s cubic-bezier(0.4, 0, 0.2, 1), stroke 0.3s ease;
@@ -334,7 +334,7 @@ a.action-btn {
 
 /* ========== DARK MODE ========== */
 [data-theme="dark"] {
-    --primary: #10b981;
+    --primary: #2b8ad9;
     --dark:    #f8fafc;
     --slate:   #0f172a;
     --border:  #1e293b;

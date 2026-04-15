@@ -8,6 +8,19 @@
     <link rel="stylesheet" href="stylesheets/history-style.css">
     <link rel="stylesheet" href="stylesheets/accessibility-global.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <!-- Apply saved theme BEFORE paint to prevent flash -->
+    <script>
+        (function() {
+            const theme    = localStorage.getItem('eco-theme')    || 'light';
+            const contrast = localStorage.getItem('eco-contrast') === 'true' ? 'high' : 'normal';
+            const font     = localStorage.getItem('eco-fontsize') || 'normal';
+            const fontMap  = { small: '14px', normal: '16px', large: '19px' };
+            document.documentElement.setAttribute('data-theme', theme);
+            document.documentElement.setAttribute('data-contrast', contrast);
+            document.documentElement.style.fontSize = fontMap[font] || '16px';
+        })();
+    </script>
 </head>
 <body>
 

@@ -9,6 +9,7 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
 
 $username = trim($_POST['USERNAME'] ?? '');
 $password = trim($_POST['PASSWORD'] ?? '');
+$remember_me = isset($_POST['REMEMBER_ME']) ? $_POST['REMEMBER_ME'] : '';
 
 if (empty($username) || empty($password)) {
     header('Location: index.php?error=empty&tab=login');
@@ -25,6 +26,16 @@ try {
     if ($user && password_verify($password, $user['PASSWORD_HASH'])) {
         $_SESSION['user_id']  = $user['USER_ID']; 
         $_SESSION['username'] = $user['USERNAME'];
+        
+        // Handle "Remember Me" checkbox
+        if (!empty($remember_me)) {
+            // Set cookie to remember the username for 30 days
+            setcookie('remembered_username', $username, time() + (30 * 24 * 60 * 60), '/');
+        } else {
+            // Clear the cookie if unchecked
+            setcookie('remembered_username', '', time() - 3600, '/');
+        }
+        
         header('Location: dashboard.php');
         exit;
     } else {

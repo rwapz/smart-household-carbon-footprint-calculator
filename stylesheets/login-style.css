@@ -37,7 +37,7 @@ body {
 /* Left Side: Branding Visual */
 .auth-visual {
     flex: 1;
-    background: linear-gradient(135deg, #22c55e 0%, #16a34a 100%);
+    background: linear-gradient(135deg, #2b8ad9 0%, #1e5fa8 100%);
     color: white;
     padding: 60px;
     display: flex;
@@ -75,12 +75,15 @@ body {
     padding: 60px 80px;
     display: flex;
     flex-direction: column;
+    overflow-y: auto;
+    max-height: 700px;
 }
 
 .form-toggle {
     margin-bottom: 50px;
     display: flex;
     gap: 30px;
+    flex-shrink: 0;
 }
 
 .form-toggle button {
@@ -100,8 +103,8 @@ body {
 }
 
 .form-toggle button.active {
-    color: #16a34a;
-    border-bottom: 3px solid #22c55e;
+    color: #1e5fa8;
+    border-bottom: 3px solid #2b8ad9;
 }
 
 .auth-form {
@@ -139,14 +142,178 @@ input {
 
 input:focus {
     outline: none;
-    border-color: #22c55e;
+    border-color: #2b8ad9;
     background: #ffffff;
-    box-shadow: 0 0 0 4px rgba(34, 197, 94, 0.1);
+    box-shadow: 0 0 0 4px rgba(43, 138, 217, 0.1);
+}
+
+input.input-error {
+    border-color: #dc2626;
+    background: #fef2f2;
+}
+
+input.input-error:focus {
+    border-color: #dc2626;
+    background: #fef2f2;
+    box-shadow: 0 0 0 4px rgba(220, 38, 38, 0.1);
+}
+
+/* Password Input Wrapper */
+.password-input-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.password-input-wrapper input {
+    padding-right: 45px;
+    width: 100%;
+}
+
+.toggle-password {
+    position: absolute;
+    right: 12px;
+    background: none;
+    border: none;
+    font-size: 1.2rem;
+    cursor: pointer;
+    padding: 4px 8px;
+    transition: opacity 0.2s ease;
+}
+
+.toggle-password:hover {
+    opacity: 0.7;
+}
+
+.toggle-password:active {
+    opacity: 0.5;
+}
+
+/* Password Strength Indicator */
+.password-strength {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    margin-top: 8px;
+}
+
+.strength-bar {
+    width: 100%;
+    height: 6px;
+    background: #e5e7eb;
+    border-radius: 3px;
+    overflow: hidden;
+}
+
+.strength-fill {
+    height: 100%;
+    width: 0%;
+    background: #2b8ad9;
+    transition: width 0.3s ease, background-color 0.3s ease;
+    border-radius: 3px;
+}
+
+.strength-text {
+    font-size: 0.75rem;
+    color: #6b7280;
+    font-weight: 600;
+}
+
+.strength-text strong {
+    color: #ef4444;
+}
+
+/* Checkbox Group */
+.checkbox-group {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 0;
+}
+
+.checkbox-group input[type="checkbox"] {
+    width: 18px;
+    height: 18px;
+    cursor: pointer;
+    margin: 0;
+    padding: 0;
+    border: 2px solid #e5e7eb;
+    border-radius: 4px;
+    background: white;
+    appearance: none;
+    transition: all 0.3s ease;
+    flex-shrink: 0;
+}
+
+.checkbox-group input[type="checkbox"]:hover {
+    border-color: #2b8ad9;
+    background: #e3f2fd;
+}
+
+.checkbox-group input[type="checkbox"]:checked {
+    background: #2b8ad9;
+    border-color: #2b8ad9;
+    background-image: url("data:image/svg+xml,%3csvg viewBox='0 0 16 16' fill='white' xmlns='http://www.w3.org/2000/svg'%3e%3cpath d='M12.207 4.793a1 1 0 010 1.414l-5 5a1 1 0 01-1.414 0l-2-2a1 1 0 011.414-1.414L6.5 9.086l4.293-4.293a1 1 0 011.414 0z'/%3e%3c/svg%3e");
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: 100%;
+}
+
+.checkbox-group input[type="checkbox"]:focus {
+    outline: none;
+    box-shadow: 0 0 0 4px rgba(43, 138, 217, 0.1);
+}
+
+.checkbox-group label {
+    display: flex;
+    align-items: center;
+    margin: 0;
+    cursor: pointer;
+    font-size: 0.95rem;
+    font-weight: 500;
+    color: #4b5563;
+    gap: 0;
+}
+
+.checkbox-group a {
+    text-decoration: none;
+    font-weight: 600;
+    color: #2b8ad9;
+}
+
+.checkbox-group a:hover {
+    text-decoration: underline;
+    color: #1e5fa8;
+}
+
+/* Error Banner */
+.error-banner {
+    background: #fee2e2;
+    color: #7f1d1d;
+    border: 2px solid #dc2626;
+    padding: 14px 16px;
+    border-radius: 8px;
+    font-size: 0.95rem;
+    font-weight: 700;
+    margin-bottom: 16px;
+    text-align: center;
+    animation: slideDown 0.3s ease;
+}
+
+@keyframes slideDown {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 
 /* Button & Hover States */
 .btn-primary {
-    background-color: #22c55e;
+    background-color: #2b8ad9;
     color: white;
     border: none;
     padding: 16px;
@@ -160,11 +327,108 @@ input:focus {
 }
 
 .btn-primary:hover {
-    background-color: #16a34a;
+    background-color: #1e5fa8;
     transform: translateY(-2px);
-    box-shadow: 0 10px 20px rgba(22, 163, 74, 0.2);
+    box-shadow: 0 10px 20px rgba(43, 138, 217, 0.2);
 }
 
 .btn-primary:active {
     transform: translateY(0);
+}
+
+/* Household Selection Styles */
+.household-selection {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.household-label {
+    font-size: 0.9rem;
+    font-weight: 700;
+    color: #1f2937;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.household-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+}
+
+.household-card {
+    position: relative;
+}
+
+.household-card input[type="radio"] {
+    display: none;
+}
+
+.household-card .card-label {
+    display: block;
+    padding: 12px;
+    border: 2px solid #e5e7eb;
+    border-radius: 10px;
+    background: white;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-weight: 500;
+    text-align: center;
+}
+
+.household-card .card-label:hover {
+    border-color: #2b8ad9;
+    background: #e3f2fd;
+    transform: translateY(-2px);
+}
+
+.household-card input[type="radio"]:checked + .card-label {
+    border-color: #2b8ad9;
+    background: #bbdefb;
+    box-shadow: 0 0 0 3px rgba(43, 138, 217, 0.1);
+}
+
+.card-content {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.card-name {
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: #1f2937;
+}
+
+/* Responsive Design for Mobile */
+@media (max-width: 768px) {
+    .auth-card {
+        width: 100%;
+        height: auto;
+        flex-direction: column;
+    }
+
+    .auth-visual {
+        padding: 40px 20px;
+        text-align: center;
+        min-height: 200px;
+    }
+
+    .auth-visual h1 {
+        font-size: 2.5rem;
+    }
+
+    .auth-visual p {
+        font-size: 1rem;
+    }
+
+    .auth-form-container {
+        padding: 40px 20px;
+    }
+
+    .household-grid {
+        grid-template-columns: 1fr;
+        max-height: 400px;
+    }
 }
