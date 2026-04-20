@@ -8,8 +8,8 @@ require_once 'connect.php';
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>User Types | Admin</title>
+    <link rel="stylesheet" href="stylesheets/admin-style.css">
     <link rel="stylesheet" href="stylesheets/accessibility-global.css">
-    <link rel="stylesheet" href="style.css">
     <script>
         (function() {
             const theme = localStorage.getItem('eco-theme') || 'light';
@@ -33,59 +33,64 @@ require_once 'connect.php';
             <a href="logout.php" class="header-btn logout">Logout</a>
         </div>
     </header>
-    <div class="main">
-        <form method="get" style="margin-bottom:20px;">
-            <input type="text" name="search" placeholder="search by ID">
-            <input type="submit" value="search">
-        </form>
-        <?php
-        try {
-            $search = isset($_GET['search']) ? $_GET['search'] : '';
+    <main class="admin-container">
+        <div class="form-card" style="padding: 0; overflow: hidden;">
+            <?php
+            try {
+                $countSql = "SELECT COUNT(*) as cnt FROM USER_TYPES";
+                $countStmt = $CONN->prepare($countSql);
+                $countStmt->execute();
+                $countResult = $countStmt->fetch();
+                echo "<div style='padding: 16px 24px; border-bottom: 1px solid var(--border); background: var(--surface-2);'>
+                    <p style='margin: 0; color: var(--text-secondary);'>Total User Types: <strong>" . $countResult['cnt'] . "</strong></p>
+                </div>";
 
-            $countSql = "SELECT COUNT(*) as cnt FROM USER_TYPES";
-            $countStmt = $CONN->prepare($countSql);
-            $countStmt->execute();
-            $countResult = $countStmt->fetch();
-            echo "<p class='count'>Total Records " . $countResult['cnt'] . "</p>";
+                $search = isset($_GET['search']) ? $_GET['search'] : '';
+                if (!empty($search)) {
+                    $sql = "SELECT ut.*, u.USERNAME FROM USER_TYPES ut 
+                            LEFT JOIN USERS u ON ut.USER_ID = u.USER_ID 
+                            WHERE ut.USER_TYPE_ID LIKE :search OR u.USERNAME LIKE :search2 
+                            ORDER BY ut.USER_TYPE_ID ASC";
+                    $stmt = $CONN->prepare($sql);
+                    $stmt->execute([':search' => "%$search%", ':search2' => "%$search%"]);
+                } else {
+                    $sql = "SELECT ut.*, u.USERNAME FROM USER_TYPES ut 
+                            LEFT JOIN USERS u ON ut.USER_ID = u.USER_ID 
+                            ORDER BY ut.USER_TYPE_ID ASC";
+                    $stmt = $CONN->prepare($sql);
+                    $stmt->execute();
+                }
 
-            if (!empty($search)) {
-                $sql = "SELECT * FROM USER_TYPES WHERE USER_TYPE_ID LIKE :search ORDER BY USER_TYPE_ID ASC";
-                $stmt = $CONN->prepare($sql);
-                $stmt->execute([':search' => "%$search%"]);
-            } else {
-                $sql = "SELECT * FROM USER_TYPES ORDER BY USER_TYPE_ID ASC";
-                $stmt = $CONN->prepare($sql);
-                $stmt->execute();
+                echo "<table style='width: 100%; border-collapse: collapse;'>";
+                echo "<thead><tr style='border-bottom: 1px solid var(--border);'>
+                    <th style='text-align: left; padding: 12px 24px;'>USER_TYPE_ID</th>
+                    <th style='text-align: left; padding: 12px 24px;'>USERNAME</th>
+                    <th style='text-align: left; padding: 12px 24px;'>USER_TYPE_NAME</th>
+                    <th style='text-align: left; padding: 12px 24px;'>DESCRIPTION</th>
+                    <th style='text-align: left; padding: 12px 24px;'>Actions</th>
+                </tr></thead>";
+
+                while ($row = $stmt->fetch()) {
+                    $UT_id = htmlspecialchars($row['USER_TYPE_ID']);
+                    $Uname = htmlspecialchars($row['USERNAME'] ?? 'Unknown');
+                    $UTname = htmlspecialchars($row['USER_TYPE_NAME']);
+                    $des = htmlspecialchars($row['DESCRIPTION']);
+                    echo "<tbody><tr style='border-bottom: 1px solid var(--border);'>
+                    <td style='padding: 12px 24px;'>$UT_id</td>
+                    <td style='padding: 12px 24px;'>$Uname</td>
+                    <td style='padding: 12px 24px;'>$UTname</td>
+                    <td style='padding: 12px 24px;'>$des</td>
+                    <td style='padding: 12px 24px;'>
+                        <a href='updateusert.php?UT_id=$UT_id' class='btn btn-view' style='display: inline-block; padding: 6px 12px; font-size: 0.8rem;'>Edit</a>
+                    </td>
+                </tr></tbody>";
+                }
+                echo "</table>";
+            } catch(PDOException $e) {
+                echo "<div class='alert alert-error' style='margin: 20px;'>Error: " . htmlspecialchars($e->getMessage()) . "</div>";
             }
-
-            echo "<table>";
-            echo "<thead><tr>";
-            echo "<td>USER_TYPE_ID</td>";
-            echo "<td>USER_ID</td>";
-            echo "<td>USER_TYPE_NAME</td>";
-            echo "<td>DESCRIPTION</td>";
-            echo "<td style='text-align: center' colspan='2'>Action</td>";
-            echo "</tr></thead>";
-
-            while ($row = $stmt->fetch()) {
-                $UT_id = htmlspecialchars($row['USER_TYPE_ID']);
-                $U_id = htmlspecialchars($row['USER_ID']);
-                $UTname = htmlspecialchars($row['USER_TYPE_NAME']);
-                $des = htmlspecialchars($row['DESCRIPTION']);
-                echo "<tbody><tr>";
-                echo "<td>$UT_id</td>";
-                echo "<td>$U_id</td>";
-                echo "<td>$UTname</td>";
-                echo "<td>$des</td>";
-                echo "<td><a href='updateusert.php?UT_id=$UT_id'>update</a></td>";
-                echo "<td><a href='deleteusert.php?UT_id=$UT_id'>delete</a></td>";
-                echo "</tr></tbody>";
-            }
-            echo "</table>";
-        } catch(PDOException $e) {
-            echo "<p class='count'>Error: " . htmlspecialchars($e->getMessage()) . "</p>";
-        }
-        ?>
-    </div>
+            ?>
+        </div>
+    </main>
 </body>
 </html>

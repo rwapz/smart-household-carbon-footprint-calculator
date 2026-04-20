@@ -8,8 +8,8 @@ require_once 'connect.php';
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>User Records | Admin</title>
+    <link rel="stylesheet" href="stylesheets/admin-style.css">
     <link rel="stylesheet" href="stylesheets/accessibility-global.css">
-    <link rel="stylesheet" href="style.css">
     <script>
         (function() {
             const theme = localStorage.getItem('eco-theme') || 'light';
@@ -33,56 +33,61 @@ require_once 'connect.php';
             <a href="logout.php" class="header-btn logout">Logout</a>
         </div>
     </header>
-    <div class="main">
-        <form method="get" style="margin-bottom:20px;">
-            <input type="text" name="search" placeholder="search by name or ID">
-            <input type="submit" value="search">
-        </form>
-        <?php
-        try {
-            $search = isset($_GET['search']) ? $_GET['search'] : '';
+    <main class="admin-container">
+        <div class="form-card" style="padding: 0; overflow: hidden;">
+            <?php
+            try {
+                $countSql = "SELECT COUNT(*) as cnt FROM USERS";
+                $countStmt = $CONN->prepare($countSql);
+                $countStmt->execute();
+                $countResult = $countStmt->fetch();
+                echo "<div style='padding: 16px 24px; border-bottom: 1px solid var(--border); background: var(--surface-2);'>
+                    <p style='margin: 0; color: var(--text-secondary);'>Total Users: <strong>" . $countResult['cnt'] . "</strong></p>
+                </div>";
 
-            $countSql = "SELECT COUNT(*) as cnt FROM USERS";
-            $countStmt = $CONN->prepare($countSql);
-            $countStmt->execute();
-            $countResult = $countStmt->fetch();
-            echo "<p class='count'>Total Records " . $countResult['cnt'] . "</p>";
+                $search = isset($_GET['search']) ? $_GET['search'] : '';
+                if (!empty($search)) {
+                    $sql = "SELECT u.*, h.HOUSEHOLD_NAME FROM USERS u 
+                            LEFT JOIN HOUSEHOLD h ON u.HOUSEHOLD_ID = h.HOUSEHOLD_ID 
+                            WHERE u.USER_ID LIKE :search OR u.USERNAME LIKE :search2 
+                            ORDER BY u.USER_ID ASC";
+                    $stmt = $CONN->prepare($sql);
+                    $stmt->execute([':search' => "%$search%", ':search2' => "%$search%"]);
+                } else {
+                    $sql = "SELECT u.*, h.HOUSEHOLD_NAME FROM USERS u 
+                            LEFT JOIN HOUSEHOLD h ON u.HOUSEHOLD_ID = h.HOUSEHOLD_ID 
+                            ORDER BY u.USER_ID ASC";
+                    $stmt = $CONN->prepare($sql);
+                    $stmt->execute();
+                }
 
-            if (!empty($search)) {
-                $sql = "SELECT * FROM USERS WHERE USER_ID LIKE :search OR USERNAME LIKE :search2 ORDER BY USER_ID ASC";
-                $stmt = $CONN->prepare($sql);
-                $stmt->execute([':search' => "%$search%", ':search2' => "%$search%"]);
-            } else {
-                $sql = "SELECT * FROM USERS ORDER BY USER_ID ASC";
-                $stmt = $CONN->prepare($sql);
-                $stmt->execute();
+                echo "<table style='width: 100%; border-collapse: collapse;'>";
+                echo "<thead><tr style='border-bottom: 1px solid var(--border);'>
+                    <th style='text-align: left; padding: 12px 24px;'>USER_ID</th>
+                    <th style='text-align: left; padding: 12px 24px;'>HOUSEHOLD</th>
+                    <th style='text-align: left; padding: 12px 24px;'>USERNAME</th>
+                    <th style='text-align: left; padding: 12px 24px;'>Actions</th>
+                </tr></thead>";
+
+                while ($row = $stmt->fetch()) {
+                    $U_id = htmlspecialchars($row['USER_ID']);
+                    $Hname = htmlspecialchars($row['HOUSEHOLD_NAME'] ?? 'Unknown');
+                    $Uname = htmlspecialchars($row['USERNAME']);
+                    echo "<tbody><tr style='border-bottom: 1px solid var(--border);'>
+                    <td style='padding: 12px 24px;'>$U_id</td>
+                    <td style='padding: 12px 24px;'>$Hname</td>
+                    <td style='padding: 12px 24px;'>$Uname</td>
+                    <td style='padding: 12px 24px;'>
+                        <a href='updateuser.php?U_id=$U_id' class='btn btn-view' style='display: inline-block; padding: 6px 12px; font-size: 0.8rem;'>Edit</a>
+                    </td>
+                </tr></tbody>";
+                }
+                echo "</table>";
+            } catch(PDOException $e) {
+                echo "<div class='alert alert-error' style='margin: 20px;'>Error: " . htmlspecialchars($e->getMessage()) . "</div>";
             }
-
-            echo "<table>";
-            echo "<thead><tr>";
-            echo "<td>USER_ID</td>";
-            echo "<td>HOUSEHOLD_ID</td>";
-            echo "<td>USERNAME</td>";
-            echo "<td style='text-align: center' colspan='2'>Action</td>";
-            echo "</tr></thead>";
-
-            while ($row = $stmt->fetch()) {
-                $U_id = htmlspecialchars($row['USER_ID']);
-                $H_id = htmlspecialchars($row['HOUSEHOLD_ID']);
-                $Uname = htmlspecialchars($row['USERNAME']);
-                echo "<tbody><tr>";
-                echo "<td>$U_id</td>";
-                echo "<td>$H_id</td>";
-                echo "<td>$Uname</td>";
-                echo "<td><a href='updateuser.php?U_id=$U_id'>update</a></td>";
-                echo "<td><a href='deleteuser.php?U_id=$U_id'>delete</a></td>";
-                echo "</tr></tbody>";
-            }
-            echo "</table>";
-        } catch(PDOException $e) {
-            echo "<p class='count'>Error: " . htmlspecialchars($e->getMessage()) . "</p>";
-        }
-        ?>
-    </div>
+            ?>
+        </div>
+    </main>
 </body>
 </html>

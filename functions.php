@@ -100,17 +100,17 @@ function deleteUserType($UT_id) {
     return "success";
 }
 
-// CATEGORIES
+// CATAGORIES
 function addCategory($Cname) {
     global $CONN;
-    $stmt = $CONN->prepare("INSERT INTO CATEGORIES (CATEGORY_NAME) VALUES (:Cname)");
+    $stmt = $CONN->prepare("INSERT INTO CATAGORIES (CATAGORY_NAME) VALUES (:Cname)");
     $stmt->execute([':Cname' => $Cname]);
     return "Category created successfully!";
 }
 
 function viewCategory($C_id) {
     global $CONN;
-    $stmt = $CONN->prepare("SELECT * FROM CATEGORIES WHERE CATEGORY_ID = :id");
+    $stmt = $CONN->prepare("SELECT * FROM CATAGORIES WHERE CATAGORY_ID = :id");
     $stmt->execute([':id' => $C_id]);
     return $stmt->fetchAll();
 }
@@ -121,14 +121,14 @@ function viewC($C_id) {
 
 function updateCategory($C_id, $Cname) {
     global $CONN;
-    $stmt = $CONN->prepare("UPDATE CATEGORIES SET CATEGORY_NAME = :Cname WHERE CATEGORY_ID = :id");
+    $stmt = $CONN->prepare("UPDATE CATAGORIES SET CATAGORY_NAME = :Cname WHERE CATAGORY_ID = :id");
     $stmt->execute([':Cname' => $Cname, ':id' => $C_id]);
     return "success";
 }
 
 function deleteCategory($C_id) {
     global $CONN;
-    $stmt = $CONN->prepare("DELETE FROM CATEGORIES WHERE CATEGORY_ID = :C_id");
+    $stmt = $CONN->prepare("DELETE FROM CATAGORIES WHERE CATAGORY_ID = :C_id");
     $stmt->execute([':C_id' => $C_id]);
     return "success";
 }
@@ -136,7 +136,7 @@ function deleteCategory($C_id) {
 // EMISSION FACTORS
 function addEmission($C_id, $Aname, $co2) {
     global $CONN;
-    $stmt = $CONN->prepare("INSERT INTO EMISSION_FACTORS (CATEGORY_ID, ACTIVITY_NAME, CO2_PER_UNIT) VALUES (:C_id, :Aname, :co2)");
+    $stmt = $CONN->prepare("INSERT INTO EMISSION_FACTORS (CATAGORY_ID, ACTIVITY_NAME, CO2_PER_UNIT) VALUES (:C_id, :Aname, :co2)");
     $stmt->execute([':C_id' => $C_id, ':Aname' => $Aname, ':co2' => $co2]);
     return "Emission factor created successfully!";
 }
@@ -154,7 +154,7 @@ function viewE($F_id) {
 
 function updateEmission($F_id, $C_id, $Aname, $co2) {
     global $CONN;
-    $stmt = $CONN->prepare("UPDATE EMISSION_FACTORS SET CATEGORY_ID = :C_id, ACTIVITY_NAME = :Aname, CO2_PER_UNIT = :co2 WHERE FACTOR_ID = :id");
+    $stmt = $CONN->prepare("UPDATE EMISSION_FACTORS SET CATAGORY_ID = :C_id, ACTIVITY_NAME = :Aname, CO2_PER_UNIT = :co2 WHERE FACTOR_ID = :id");
     $stmt->execute([':C_id' => $C_id, ':Aname' => $Aname, ':co2' => $co2, ':id' => $F_id]);
     return "success";
 }

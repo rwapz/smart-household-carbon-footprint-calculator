@@ -39,9 +39,10 @@ require_once 'connect.php';
             $C_id = $_POST['CATAGORY_ID'];
             $Aname = $_POST['ACTIVITY_NAME'];
             $co2 = $_POST['CO2_PER_UNIT'];
+            $unit = $_POST['UNIT'];
             try {
-                $stmt = $CONN->prepare("INSERT INTO EMISSION_FACTORS (CATAGORY_ID, ACTIVITY_NAME, CO2_PER_UNIT) VALUES (:C_id, :Aname, :co2)");
-                $stmt->execute([':C_id' => $C_id, ':Aname' => $Aname, ':co2' => $co2]);
+                $stmt = $CONN->prepare("INSERT INTO EMISSION_FACTORS (CATAGORY_ID, ACTIVITY_NAME, CO2_PER_UNIT, UNIT) VALUES (:C_id, :Aname, :co2, :unit)");
+                $stmt->execute([':C_id' => $C_id, ':Aname' => $Aname, ':co2' => $co2, ':unit' => $unit]);
                 echo "<div class='alert alert-success'>Emission factor created successfully!</div>";
             } catch(PDOException $e) {
                 echo "<div class='alert alert-error'>Error: " . htmlspecialchars($e->getMessage()) . "</div>";
@@ -61,6 +62,17 @@ require_once 'connect.php';
                 <div class="form-group">
                     <label for="CO2_PER_UNIT">CO2 Per Unit (kg)</label>
                     <input type="number" step="0.01" name="CO2_PER_UNIT" placeholder="e.g., 0.21" required>
+                </div>
+                <div class="form-group">
+                    <label for="UNIT">Unit</label>
+                    <select name="UNIT" required>
+                        <option value="kg">kg</option>
+                        <option value="L">L (litres)</option>
+                        <option value="kWh">kWh</option>
+                        <option value="km">km</option>
+                        <option value="m³">m³</option>
+                        <option value="kg waste">kg waste</option>
+                    </select>
                 </div>
                 <button type="submit" name="createemission" class="btn btn-primary">Create Emission Factor</button>
             </form>

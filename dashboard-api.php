@@ -128,8 +128,21 @@ try {
     $totalData = $totalStmt->fetch();
     $rank = rand(1, $totalData['cnt']);
     
-    // Goal calculation
-    $goalTarget = 30;
+    // Get user's household goal
+    $goalStmt = $CONN->prepare("
+        SELECT TARGET_CO2_LIMIT, TARGET_MONTH FROM HOUSEHOLD_GOALS 
+        WHERE HOUSEHOLD_ID = :hid 
+        ORDER BY GOAL_ID DESC LIMIT 1
+    ");
+    $goalStmt->execute([':hid' => $household_id]);
+    $goalData = $goalStmt->fetch();
+    
+    if ($goalData) {
+        $goalTarget = round($goalData['TARGET_CO2_LIMIT'], 1);
+    } else {
+        $goalTarget = 30;
+    }
+    
     $goalCurrent = $monthlyTotal;
     $goalPercent = min(round(($goalCurrent / $goalTarget) * 100), 100);
     $savings = max(round(($goalTarget - $goalCurrent) * 0.5), 0);

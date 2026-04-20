@@ -71,7 +71,7 @@ try {
                 <input type="hidden" name="FACTOR_ID" value="<?php echo htmlspecialchars($ef['FACTOR_ID']); ?>">
                 <div class="confirm-info">
                     <p><strong>Activity:</strong> <?php echo htmlspecialchars($ef['ACTIVITY_NAME']); ?></p>
-                    <p><strong>Category ID:</strong> <?php echo htmlspecialchars($ef['CATEGORY_ID']); ?></p>
+                    <p><strong>Category ID:</strong> <?php echo htmlspecialchars($ef['CATAGORY_ID']); ?></p>
                     <p><strong>CO2 Per Unit:</strong> <?php echo htmlspecialchars($ef['CO2_PER_UNIT']); ?> kg</p>
                 </div>
                 <button type="submit" name="deleteemiss" class="btn btn-danger">Delete Emission Factor</button>

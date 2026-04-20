@@ -38,7 +38,7 @@ require_once 'connect.php';
             <h2>Database Overview</h2>
             <div class="stats-grid">
                 <?php
-                $tables = ['USERS', 'HOUSEHOLD', 'CATEGORIES', 'EMISSION_FACTORS', 'HOUSEHOLD_GOALS', 'ACTIVITY_LOG', 'USER_TYPES'];
+                $tables = ['USERS', 'HOUSEHOLD', 'CATAGORIES', 'EMISSION_FACTORS', 'HOUSEHOLD_GOALS', 'ACTIVITY_LOG', 'USER_TYPES'];
                 foreach ($tables as $table) {
                     try {
                         $stmt = $CONN->query("SELECT COUNT(*) as cnt FROM $table");

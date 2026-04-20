@@ -625,21 +625,7 @@ window.addEventListener('load', () => {
         applyTheme(true);
     }
     
-    /* Load last saved score and values */
-    try {
-        const lastEntry = JSON.parse(localStorage.getItem('eco-last-entry') || 'null');
-        if (lastEntry) {
-            document.getElementById('input-elec').value = lastEntry.elec || '';
-            document.getElementById('input-gas').value = lastEntry.gas || '';
-            document.getElementById('input-water').value = lastEntry.water || '';
-            document.getElementById('input-waste').value = lastEntry.waste || '0';
-            document.getElementById('input-diet').value = lastEntry.diet || '0';
-            document.getElementById('input-shopping').value = lastEntry.shopping || '0';
-            document.getElementById('input-flights').value = lastEntry.flights || 'none';
-            document.getElementById('user-area').value = lastEntry.area || '';
-            if (lastEntry.period) setPeriod(lastEntry.period);
-        }
-    } catch(e) {}
+    // Calculator starts fresh - no old data loaded
     
     calculateTotal();
 });

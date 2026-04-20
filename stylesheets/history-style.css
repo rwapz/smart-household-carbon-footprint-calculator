@@ -165,9 +165,31 @@ html, body {
 
 .hidden { display: none !important; }
 
+.btn-add-activity, .btn-create {
+    display: inline-block;
+    padding: 8px 16px;
+    background: linear-gradient(135deg, #2b8ad9, #1a6db3);
+    color: white;
+    border-radius: 8px;
+    text-decoration: none;
+    font-size: 0.85rem;
+    font-weight: 600;
+    border: none;
+    cursor: pointer;
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+.btn-add-activity:hover, .btn-create:hover {
+    filter: brightness(110%);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(43, 138, 217, 0.3);
+}
+
 @media (max-width: 600px) {
     .stats-row { grid-template-columns: repeat(2, 1fr); }
     .history-card { padding: 20px; }
+    .history-header { flex-direction: column; }
+    .header-controls { width: 100%; justify-content: space-between; }
+    .history-table th:nth-child(2), .history-table td:nth-child(2) { display: none; }
 }
 
 /* ── Dark mode ── */

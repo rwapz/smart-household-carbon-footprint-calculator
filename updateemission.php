@@ -2,37 +2,40 @@
 require_once 'auth-admin.php';
 require_once 'connect.php';
 
-$error = '';
+if (!isset($_GET['F_id'])) {
+    header('Location: viewemission.php');
+    exit;
+}
 
-if (isset($_POST["updateemiss"])) {
-    $F_id = $_POST["FACTOR_ID"];
-    $C_id = $_POST["CATAGORY_ID"];
-    $Aname = $_POST["ACTIVITY_NAME"];
-    $co2 = $_POST["CO2_PER_UNIT"];
+$factor_id = $_GET['F_id'];
+$factor = null;
+
+try {
+    $stmt = $CONN->prepare("SELECT * FROM EMISSION_FACTORS WHERE FACTOR_ID = :id");
+    $stmt->execute([':id' => $factor_id]);
+    $factor = $stmt->fetch();
+} catch(PDOException $e) {
+    die("Error: " . $e->getMessage());
+}
+
+if (!$factor) {
+    die("Emission factor not found");
+}
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $cat_id = $_POST['CATAGORY_ID'];
+    $name = $_POST['ACTIVITY_NAME'];
+    $co2 = $_POST['CO2_PER_UNIT'];
+    $unit = $_POST['UNIT'];
+    
     try {
-        $stmt = $CONN->prepare("UPDATE EMISSION_FACTORS SET CATAGORY_ID = :C_id, ACTIVITY_NAME = :Aname, CO2_PER_UNIT = :co2 WHERE FACTOR_ID = :id");
-        $stmt->execute([':C_id' => $C_id, ':Aname' => $Aname, ':co2' => $co2, ':id' => $F_id]);
-        header("Location: viewemission.php");
+        $stmt = $CONN->prepare("UPDATE EMISSION_FACTORS SET CATAGORY_ID = :cat, ACTIVITY_NAME = :name, CO2_PER_UNIT = :co2, UNIT = :unit WHERE FACTOR_ID = :id");
+        $stmt->execute([':cat' => $cat_id, ':name' => $name, ':co2' => $co2, ':unit' => $unit, ':id' => $factor_id]);
+        header('Location: viewemission.php');
         exit;
     } catch(PDOException $e) {
         $error = $e->getMessage();
     }
-}
-
-if (!isset($_GET["F_id"]) || $_GET["F_id"] === "") {
-    die("No factor ID given");
-}
-$F_id = (int)$_GET["F_id"];
-
-try {
-    $stmt = $CONN->prepare("SELECT * FROM EMISSION_FACTORS WHERE FACTOR_ID = :id");
-    $stmt->execute([':id' => $F_id]);
-    $ef = $stmt->fetch();
-    if (!$ef) {
-        die("Emission factor not found");
-    }
-} catch(PDOException $e) {
-    die("Error: " . $e->getMessage());
 }
 ?>
 <!DOCTYPE html>
@@ -61,29 +64,42 @@ try {
             <h1>Update Emission Factor</h1>
         </div>
         <div class="header-right">
-            <a href="admin-dashboard.php" class="header-btn">← Back to Admin</a>
+            <a href="viewemission.php" class="header-btn">← Back to Emission Factors</a>
             <a href="dashboard.php" class="header-btn">Dashboard</a>
             <a href="logout.php" class="header-btn logout">Logout</a>
         </div>
     </header>
     <main class="admin-container">
-        <?php if (!empty($error)) { echo "<div class='alert alert-error'>Error: " . htmlspecialchars($error) . "</div>"; } ?>
+        <?php if (!empty($error)): ?>
+            <div class="alert alert-error"><?php echo htmlspecialchars($error); ?></div>
+        <?php endif; ?>
+        
         <div class="form-card">
             <form method="post">
-                <input type="hidden" name="FACTOR_ID" value="<?php echo htmlspecialchars($ef['FACTOR_ID']); ?>">
                 <div class="form-group">
                     <label for="CATAGORY_ID">Category ID</label>
-                    <input type="number" name="CATAGORY_ID" value="<?php echo htmlspecialchars($ef['CATAGORY_ID']); ?>" required>
+                    <input type="number" name="CATAGORY_ID" value="<?php echo htmlspecialchars($factor['CATAGORY_ID']); ?>" required>
                 </div>
                 <div class="form-group">
                     <label for="ACTIVITY_NAME">Activity Name</label>
-                    <input type="text" name="ACTIVITY_NAME" value="<?php echo htmlspecialchars($ef['ACTIVITY_NAME']); ?>" required>
+                    <input type="text" name="ACTIVITY_NAME" value="<?php echo htmlspecialchars($factor['ACTIVITY_NAME']); ?>" required>
                 </div>
                 <div class="form-group">
                     <label for="CO2_PER_UNIT">CO2 Per Unit (kg)</label>
-                    <input type="number" step="0.01" name="CO2_PER_UNIT" value="<?php echo htmlspecialchars($ef['CO2_PER_UNIT']); ?>" required>
+                    <input type="number" step="0.01" name="CO2_PER_UNIT" value="<?php echo htmlspecialchars($factor['CO2_PER_UNIT']); ?>" required>
                 </div>
-                <button type="submit" name="updateemiss" class="btn btn-primary">Update Emission Factor</button>
+                <div class="form-group">
+                    <label for="UNIT">Unit</label>
+                    <select name="UNIT" required>
+                        <option value="kg" <?php echo ($factor['UNIT'] ?? '') === 'kg' ? 'selected' : ''; ?>>kg</option>
+                        <option value="L" <?php echo ($factor['UNIT'] ?? '') === 'L' ? 'selected' : ''; ?>>L</option>
+                        <option value="kWh" <?php echo ($factor['UNIT'] ?? '') === 'kWh' ? 'selected' : ''; ?>>kWh</option>
+                        <option value="km" <?php echo ($factor['UNIT'] ?? '') === 'km' ? 'selected' : ''; ?>>km</option>
+                        <option value="m³" <?php echo ($factor['UNIT'] ?? '') === 'm³' ? 'selected' : ''; ?>>m³</option>
+                        <option value="kg waste" <?php echo ($factor['UNIT'] ?? '') === 'kg waste' ? 'selected' : ''; ?>>kg waste</option>
+                    </select>
+                </div>
+                <button type="submit" class="btn btn-primary">Update Emission Factor</button>
             </form>
         </div>
     </main>

@@ -51,23 +51,23 @@ require_once 'connect.php';
 
                 echo "<table style='width: 100%; border-collapse: collapse;'>";
                 echo "<thead><tr style='border-bottom: 1px solid var(--border);'>
-                    <th style='text-align: left; padding: 12px 24px;'>FACTOR_ID</th>
-                    <th style='text-align: left; padding: 12px 24px;'>CATAGORY_ID</th>
-                    <th style='text-align: left; padding: 12px 24px;'>ACTIVITY_NAME</th>
-                    <th style='text-align: left; padding: 12px 24px;'>CO2_PER_UNIT</th>
+                    <th style='text-align: left; padding: 12px 24px;'>Factor ID</th>
+                    <th style='text-align: left; padding: 12px 24px;'>Activity</th>
+                    <th style='text-align: left; padding: 12px 24px;'>CO2/Unit</th>
+                    <th style='text-align: left; padding: 12px 24px;'>Unit</th>
                     <th style='text-align: left; padding: 12px 24px;'>Actions</th>
                 </tr></thead>";
 
                 while ($row = $stmt->fetch()) {
                     $F_id = htmlspecialchars($row['FACTOR_ID']);
-                    $C_id = htmlspecialchars($row['CATAGORY_ID']);
                     $Aname = htmlspecialchars($row['ACTIVITY_NAME']);
                     $co2 = htmlspecialchars($row['CO2_PER_UNIT']);
+                    $unit = htmlspecialchars($row['UNIT'] ?? 'kg');
                     echo "<tbody><tr style='border-bottom: 1px solid var(--border);'>
                     <td style='padding: 12px 24px;'>$F_id</td>
-                    <td style='padding: 12px 24px;'>$C_id</td>
                     <td style='padding: 12px 24px;'>$Aname</td>
-                    <td style='padding: 12px 24px;'>$co2</td>
+                    <td style='padding: 12px 24px;'>$co2 kg</td>
+                    <td style='padding: 12px 24px;'>$unit</td>
                     <td style='padding: 12px 24px;'>
                         <a href='updateemission.php?F_id=$F_id' class='btn btn-view' style='display: inline-block; padding: 6px 12px; font-size: 0.8rem;'>Edit</a>
                     </td>

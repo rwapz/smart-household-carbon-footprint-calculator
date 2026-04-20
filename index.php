@@ -63,7 +63,7 @@ try {
                     </div>
                     
                     <div class="checkbox-group">
-                        <input type="checkbox" id="remember-me" name="REMEMBER_ME">
+                        <input type="checkbox" id="remember-me" name="REMEMBER_ME" checked>
                         <label for="remember-me">Remember me</label>
                     </div>
                     
