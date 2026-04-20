@@ -1,51 +1,82 @@
-<DOCTYPE.html>
-<html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device=width, initial-scale=1.0">
-        <title>delete Your Goals</title>
-        <link rel="stylesheet" href="style.css" />
-    </head>
-    <body>
+<?php
+require_once 'auth-admin.php';
+require_once 'connect.php';
 
-        <?php
-        require_once("functions.php");
+$error = '';
 
-        if (isset($_POST["deletegoal"])) {
-            $G_id = $_POST["GOAL_ID"];
-             $H_id = $_POST["HOUSEHOLD_ID"];
-            $co2 = $_POST["TARGET_CO_LIMIT"];
-            $Tmon = $_POST["TARGET_MONTH"];
-            deletegoal($G_id);
-            header("Location: viewhouseg.php");
-            
-        }
-        $G_id = $_GET["G_id"] ?? null;
+if (isset($_POST["deletegoal"])) {
+    $G_id = $_POST["GOAL_ID"];
+    try {
+        $stmt = $CONN->prepare("DELETE FROM HOUSEHOLD_GOALS WHERE GOAL_ID = :id");
+        $stmt->execute([':id' => $G_id]);
+        header("Location: viewhouseg.php");
+        exit;
+    } catch(PDOException $e) {
+        $error = $e->getMessage();
+    }
+}
 
-        if ($G_id === null) {
-            die("error");
-        }
+$G_id = $_GET["G_id"] ?? null;
+if ($G_id === null) {
+    die("Error: No goal ID provided");
+}
 
-       
-
-
-         $gl = viewG($G_id);
-        ?>
-        <div>
-            <h2 class="centered-header">delete <?php echo $gl[0][0] ?> Goals</h2>
-    </div>
-    <div class="main">
-        <form method="post">
-            <input type="hidden" name="GOAL_ID" value="<?php echo $gl[0][0]; ?>">
-            <input type="integer" name="HOUSWEHOLD_ID" value="<?php echo $gl[0][1]; ?>">
-            <input type="text" name="TARGET_CO2_LIMIT" value="<?php echo $gl[0][2]; ?>">
-            <input type="text" name="TARGET_MONTH" value="<?php echo $gl[0][3]; ?>">
-            <input type="submit" name="deletegoal" value="delete Goals">
-            <form>
-    </div>
-    <footer>
-            <p> </p>
-    
-        </footer>
-    </body>
+try {
+    $stmt = $CONN->prepare("SELECT * FROM HOUSEHOLD_GOALS WHERE GOAL_ID = :id");
+    $stmt->execute([':id' => $G_id]);
+    $goal = $stmt->fetch();
+    if (!$goal) {
+        die("Goal not found");
+    }
+} catch(PDOException $e) {
+    die("Error: " . $e->getMessage());
+}
+?>
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Delete Household Goal | Admin</title>
+    <link rel="stylesheet" href="stylesheets/admin-style.css">
+    <link rel="stylesheet" href="stylesheets/accessibility-global.css">
+    <script>
+        (function() {
+            const theme = localStorage.getItem('eco-theme') || 'light';
+            const contrast = localStorage.getItem('eco-contrast') === 'true' ? 'high' : 'normal';
+            const font = localStorage.getItem('eco-fontsize') || 'normal';
+            const fontMap = { small: '14px', normal: '16px', large: '19px' };
+            document.documentElement.setAttribute('data-theme', theme);
+            document.documentElement.setAttribute('data-contrast', contrast);
+            document.documentElement.style.fontSize = fontMap[font] || '16px';
+        })();
+    </script>
+</head>
+<body>
+    <header class="admin-header">
+        <div class="header-left">
+            <h1>Delete Household Goal</h1>
+        </div>
+        <div class="header-right">
+            <a href="admin-dashboard.php" class="header-btn">← Back to Admin</a>
+            <a href="dashboard.php" class="header-btn">Dashboard</a>
+            <a href="logout.php" class="header-btn logout">Logout</a>
+        </div>
+    </header>
+    <main class="admin-container">
+        <?php if (!empty($error)) { echo "<div class='alert alert-error'>Error: " . htmlspecialchars($error) . "</div>"; } ?>
+        <div class="form-card">
+            <form method="post">
+                <p class="confirm-text">Are you sure you want to delete this goal?</p>
+                <input type="hidden" name="GOAL_ID" value="<?php echo htmlspecialchars($goal['GOAL_ID']); ?>">
+                <div class="confirm-info">
+                    <p><strong>Household ID:</strong> <?php echo htmlspecialchars($goal['HOUSEHOLD_ID']); ?></p>
+                    <p><strong>Target CO2:</strong> <?php echo htmlspecialchars($goal['TARGET_CO2_LIMIT']); ?> kg</p>
+                    <p><strong>Target Month:</strong> <?php echo htmlspecialchars($goal['TARGET_MONTH']); ?></p>
+                </div>
+                <button type="submit" name="deletegoal" class="btn btn-danger">Delete Goal</button>
+            </form>
+        </div>
+    </main>
+</body>
 </html>

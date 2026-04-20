@@ -1,7 +1,6 @@
-<?php 
+<?php
 session_start();
 
-// Check if user is logged in
 if (!isset($_SESSION['user_id']) || !isset($_SESSION['username'])) {
     header('Location: index.php?error=unauthorized&tab=login');
     exit;
@@ -9,6 +8,11 @@ if (!isset($_SESSION['user_id']) || !isset($_SESSION['username'])) {
 
 $username = htmlspecialchars($_SESSION['username']);
 $initial = strtoupper(substr($username, 0, 1));
+
+require_once 'connect.php';
+$stmt = $CONN->prepare("SELECT * FROM USER_TYPES WHERE USER_ID = :uid AND USER_TYPE_NAME = 'Admin' LIMIT 1");
+$stmt->execute([':uid' => $_SESSION['user_id']]);
+$isAdmin = $stmt->fetch() !== false;
 ?>
 <!DOCTYPE html>
 <html lang="en" data-theme="light">
@@ -18,14 +22,12 @@ $initial = strtoupper(substr($username, 0, 1));
     <title>Dashboard | Smart Household</title>
     <link rel="stylesheet" href="stylesheets/dashboard-style.css">
     <link rel="stylesheet" href="stylesheets/accessibility-global.css">
-
-    <!-- Apply saved theme BEFORE paint to prevent flash -->
     <script>
         (function() {
-            const theme    = localStorage.getItem('eco-theme')    || 'light';
+            const theme = localStorage.getItem('eco-theme') || 'light';
             const contrast = localStorage.getItem('eco-contrast') === 'true' ? 'high' : 'normal';
-            const font     = localStorage.getItem('eco-fontsize') || 'normal';
-            const fontMap  = { small: '14px', normal: '16px', large: '19px' };
+            const font = localStorage.getItem('eco-fontsize') || 'normal';
+            const fontMap = { small: '14px', normal: '16px', large: '19px' };
             document.documentElement.setAttribute('data-theme', theme);
             document.documentElement.setAttribute('data-contrast', contrast);
             document.documentElement.style.fontSize = fontMap[font] || '16px';
@@ -33,99 +35,89 @@ $initial = strtoupper(substr($username, 0, 1));
     </script>
 </head>
 <body>
-
-    <!-- TOP DASHBOARD HEADER -->
-    <div class="dashboard-header">
-        <div class="dashboard-welcome">
-            <h1>Welcome back, <span><?php echo $username; ?></span>! 👋</h1>
-            <p>Select a calculator or view your activity history</p>
+    <header class="dashboard-header">
+        <div class="header-left">
+            <h1>Welcome back, <span><?php echo $username; ?></span></h1>
+            <p>Track your environmental impact</p>
         </div>
-
-        <div class="dashboard-user-section">
-            <div class="user-avatar"><?php echo $initial; ?></div>
+        <div class="header-right">
+            <?php if ($isAdmin): ?>
+            <a href="admin-dashboard.php" class="admin-btn">Admin Dashboard</a>
+            <?php endif; ?>
             <div class="user-info">
-                <p>Logged in as</p>
-                <h3><?php echo $username; ?></h3>
+                <span class="user-avatar"><?php echo $initial; ?></span>
+                <span class="user-name"><?php echo $username; ?></span>
             </div>
-            <form method="POST" action="logout.php" style="margin: 0;">
+            <button id="dark-btn" class="header-btn" onclick="toggleDarkMode()" aria-label="Toggle dark mode">🌙</button>
+            <form method="POST" action="logout.php">
                 <button type="submit" class="logout-btn">Logout</button>
             </form>
         </div>
-    </div>
+    </header>
 
-    <div class="main-container">
-        <!-- QUICK STATS SECTION -->
-        <section class="dashboard-section stats-section">
+    <main class="main-container">
+        <section class="stats-section">
             <div class="stats-grid">
                 <div class="stat-card">
-                    <div class="stat-icon">📊</div>
+                    <span class="stat-icon">📊</span>
                     <div class="stat-content">
-                        <p class="stat-label">This Month</p>
-                        <h3 class="stat-value" id="monthly-co2">--</h3>
-                        <p class="stat-unit">kg CO₂</p>
+                        <span class="stat-label">This Month</span>
+                        <span class="stat-value" id="monthly-co2">--</span>
+                        <span class="stat-unit">kg CO₂</span>
                     </div>
                 </div>
-
                 <div class="stat-card">
-                    <div class="stat-icon">📈</div>
+                    <span class="stat-icon">📈</span>
                     <div class="stat-content">
-                        <p class="stat-label">Monthly Avg</p>
-                        <h3 class="stat-value" id="avg-co2">--</h3>
-                        <p class="stat-unit">kg CO₂</p>
+                        <span class="stat-label">Monthly Avg</span>
+                        <span class="stat-value" id="avg-co2">--</span>
+                        <span class="stat-unit">kg CO₂</span>
                     </div>
                 </div>
-
                 <div class="stat-card">
-                    <div class="stat-icon">🏆</div>
+                    <span class="stat-icon">🏆</span>
                     <div class="stat-content">
-                        <p class="stat-label">Your Rank</p>
-                        <h3 class="stat-value" id="your-rank">--</h3>
-                        <p class="stat-unit">of 150</p>
+                        <span class="stat-label">Your Rank</span>
+                        <span class="stat-value" id="your-rank">--</span>
+                        <span class="stat-unit">of 150</span>
                     </div>
                 </div>
-
                 <div class="stat-card">
-                    <div class="stat-icon">🎯</div>
+                    <span class="stat-icon">🎯</span>
                     <div class="stat-content">
-                        <p class="stat-label">Goal Progress</p>
-                        <h3 class="stat-value" id="goal-progress">--</h3>
-                        <p class="stat-unit">Target: 30kg</p>
+                        <span class="stat-label">Goal Progress</span>
+                        <span class="stat-value" id="goal-progress">--</span>
+                        <span class="stat-unit">Target: 30kg</span>
                     </div>
                 </div>
             </div>
         </section>
 
-        <!-- MAIN GRID -->
         <div class="dashboard-grid">
-            
-            <!-- LEFT COLUMN -->
-            <div class="dashboard-column-left">
-
-                <!-- ENVIRONMENTAL IMPACT -->
-                <section class="dashboard-section impact-section">
-                    <h2>🌱 Latest Environmental Impact</h2>
+            <div class="dashboard-column">
+                <section class="dashboard-section">
+                    <h2>🌱 Environmental Impact</h2>
                     <div class="impact-grid">
                         <div class="impact-item">
-                            <p class="impact-value" id="trees-equiv">--</p>
-                            <p class="impact-label">🌳 Trees Equivalent</p>
+                            <span class="impact-value" id="trees-equiv">--</span>
+                            <span class="impact-label">Trees Equivalent</span>
                         </div>
                         <div class="impact-item">
-                            <p class="impact-value" id="water-saved">--</p>
-                            <p class="impact-label">💧 Water Saved (L)</p>
+                            <span class="impact-value" id="water-saved">--</span>
+                            <span class="impact-label">Water Saved (L)</span>
                         </div>
                         <div class="impact-item">
-                            <p class="impact-value" id="clean-energy">--</p>
-                            <p class="impact-label">🔋 Clean Energy (kWh)</p>
+                            <span class="impact-value" id="clean-energy">--</span>
+                            <span class="impact-label">Clean Energy (kWh)</span>
                         </div>
                     </div>
-                    <p class="impact-note" id="impact-note">No recent data yet. Start logging activities!</p>
+                    <p class="impact-note" id="impact-note">Start tracking to see your impact!</p>
                 </section>
 
-                <!-- CARBON GOAL -->
-                <section class="dashboard-section goal-section">
-                    <div class="goal-header-top">
+                <section class="dashboard-section">
+                    <div class="section-header">
                         <h2>🎯 Monthly Goal</h2>
-                        <button class="edit-goal-btn" onclick="openGoalModal()">⚙️ Edit</button>
+                        <button class="edit-btn" onclick="openGoalModal()">Edit</button>
                     </div>
                     <div class="goal-card">
                         <div class="goal-header">
@@ -133,121 +125,88 @@ $initial = strtoupper(substr($username, 0, 1));
                             <span class="goal-pct" id="goal-pct-text">0%</span>
                         </div>
                         <div class="progress-bar">
-                            <div class="progress-fill" id="goal-bar" style="width: 0%;"></div>
+                            <div class="progress-fill" id="goal-bar"></div>
                         </div>
-                        <p class="goal-message"><strong id="goal-status">Set your goal!</strong> You can edit it anytime.</p>
+                        <p class="goal-message"><strong id="goal-status">Set your goal!</strong></p>
                     </div>
                 </section>
+            </div>
 
-                <!-- TIPS & RECOMMENDATIONS -->
-                <section class="dashboard-section tips-section">
+            <div class="dashboard-column">
+                <section class="dashboard-section">
                     <h2>💡 Daily Tip</h2>
                     <div class="tip-card">
                         <p id="daily-tip">Loading tip...</p>
                     </div>
                 </section>
 
-            </div>
-
-            <!-- RIGHT COLUMN -->
-            <div class="dashboard-column-right">
-
-                <!-- QUICK STATS (TOP RIGHT) -->
-                <section class="dashboard-section stats-summary">
-                    <h2>📊 Overview</h2>
-                    <div class="summary-grid">
-                        <div class="summary-item">
-                            <p class="summary-label">This Month</p>
-                            <h3 class="summary-value" id="monthly-co2">--</h3>
-                            <p class="summary-unit">kg CO₂</p>
-                        </div>
-                        <div class="summary-item">
-                            <p class="summary-label">Monthly Avg</p>
-                            <h3 class="summary-value" id="avg-co2">--</h3>
-                            <p class="summary-unit">kg CO₂</p>
-                        </div>
+                <section class="dashboard-section">
+                    <h2>⚡ Quick Actions</h2>
+                    <div class="quick-actions">
+                        <a href="calculator.php" class="action-card">
+                            <span class="action-icon">🧮</span>
+                            <span class="action-text">Carbon Calculator</span>
+                        </a>
+                        <a href="history.php" class="action-card">
+                            <span class="action-icon">📊</span>
+                            <span class="action-text">Activity History</span>
+                        </a>
+                        <a href="accessibility-settings.php" class="action-card">
+                            <span class="action-icon">♿</span>
+                            <span class="action-text">Accessibility</span>
+                        </a>
+                        <a href="settings.php" class="action-card">
+                            <span class="action-icon">⚙️</span>
+                            <span class="action-text">Settings</span>
+                        </a>
                     </div>
                 </section>
-
             </div>
-
         </div>
+    </main>
 
-        <!-- NAVIGATION CARD -->
-        <div class="menu-card menu-card-compact">
-            <div class="menu-header menu-header-compact">
-                <h2>Smart Hub</h2>
-                <p>Quick access to all tools</p>
-            </div>
-
-            <div class="menu-grid">
-                <button class="menu-btn btn-green" onclick="window.location.href='calculator.php'">
-                    🧮 Carbon Calculator
-                </button>
-
-                <button class="menu-btn btn-green" onclick="window.location.href='history.php'">
-                    📊 Activity History
-                </button>
-
-                <button class="menu-btn btn-blue" onclick="window.location.href='accessibility-settings.php'">
-                    ♿ Accessibility
-                </button>
-
-                <button class="menu-btn btn-blue" onclick="window.location.href='settings.php'">
-                    ⚙️ Account Settings
-                </button>
-            </div>
-
-        </div>
-
-    </div>
-
-    <!-- GOAL SETTING MODAL -->
     <div id="goalModal" class="modal-overlay" style="display: none;">
-        <div class="modal-content-goal">
-            <h2>Set Your Monthly CO₂ Goal</h2>
-            <p class="modal-description">Choose a target for your household's monthly carbon footprint.</p>
+        <div class="modal-content">
+            <h2>Set Your Monthly Goal</h2>
+            <p>Choose a target for your carbon footprint.</p>
             
-            <div class="goal-preset-options">
-                <button class="preset-btn" onclick="setGoal(25)">
+            <div class="goal-options">
+                <button class="goal-preset" onclick="setGoal(25)">
                     <span class="preset-icon">🌱</span>
                     <span class="preset-name">Eco Warrior</span>
                     <span class="preset-value">25 kg</span>
                 </button>
-                <button class="preset-btn" onclick="setGoal(30)">
+                <button class="goal-preset active" onclick="setGoal(30)">
                     <span class="preset-icon">🌍</span>
                     <span class="preset-name">Balanced</span>
                     <span class="preset-value">30 kg</span>
                 </button>
-                <button class="preset-btn" onclick="setGoal(40)">
+                <button class="goal-preset" onclick="setGoal(40)">
                     <span class="preset-icon">🏠</span>
                     <span class="preset-name">Comfortable</span>
                     <span class="preset-value">40 kg</span>
                 </button>
             </div>
 
-            <div class="custom-goal-section">
-                <label for="customGoalInput">Or enter a custom target:</label>
-                <div class="custom-goal-input">
-                    <input type="number" id="customGoalInput" min="5" max="200" placeholder="e.g., 35" />
+            <div class="custom-goal">
+                <label for="customGoalInput">Custom target:</label>
+                <div class="input-row">
+                    <input type="number" id="customGoalInput" min="5" max="200" placeholder="35">
                     <span class="input-unit">kg CO₂</span>
                 </div>
-                <button class="btn-set-custom" onclick="setCustomGoal()">Set Custom Goal</button>
+                <button class="btn-primary" onclick="setCustomGoal()">Set Goal</button>
             </div>
 
-            <button class="modal-close" onclick="closeGoalModal()">✕</button>
+            <button class="modal-close" onclick="closeGoalModal()" aria-label="Close">✕</button>
         </div>
     </div>
 
-    <!-- EmailJS -->
-    <span id="eco-user"
-        data-name="<?php echo htmlspecialchars($_SESSION['username'] ?? ''); ?>"
-        data-email="<?php echo htmlspecialchars($_SESSION['email'] ?? ''); ?>"
-        style="display:none;">
-    </span>
-    <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
-    <script src="scripts/emailjs-handler.js"></script>
     <script src="scripts/accessibility.js"></script>
     <script src="scripts/dashboard-enhanced.js"></script>
+    <script>
+        if (window.location.search.includes('loggedin=1')) {
+            console.log('Login successful! Welcome to Smart Household Carbon Footprint Tracker.');
+        }
+    </script>
 </body>
 </html>

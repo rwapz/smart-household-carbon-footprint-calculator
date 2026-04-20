@@ -1,53 +1,83 @@
-<DOCTYPE.html>
-<html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device=width, initial-scale=1.0">
-        <title>delete Log</title>
-        <link rel="stylesheet" href="style.css" />
-    </head>
-    <body>
+<?php
+require_once 'auth-admin.php';
+require_once 'connect.php';
 
-        <?php
-        require_once("functions.php");
+$error = '';
 
-        if (isset($_POST["deleteact"])) {
-            $L_id = $_POST["LOG_ID"];
-             $U_id = $_POST["USER_ID"];
-            $F_id = $_POST["FACTOR_NAME"];
-            $Amot = $_POST["AMOUNT"];
-            $Drec = $_POST["DATE_RECORDED"];
-            deleteact($L_id);
-            header("Location: viewactivity.php");
-            
-        }
-        $L_id = $_GET["L_id"] ?? null;
+if (isset($_POST["deleteact"])) {
+    $L_id = $_POST["LOG_ID"];
+    try {
+        $stmt = $CONN->prepare("DELETE FROM ACTIVITY_LOG WHERE LOG_ID = :id");
+        $stmt->execute([':id' => $L_id]);
+        header("Location: viewactivity.php");
+        exit;
+    } catch(PDOException $e) {
+        $error = $e->getMessage();
+    }
+}
 
-        if ($L_id === null) {
-            die("error");
-        }
+$L_id = $_GET["L_id"] ?? null;
+if ($L_id === null) {
+    die("Error: No log ID provided");
+}
 
-       
-
-
-         $lg = viewA($L_id);
-        ?>
-        <div>
-            <h2 class="centered-header">delete <?php echo $lg[0][1] ?> Activity</h2>
-    </div>
-    <div class="main">
-        <form method="post">
-            <input type="hidden" name="LOG_ID" value="<?php echo $lg[0][0]; ?>">
-            <input type="integer" name="USER_ID" value="<?php echo $lg[0][1]; ?>">
-            <input type="integer" name="FACTOR" value="<?php echo $lg[0][2]; ?>">
-            <input type="text" name="AMOUNT" value="<?php echo $lg[0][3]; ?>">
-            <input type="text" name=DATE_RECORDED" value="<?php echo $lg[0][4]; ?>">
-            <input type="submit" name="deleteact" value="delete the Activity Log">
-            <form>
-    </div>
-    <footer>
-            <p> </p>
-    
-        </footer>
-    </body>
+try {
+    $stmt = $CONN->prepare("SELECT * FROM ACTIVITY_LOG WHERE LOG_ID = :id");
+    $stmt->execute([':id' => $L_id]);
+    $log = $stmt->fetch();
+    if (!$log) {
+        die("Activity log not found");
+    }
+} catch(PDOException $e) {
+    die("Error: " . $e->getMessage());
+}
+?>
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Delete Activity Log | Admin</title>
+    <link rel="stylesheet" href="stylesheets/admin-style.css">
+    <link rel="stylesheet" href="stylesheets/accessibility-global.css">
+    <script>
+        (function() {
+            const theme = localStorage.getItem('eco-theme') || 'light';
+            const contrast = localStorage.getItem('eco-contrast') === 'true' ? 'high' : 'normal';
+            const font = localStorage.getItem('eco-fontsize') || 'normal';
+            const fontMap = { small: '14px', normal: '16px', large: '19px' };
+            document.documentElement.setAttribute('data-theme', theme);
+            document.documentElement.setAttribute('data-contrast', contrast);
+            document.documentElement.style.fontSize = fontMap[font] || '16px';
+        })();
+    </script>
+</head>
+<body>
+    <header class="admin-header">
+        <div class="header-left">
+            <h1>Delete Activity Log</h1>
+        </div>
+        <div class="header-right">
+            <a href="admin-dashboard.php" class="header-btn">← Back to Admin</a>
+            <a href="dashboard.php" class="header-btn">Dashboard</a>
+            <a href="logout.php" class="header-btn logout">Logout</a>
+        </div>
+    </header>
+    <main class="admin-container">
+        <?php if (!empty($error)) { echo "<div class='alert alert-error'>Error: " . htmlspecialchars($error) . "</div>"; } ?>
+        <div class="form-card">
+            <form method="post">
+                <p class="confirm-text">Are you sure you want to delete this activity log?</p>
+                <input type="hidden" name="LOG_ID" value="<?php echo htmlspecialchars($log['LOG_ID']); ?>">
+                <div class="confirm-info">
+                    <p><strong>User ID:</strong> <?php echo htmlspecialchars($log['USER_ID']); ?></p>
+                    <p><strong>Factor ID:</strong> <?php echo htmlspecialchars($log['FACTOR_ID']); ?></p>
+                    <p><strong>Amount:</strong> <?php echo htmlspecialchars($log['AMOUNT']); ?></p>
+                    <p><strong>Date:</strong> <?php echo htmlspecialchars($log['DATE_RECORDED']); ?></p>
+                </div>
+                <button type="submit" name="deleteact" class="btn btn-danger">Delete Activity Log</button>
+            </form>
+        </div>
+    </main>
+</body>
 </html>

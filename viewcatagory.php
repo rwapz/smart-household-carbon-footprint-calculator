@@ -1,81 +1,78 @@
+<?php
+require_once 'auth-admin.php';
+require_once 'connect.php';
+?>
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="light">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Carbon Footprint Tracker</title>
-    <link rel="stylesheet" href="style.css" />
+    <title>Categories | Admin</title>
+    <link rel="stylesheet" href="stylesheets/admin-style.css">
+    <link rel="stylesheet" href="stylesheets/accessibility-global.css">
+    <script>
+        (function() {
+            const theme = localStorage.getItem('eco-theme') || 'light';
+            const contrast = localStorage.getItem('eco-contrast') === 'true' ? 'high' : 'normal';
+            const font = localStorage.getItem('eco-fontsize') || 'normal';
+            const fontMap = { small: '14px', normal: '16px', large: '19px' };
+            document.documentElement.setAttribute('data-theme', theme);
+            document.documentElement.setAttribute('data-contrast', contrast);
+            document.documentElement.style.fontSize = fontMap[font] || '16px';
+        })();
+    </script>
 </head>
-
-<header>  
-         
-
-           
-        
-</header>
 <body>
+    <header class="admin-header">
+        <div class="header-left">
+            <h1>Categories</h1>
+        </div>
+        <div class="header-right">
+            <a href="admin-dashboard.php" class="header-btn">← Back to Admin</a>
+            <a href="dashboard.php" class="header-btn">Dashboard</a>
+            <a href="logout.php" class="header-btn logout">Logout</a>
+        </div>
+    </header>
+    <main class="admin-container">
+        <div class="form-card" style="padding: 0; overflow: hidden;">
+            <?php
+            try {
+                $countSql = "SELECT COUNT(*) as cnt FROM CATAGORIES";
+                $countStmt = $CONN->prepare($countSql);
+                $countStmt->execute();
+                $countResult = $countStmt->fetch();
+                echo "<div style='padding: 16px 24px; border-bottom: 1px solid var(--border); background: var(--surface-2);'>
+                    <p style='margin: 0; color: var(--text-secondary);'>Total Categories: <strong>" . $countResult['cnt'] . "</strong></p>
+                </div>";
 
-    <div>
-        <h2 class="centered-header">Catagories</h2>
-    </div>
-    <div class="main">
+                $sql = "SELECT * FROM CATAGORIES ORDER BY CATAGORY_ID ASC";
+                $stmt = $CONN->prepare($sql);
+                $stmt->execute();
 
-      <form method="get" style="margin-bottom:20px;">
-        <input type="text" name="search" placeholder="search by name or ID">
-        <input type="submit" value="search">
-    </form>
-        <?php
-        $db = new SQLite3('carbon.db');
+                echo "<table style='width: 100%; border-collapse: collapse;'>";
+                echo "<thead><tr style='border-bottom: 1px solid var(--border);'>
+                    <th style='text-align: left; padding: 12px 24px;'>CATAGORY_ID</th>
+                    <th style='text-align: left; padding: 12px 24px;'>CATAGORY_NAME</th>
+                    <th style='text-align: left; padding: 12px 24px;'>Actions</th>
+                </tr></thead>";
 
-         $count = $db->querySingle("SELECT COUNT(*) FROM CATAGORIES");
-            echo "<p class='count'>Total catagories $count</p>";
-
-       if (isset($_GET['search']) && !empty($_GET['search'])) { 
-
-        $search = $_GET['search'];
-
-         $stmt = $db->prepare("
-         SELECT * FROM CATAGORIES
-         WHERE CATAGORY_ID LIKE :search   
-         ");
-
-         $stmt->bindValue(':search',"%$search%", SQLITE3_TEXT);
-         $result = $stmt->execute();
-    
-    } else {
-          $result = $db->query("SELECT * FROM CATAGORIES ORDER BY CATAGORY_ID ASC");
-    }
-        
-       
-        echo "<table>";
-        echo "
-        <thead>
-            <tr> 
-                <td>GATAGORY_ID</td>
-                <td>CATAGORY_NAME</td>
-                <td style ='text-align: center' colspan='2'> Action </td> 
-            </tr>
-        </thead>";
-        while ($row = $result->fetchArray(SQLITE3_ASSOC)) {
-            $C_id = $row['CATAGORY_ID'];
-            $Cname = $row['CATAGORY_NAME'];
-            echo "
-            <tbody>
-                <tr> 
-                  <td>$C_id</td> 
-                  <td>$Cname</td> 
-                  <td><a href='updatecatagory.php?C_id=$C_id'>update</td>
-                  <td><a href='deletecatagory.php?C_id=$C_id'>delete</td>
-                </tr>
-            </tbody>";
-        }
-        echo "</table>";
-        $db->close();
-        ?>
-    </div>
+                while ($row = $stmt->fetch()) {
+                    $C_id = htmlspecialchars($row['CATAGORY_ID']);
+                    $Cname = htmlspecialchars($row['CATAGORY_NAME']);
+                    echo "<tbody><tr style='border-bottom: 1px solid var(--border);'>
+                    <td style='padding: 12px 24px;'>$C_id</td>
+                    <td style='padding: 12px 24px;'>$Cname</td>
+                    <td style='padding: 12px 24px;'>
+                        <a href='updatecatagory.php?C_id=$C_id' class='btn btn-view' style='display: inline-block; padding: 6px 12px; font-size: 0.8rem;'>Edit</a>
+                    </td>
+                </tr></tbody>";
+                }
+                echo "</table>";
+            } catch(PDOException $e) {
+                echo "<div class='alert alert-error' style='margin: 20px;'>Error: " . htmlspecialchars($e->getMessage()) . "</div>";
+            }
+            ?>
+        </div>
+    </main>
 </body>
- <footer>
-            <p>  </p>
-    
-        </footer>
 </html>

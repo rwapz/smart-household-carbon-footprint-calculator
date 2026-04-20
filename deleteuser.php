@@ -1,51 +1,81 @@
-<DOCTYPE.html>
-<html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device=width, initial-scale=1.0">
-        <title>delete user records</title>
-        <link rel="stylesheet" href="style.css" />
-    </head>
-    <body>
+<?php
+require_once 'auth-admin.php';
+require_once 'connect.php';
 
-        <?php
-        require_once("functions.php");
+$error = '';
 
-        if (isset($_POST["deleteuser"])) {
-            $U_id = $_POST["USER_ID"];
-            $H_id = $_POST["HOUSEHOLD_ID"];
-            $Uname = $_POST["USERNAME"];
-            $Phash = $_POST["PASSWORD_HASH"];
-            deleteUser($U_id);
-            header("Location: viewusere.php");
-            
-        }
-        $U_id = $_GET["U_id"] ?? null;
+if (isset($_POST["deleteuser"])) {
+    $U_id = $_POST["USER_ID"];
+    try {
+        $stmt = $CONN->prepare("DELETE FROM USERS WHERE USER_ID = :id");
+        $stmt->execute([':id' => $U_id]);
+        header("Location: viewuser.php");
+        exit;
+    } catch(PDOException $e) {
+        $error = $e->getMessage();
+    }
+}
 
-        if ($U_id === null) {
-            die("error");
-        }
+$U_id = $_GET["U_id"] ?? null;
+if ($U_id === null) {
+    die("Error: No user ID provided");
+}
 
-       
-
-
-         $user = viewU($U_id);
-        ?>
-        <div>
-            <h2 class="centered-header">delete <?php echo $user[0][1] ?> User Record</h2>
-    </div>
-    <div class="main">
-        <form method="post">
-             <input type="hidden" name="USER_ID" value="<?php echo $user[0][0]; ?>">
-            <input type="hidden" name="HOUSEHOLD_ID" value="<?php echo $user[0][1]; ?>">
-            <input type="text" name="USERNAME" value="<?php echo $user[0][2]; ?>">
-            <input type="text" name="PASSWORD_HASH" value="<?php echo $user[0][3]; ?>">
-            <input type="submit" name="deleteuser" value="delete user">
-            <form>
-    </div>
-    <footer>
-            <p> Lincolnshire HMS - all rigths reserved</p>
-    
-        </footer>
-    </body>
+try {
+    $stmt = $CONN->prepare("SELECT * FROM USERS WHERE USER_ID = :id");
+    $stmt->execute([':id' => $U_id]);
+    $user = $stmt->fetch();
+    if (!$user) {
+        die("User not found");
+    }
+} catch(PDOException $e) {
+    die("Error: " . $e->getMessage());
+}
+?>
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Delete User | Admin</title>
+    <link rel="stylesheet" href="stylesheets/admin-style.css">
+    <link rel="stylesheet" href="stylesheets/accessibility-global.css">
+    <script>
+        (function() {
+            const theme = localStorage.getItem('eco-theme') || 'light';
+            const contrast = localStorage.getItem('eco-contrast') === 'true' ? 'high' : 'normal';
+            const font = localStorage.getItem('eco-fontsize') || 'normal';
+            const fontMap = { small: '14px', normal: '16px', large: '19px' };
+            document.documentElement.setAttribute('data-theme', theme);
+            document.documentElement.setAttribute('data-contrast', contrast);
+            document.documentElement.style.fontSize = fontMap[font] || '16px';
+        })();
+    </script>
+</head>
+<body>
+    <header class="admin-header">
+        <div class="header-left">
+            <h1>Delete User</h1>
+        </div>
+        <div class="header-right">
+            <a href="admin-dashboard.php" class="header-btn">← Back to Admin</a>
+            <a href="dashboard.php" class="header-btn">Dashboard</a>
+            <a href="logout.php" class="header-btn logout">Logout</a>
+        </div>
+    </header>
+    <main class="admin-container">
+        <?php if (!empty($error)) { echo "<div class='alert alert-error'>Error: " . htmlspecialchars($error) . "</div>"; } ?>
+        <div class="form-card">
+            <form method="post">
+                <p class="confirm-text">Are you sure you want to delete this user?</p>
+                <input type="hidden" name="USER_ID" value="<?php echo htmlspecialchars($user['USER_ID']); ?>">
+                <div class="confirm-info">
+                    <p><strong>Username:</strong> <?php echo htmlspecialchars($user['USERNAME']); ?></p>
+                    <p><strong>Household ID:</strong> <?php echo htmlspecialchars($user['HOUSEHOLD_ID']); ?></p>
+                </div>
+                <button type="submit" name="deleteuser" class="btn btn-danger">Delete User</button>
+            </form>
+        </div>
+    </main>
+</body>
 </html>

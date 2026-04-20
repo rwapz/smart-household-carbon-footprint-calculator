@@ -1,47 +1,80 @@
-<DOCTYPE.html>
-<html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device=width, initial-scale=1.0">
-        <title>delete catagories</title>
-        <link rel="stylesheet" href="style.css" />
-    </head>
-    <body>
+<?php
+require_once 'auth-admin.php';
+require_once 'connect.php';
 
-        <?php
-        require_once("functions.php");
+$error = '';
 
-        if (isset($_POST["deletecatagory"])) {
-            $C_id = $_POST["CATAGORY_ID"];
-            $Cname = $_POST["CATAGORY_NAME"];
-            deleteCatagory($C_id);
-            header("Location: viewcatagory.php");
-            
-        }
-        $C_id = $_GET["C_id"] ?? null;
+if (isset($_POST["deletecatagory"])) {
+    $C_id = $_POST["CATAGORY_ID"];
+    try {
+        $stmt = $CONN->prepare("DELETE FROM CATAGORIES WHERE CATAGORY_ID = :id");
+        $stmt->execute([':id' => $C_id]);
+        header("Location: viewcatagory.php");
+        exit;
+    } catch(PDOException $e) {
+        $error = $e->getMessage();
+    }
+}
 
-        if ($C_id === null) {
-            die("error");
-        }
+$C_id = $_GET["C_id"] ?? null;
+if ($C_id === null) {
+    die("Error: No category ID provided");
+}
 
-       
-
-
-         $cg = viewC($C_id);
-        ?>
-        <div>
-            <h2 class="centered-header">delete <?php echo $cg[0][1] ?> catagory</h2>
-    </div>
-    <div class="main">
-        <form method="post">
-             <input type="hidden" name="CATAGORY_ID" value="<?php echo $cg[0][0]; ?>">
-            <input type="text" name="CATAGORY_NAME" value="<?php echo $cg[0][1]; ?>">
-            <input type="submit" name="deletecatagory" value="delete catagory">
-            <form>
-    </div>
-    <footer>
-            <p> Lincolnshire HMS - all rigths reserved</p>
-    
-        </footer>
-    </body>
+try {
+    $stmt = $CONN->prepare("SELECT * FROM CATAGORIES WHERE CATAGORY_ID = :id");
+    $stmt->execute([':id' => $C_id]);
+    $cat = $stmt->fetch();
+    if (!$cat) {
+        die("Category not found");
+    }
+} catch(PDOException $e) {
+    die("Error: " . $e->getMessage());
+}
+?>
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Delete Category | Admin</title>
+    <link rel="stylesheet" href="stylesheets/admin-style.css">
+    <link rel="stylesheet" href="stylesheets/accessibility-global.css">
+    <script>
+        (function() {
+            const theme = localStorage.getItem('eco-theme') || 'light';
+            const contrast = localStorage.getItem('eco-contrast') === 'true' ? 'high' : 'normal';
+            const font = localStorage.getItem('eco-fontsize') || 'normal';
+            const fontMap = { small: '14px', normal: '16px', large: '19px' };
+            document.documentElement.setAttribute('data-theme', theme);
+            document.documentElement.setAttribute('data-contrast', contrast);
+            document.documentElement.style.fontSize = fontMap[font] || '16px';
+        })();
+    </script>
+</head>
+<body>
+    <header class="admin-header">
+        <div class="header-left">
+            <h1>Delete Category</h1>
+        </div>
+        <div class="header-right">
+            <a href="admin-dashboard.php" class="header-btn">← Back to Admin</a>
+            <a href="dashboard.php" class="header-btn">Dashboard</a>
+            <a href="logout.php" class="header-btn logout">Logout</a>
+        </div>
+    </header>
+    <main class="admin-container">
+        <?php if (!empty($error)) { echo "<div class='alert alert-error'>Error: " . htmlspecialchars($error) . "</div>"; } ?>
+        <div class="form-card">
+            <form method="post">
+                <p class="confirm-text">Are you sure you want to delete this category?</p>
+                <input type="hidden" name="CATAGORY_ID" value="<?php echo htmlspecialchars($cat['CATAGORY_ID']); ?>">
+                <div class="confirm-info">
+                    <p><strong>Category Name:</strong> <?php echo htmlspecialchars($cat['CATAGORY_NAME']); ?></p>
+                </div>
+                <button type="submit" name="deletecatagory" class="btn btn-danger">Delete Category</button>
+            </form>
+        </div>
+    </main>
+</body>
 </html>

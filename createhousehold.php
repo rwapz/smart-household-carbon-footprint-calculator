@@ -1,53 +1,65 @@
+<?php
+require_once 'auth-admin.php';
+require_once 'connect.php';
+?>
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="light">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>add New Address</title>
-    <link rel="stylesheet" href="style.css" />
+    <title>Create Household | Admin</title>
+    <link rel="stylesheet" href="stylesheets/admin-style.css">
+    <link rel="stylesheet" href="stylesheets/accessibility-global.css">
+    <script>
+        (function() {
+            const theme = localStorage.getItem('eco-theme') || 'light';
+            const contrast = localStorage.getItem('eco-contrast') === 'true' ? 'high' : 'normal';
+            const font = localStorage.getItem('eco-fontsize') || 'normal';
+            const fontMap = { small: '14px', normal: '16px', large: '19px' };
+            document.documentElement.setAttribute('data-theme', theme);
+            document.documentElement.setAttribute('data-contrast', contrast);
+            document.documentElement.style.fontSize = fontMap[font] || '16px';
+        })();
+    </script>
 </head>
-
-<header>
-    
-</header>
-
-
- 
 <body>
-    <?php
-    
-    require_once("functions.php");
-    
-    
-
-    
-    if(isset($_POST['createhousehold'])) 
-    {   
-        $Hname = $_POST['HOUSEHOLD_NAME'];
-        $post = $_POST['POSTCODE'];
-        addhousehold($Hname,$post,);       
-    }
-    ?>
-    <div>
-        <h2 class="centered-header">Add HouseHold Details</h2>
-    </div>
-    <div class="main">
-        <form method="post">
-            <input type="text" name="HOUSEHOLD_NAME" placeholder="HouseHold Name" required>
-            <input type="text" name="POSTCODE" placeholder="PostCode"required>
-            
-            
-            
-            <input type="submit" name = "createhousehold" value="Create household">
-        </form>
-    </div>
-    
-
-     <footer>
-            <p> Lincolnshire HMS - all rigths reserved</p>
-    
-        </footer>
-       
-    </div>
+    <header class="admin-header">
+        <div class="header-left">
+            <h1>Create Household</h1>
+        </div>
+        <div class="header-right">
+            <a href="admin-dashboard.php" class="header-btn">← Back to Admin</a>
+            <a href="dashboard.php" class="header-btn">Dashboard</a>
+            <a href="logout.php" class="header-btn logout">Logout</a>
+        </div>
+    </header>
+    <main class="admin-container">
+        <?php
+        if (isset($_POST['createhousehold'])) {
+            $Hname = $_POST['HOUSEHOLD_NAME'];
+            $post = $_POST['POSTCODE'];
+            try {
+                $stmt = $CONN->prepare("INSERT INTO HOUSEHOLD (HOUSEHOLD_NAME, POSTCODE) VALUES (:Hname, :post)");
+                $stmt->execute([':Hname' => $Hname, ':post' => $post]);
+                echo "<div class='alert alert-success'>Household created successfully!</div>";
+            } catch(PDOException $e) {
+                echo "<div class='alert alert-error'>Error: " . htmlspecialchars($e->getMessage()) . "</div>";
+            }
+        }
+        ?>
+        <div class="form-card">
+            <form method="post">
+                <div class="form-group">
+                    <label for="HOUSEHOLD_NAME">Household Name</label>
+                    <input type="text" name="HOUSEHOLD_NAME" placeholder="Enter household name" required>
+                </div>
+                <div class="form-group">
+                    <label for="POSTCODE">Postcode</label>
+                    <input type="text" name="POSTCODE" placeholder="Enter postcode">
+                </div>
+                <button type="submit" name="createhousehold" class="btn btn-primary">Create Household</button>
+            </form>
+        </div>
+    </main>
 </body>
 </html>

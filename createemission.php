@@ -1,55 +1,70 @@
+<?php
+require_once 'auth-admin.php';
+require_once 'connect.php';
+?>
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="light">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>add Emissions</title>
-    <link rel="stylesheet" href="style.css" />
+    <title>Create Emission Factor | Admin</title>
+    <link rel="stylesheet" href="stylesheets/admin-style.css">
+    <link rel="stylesheet" href="stylesheets/accessibility-global.css">
+    <script>
+        (function() {
+            const theme = localStorage.getItem('eco-theme') || 'light';
+            const contrast = localStorage.getItem('eco-contrast') === 'true' ? 'high' : 'normal';
+            const font = localStorage.getItem('eco-fontsize') || 'normal';
+            const fontMap = { small: '14px', normal: '16px', large: '19px' };
+            document.documentElement.setAttribute('data-theme', theme);
+            document.documentElement.setAttribute('data-contrast', contrast);
+            document.documentElement.style.fontSize = fontMap[font] || '16px';
+        })();
+    </script>
 </head>
-
-<header>
-    
-</header>
-
-
- 
 <body>
-    <?php
-    
-    require_once("functions.php");
-    
-    
-
-    
-    if(isset($_POST['createemiss'])) 
-    {  
-        $C_id = $_POST['CATAGORY_ID']; 
-        $Aname = $_POST['ACTIVITY_NAME'];
-        $co2 = $_POST['CO2_PER_UNIT'];
-        addemiss($C_id,$Aname, $co2);       
-    }
-    ?>
-    <div>
-        <h2 class="centered-header">Add Activity</h2>
-    </div>
-    <div class="main">
-        <form method="post">
-            <input type="integer" name="CATAGORY_ID" placeholder="Catagory" required>
-            <input type="text" name="ACTIVITY_NAME" placeholder="activity name" required>
-            <input type="text" name="CO2_PER_UNIT" placeholder="Co2 per unit "required>
-            
-            
-            
-            <input type="submit" name = "createemiss" value="Create Activity">
-        </form>
-    </div>
-    
-
-     <footer>
-            <p> </p>
-    
-        </footer>
-       
-    </div>
+    <header class="admin-header">
+        <div class="header-left">
+            <h1>Create Emission Factor</h1>
+        </div>
+        <div class="header-right">
+            <a href="admin-dashboard.php" class="header-btn">← Back to Admin</a>
+            <a href="dashboard.php" class="header-btn">Dashboard</a>
+            <a href="logout.php" class="header-btn logout">Logout</a>
+        </div>
+    </header>
+    <main class="admin-container">
+        <?php
+        if (isset($_POST['createemission'])) {
+            $C_id = $_POST['CATAGORY_ID'];
+            $Aname = $_POST['ACTIVITY_NAME'];
+            $co2 = $_POST['CO2_PER_UNIT'];
+            try {
+                $stmt = $CONN->prepare("INSERT INTO EMISSION_FACTORS (CATAGORY_ID, ACTIVITY_NAME, CO2_PER_UNIT) VALUES (:C_id, :Aname, :co2)");
+                $stmt->execute([':C_id' => $C_id, ':Aname' => $Aname, ':co2' => $co2]);
+                echo "<div class='alert alert-success'>Emission factor created successfully!</div>";
+            } catch(PDOException $e) {
+                echo "<div class='alert alert-error'>Error: " . htmlspecialchars($e->getMessage()) . "</div>";
+            }
+        }
+        ?>
+        <div class="form-card">
+            <form method="post">
+                <div class="form-group">
+                    <label for="CATAGORY_ID">Category ID</label>
+                    <input type="number" name="CATAGORY_ID" placeholder="Enter category ID" required>
+                </div>
+                <div class="form-group">
+                    <label for="ACTIVITY_NAME">Activity Name</label>
+                    <input type="text" name="ACTIVITY_NAME" placeholder="e.g., Driving Car" required>
+                </div>
+                <div class="form-group">
+                    <label for="CO2_PER_UNIT">CO2 Per Unit (kg)</label>
+                    <input type="number" step="0.01" name="CO2_PER_UNIT" placeholder="e.g., 0.21" required>
+                </div>
+                <button type="submit" name="createemission" class="btn btn-primary">Create Emission Factor</button>
+            </form>
+        </div>
+    </main>
 </body>
 </html>

@@ -1,668 +1,233 @@
-<?php 
+<?php
+require_once 'connect.php';
 
-
-
-function db_connect(){
-    return $db = new SQLite3("carbon.db");
-}
-function addhousehold( $Hname, $post)
-{
-    $db = db_connect();
-    $stmt = $db->prepare("INSERT INTO HOUSEHOLD ( HOUSEHOLD_NAME, POSTCODE)
-                                    VALUES (:Hname, :post)");
-    
-    $stmt->bindValue(':Hname', $Hname, SQLITE3_TEXT);
-    $stmt->bindValue(':post', $post, SQLITE3_TEXT);
- 
-    
-   
-
-    
-    if ($stmt->execute()) {
-        echo "A new record  created successfully!";
-    } else {
-        echo "Failed to create record.";
-    }
-
+// HOUSEHOLD
+function addHousehold($Hname, $post) {
+    global $CONN;
+    $stmt = $CONN->prepare("INSERT INTO HOUSEHOLD (HOUSEHOLD_NAME, POSTCODE) VALUES (:Hname, :post)");
+    $stmt->execute([':Hname' => $Hname, ':post' => $post]);
+    return "Household created successfully!";
 }
 
-
-function viewHousehold($H_id)
-{
-    $db = db_connect();
-
-    $stmt = $db->prepare("SELECT * FROM HOUSEHOLD WHERE HOUSEHOLD_id = :id");
-    $stmt->bindValue(":id", $H_id, SQLITE3_INTEGER);
-
-    $result = $stmt->execute();
-
-    $HH_d = [];
-
-    while ($row = $result->fetchArray(SQLITE3_NUM)) {
-        $HH_d[] = $row;
-    }
-
-    $db->close();
-
-    return $HH_d;
+function viewHousehold($H_id) {
+    global $CONN;
+    $stmt = $CONN->prepare("SELECT * FROM HOUSEHOLD WHERE HOUSEHOLD_ID = :id");
+    $stmt->execute([':id' => $H_id]);
+    return $stmt->fetchAll();
 }
 
-
-function updateHousehold($H_id, $Hname, $post)
-{
-    $db = db_connect();
-
-    $stmt = $db->prepare("
-    UPDATE HOUSEHOLD
-    SET HOUSEHOLD_NAME= :Hname,
-    POSTCODE = :post
-    WHERE HOUSEHOLD_ID = :id");
-
-   
-    $stmt->bindValue(":Hname", $Hname, SQLITE3_TEXT );
-    $stmt->bindValue(":post", $post, SQLITE3_TEXT );
-    $stmt->bindValue(":id", $H_id, SQLITE3_INTEGER );
-
-    $stmt->execute();
-    $db->close();
+function viewH($H_id) {
+    return viewHousehold($H_id);
 }
 
-    function deleteHousehold($H_id)
-{
-    $db = db_connect();
-
-    $stmt = $db->prepare("DELETE FROM HOUSEHOLD WHERE HOUSEHOLD_ID = :H_id");
-    $stmt->bindValue(":H_id", $H_id, SQLITE3_INTEGER);
-
-    if ($stmt->execute()) {
-        echo "success";
-    } else {
-        echo "failure" . $db->lastErrorMsg();
-    }
-    $db->close();
+function updateHousehold($H_id, $Hname, $post) {
+    global $CONN;
+    $stmt = $CONN->prepare("UPDATE HOUSEHOLD SET HOUSEHOLD_NAME = :Hname, POSTCODE = :post WHERE HOUSEHOLD_ID = :id");
+    $stmt->execute([':Hname' => $Hname, ':post' => $post, ':id' => $H_id]);
+    return "success";
 }
 
- function viewH($H_id)
-    { 
-
-    $db = db_connect();
-    $query = "SELECT * FROM HOUSEHOLD WHERE HOUSEHOLD_ID = $H_id ORDER BY HOUSEHOLD_ID DESC";
-    $result = $db->query($query);
-    while ($row = $result->fetchArray(SQLITE3_NUM)) {
-        $HH_d[] = $row;
-    }
-
-$db->close();
-return $HH_d;
-
- }
-
- function adduser($H_id, $Uname, $Phash)
-{
-    $db = db_connect();
-    $stmt = $db->prepare("INSERT INTO USERS ( HOUSEHOLD_ID, USERNAME, PASSWORD_HASH)
-                                    VALUES (:H_id, :Uname, :Phash)"); 
-    $stmt->bindValue(':H_id', $H_id, SQLITE3_INTEGER);
-    $stmt->bindValue(':Uname', $Uname, SQLITE3_TEXT);
-    $stmt->bindValue(':Phash', $Phash, SQLITE3_TEXT);
- 
-    
-   
-
-    
-    if ($stmt->execute()) {
-        echo "A new record  created successfully!";
-    } else {
-        echo "Failed to create record.";
-    }
-
+function deleteHousehold($H_id) {
+    global $CONN;
+    $stmt = $CONN->prepare("DELETE FROM HOUSEHOLD WHERE HOUSEHOLD_ID = :H_id");
+    $stmt->execute([':H_id' => $H_id]);
+    return "success";
 }
 
-function deleteUser($U_id)
-{
-    $db = db_connect();
-
-    $stmt = $db->prepare("DELETE FROM USERS WHERE USER_ID = :U_id");
-    $stmt->bindValue(":U_id", $U_id, SQLITE3_INTEGER);
-
-    if ($stmt->execute()) {
-        echo "success";
-    } else {
-        echo "failure" . $db->lastErrorMsg();
-    }
-    $db->close();
+// USER
+function addUser($H_id, $Uname, $Phash) {
+    global $CONN;
+    $stmt = $CONN->prepare("INSERT INTO USERS (HOUSEHOLD_ID, USERNAME, PASSWORD_HASH) VALUES (:H_id, :Uname, :Phash)");
+    $stmt->execute([':H_id' => $H_id, ':Uname' => $Uname, ':Phash' => $Phash]);
+    return "User created successfully!";
 }
 
- function viewU($U_id)
-    { 
-
-    $db = db_connect();
-    $query = "SELECT * FROM USERS WHERE USER_ID = $U_id ORDER BY USER_ID DESC";
-    $result = $db->query($query);
-    while ($row = $result->fetchArray(SQLITE3_NUM)) {
-        $us_d[] = $row;
-    }
-
-$db->close();
-return $us_d;
-
- }
-
- function viewUser($U_id)
-{
-    $db = db_connect();
-
-    $stmt = $db->prepare("SELECT * FROM USERS WHERE USER_id = :id");
-    $stmt->bindValue(":id", $U_id, SQLITE3_INTEGER);
-
-    $result = $stmt->execute();
-
-    $us_d = [];
-
-    while ($row = $result->fetchArray(SQLITE3_NUM)) {
-        $us_d[] = $row;
-    }
-
-    $db->close();
-
-    return $us_d;
+function viewUser($U_id) {
+    global $CONN;
+    $stmt = $CONN->prepare("SELECT * FROM USERS WHERE USER_ID = :id");
+    $stmt->execute([':id' => $U_id]);
+    return $stmt->fetchAll();
 }
 
-
-function updateUser($U_id, $H_id, $Uname, $Phash)
-{
-    $db = db_connect();
-
-    $stmt = $db->prepare("
-    UPDATE USERS
-    SET HOUSEHOLD_ID = :H_id,
-     USERNAME = :Uname,
-     PASSWORD_HASH = :Phash
-    WHERE USER_ID = :id");
-
-    $stmt->bindValue(":H_id", $H_id, SQLITE3_TEXT );
-    $stmt->bindValue(":Uname", $Uname, SQLITE3_TEXT );
-    $stmt->bindValue(":Phash", $Phash, SQLITE3_TEXT );
-    $stmt->bindValue(":id", $U_id, SQLITE3_INTEGER );
-
-    $stmt->execute();
-    $db->close();
+function viewU($U_id) {
+    return viewUser($U_id);
 }
 
-function addCatagory( $Cname)
-{
-    $db = db_connect();
-    $stmt = $db->prepare("INSERT INTO CATAGORIES ( CATAGORY_NAME)
-                                    VALUES (:Cname)");
-    
-    $stmt->bindValue(':Cname', $Cname, SQLITE3_TEXT);
-   
- 
-    
-   
-
-    
-    if ($stmt->execute()) {
-        echo "A new record  created successfully!";
-    } else {
-        echo "Failed to create record.";
-    }
-
+function updateUser($U_id, $H_id, $Uname, $Phash) {
+    global $CONN;
+    $stmt = $CONN->prepare("UPDATE USERS SET HOUSEHOLD_ID = :H_id, USERNAME = :Uname, PASSWORD_HASH = :Phash WHERE USER_ID = :id");
+    $stmt->execute([':H_id' => $H_id, ':Uname' => $Uname, ':Phash' => $Phash, ':id' => $U_id]);
+    return "success";
 }
 
-
-function viewCatagory($C_id)
-{
-    $db = db_connect();
-
-    $stmt = $db->prepare("SELECT * FROM CATAGORIES WHERE CATAGORY_id = :id");
-    $stmt->bindValue(":id", $C_id, SQLITE3_INTEGER);
-
-    $result = $stmt->execute();
-
-    $cg_d = [];
-
-    while ($row = $result->fetchArray(SQLITE3_NUM)) {
-        $cg_d[] = $row;
-    }
-
-    $db->close();
-
-    return $cg_d;
+function deleteUser($U_id) {
+    global $CONN;
+    $stmt = $CONN->prepare("DELETE FROM USERS WHERE USER_ID = :U_id");
+    $stmt->execute([':U_id' => $U_id]);
+    return "success";
 }
 
-
-function updateCatagory($C_id, $Cname)
-{
-    $db = db_connect();
-
-    $stmt = $db->prepare("
-    UPDATE CATAGORIES
-    SET CATAGORY_NAME = :Cname
-    WHERE CATAGORY_ID = :id");
-
-    $stmt->bindValue(":Cname", $Cname, SQLITE3_TEXT );
-    $stmt->bindValue(":id", $C_id, SQLITE3_INTEGER );
-
-    $stmt->execute();
-    $db->close();
+// USER TYPES
+function addUserType($U_id, $UTname, $des) {
+    global $CONN;
+    $stmt = $CONN->prepare("INSERT INTO USER_TYPES (USER_ID, USER_TYPE_NAME, DESCRIPTION) VALUES (:U_id, :UTname, :des)");
+    $stmt->execute([':U_id' => $U_id, ':UTname' => $UTname, ':des' => $des]);
+    return "User type created successfully!";
 }
 
-
-function deleteCatagory($C_id)
-{
-    $db = db_connect();
-
-    $stmt = $db->prepare("DELETE FROM CATAGORIES WHERE CATAGORY_ID = :C_id");
-    $stmt->bindValue(":C_id", $C_id, SQLITE3_INTEGER);
-
-    if ($stmt->execute()) {
-        echo "success";
-    } else {
-        echo "failure" . $db->lastErrorMsg();
-    }
-    $db->close();
+function viewUserType($UT_id) {
+    global $CONN;
+    $stmt = $CONN->prepare("SELECT * FROM USER_TYPES WHERE USER_TYPE_ID = :id");
+    $stmt->execute([':id' => $UT_id]);
+    return $stmt->fetchAll();
 }
 
- function viewC($C_id)
-    { 
-
-    $db = db_connect();
-    $query = "SELECT * FROM CATAGORIES WHERE CATAGORY_ID = $C_id ORDER BY CATAGORY_ID DESC";
-    $result = $db->query($query);
-    while ($row = $result->fetchArray(SQLITE3_NUM)) {
-        $cg_d[] = $row;
-    }
-
-$db->close();
-return $cg_d;
-
- }
-
- function addusert( $U_id, $UTname, $des)
-{
-    $db = db_connect();
-    $stmt = $db->prepare("INSERT INTO USER_TYPES ( USER_ID, USER_TYPE_NAME, DESCRIPTION)
-                                    VALUES (:U_id, :UTname, :des)");
-    
-    $stmt->bindValue(':U_id', $U_id, SQLITE3_INTEGER);
-    $stmt->bindValue(':UTname', $UTname, SQLITE3_TEXT);
-    $stmt->bindValue(':des', $des, SQLITE3_TEXT);
-   
- 
-    
-   
-
-    
-    if ($stmt->execute()) {
-        echo "A new record  created successfully!";
-    } else {
-        echo "Failed to create record.";
-    }
-
+function viewUT($UT_id) {
+    return viewUserType($UT_id);
 }
 
-function viewusert($UT_id)
-{
-    $db = db_connect();
-
-    $stmt = $db->prepare("SELECT * FROM USER_TYPES WHERE USER_TYPE_ID = :id");
-    $stmt->bindValue(":id", $UT_id, SQLITE3_INTEGER);
-
-    $result = $stmt->execute();
-
-    $ut_d = [];
-
-    while ($row = $result->fetchArray(SQLITE3_NUM)) {
-        $ut_d[] = $row;
-    }
-
-    $db->close();
-
-    return $ut_d;
+function updateUserType($UT_id, $U_id, $UTname, $des) {
+    global $CONN;
+    $stmt = $CONN->prepare("UPDATE USER_TYPES SET USER_ID = :U_id, USER_TYPE_NAME = :UTname, DESCRIPTION = :des WHERE USER_TYPE_ID = :id");
+    $stmt->execute([':U_id' => $U_id, ':UTname' => $UTname, ':des' => $des, ':id' => $UT_id]);
+    return "success";
 }
 
-
-function updateusert($UT_id, $U_id, $UTname, $des)
-{
-    $db = db_connect();
-
-    $stmt = $db->prepare("
-    UPDATE USER_TYPES
-    SET USER_ID = :U_id,
-    USER_TYPE_NAME = :UTname,
-    DESCRIPTION = :des
-    WHERE USER_TYPE_ID = :id");
-
-    $stmt->bindValue(":U_id", $U_id, SQLITE3_INTEGER );
-    $stmt->bindValue(":UTname", $UTname, SQLITE3_TEXT );
-    $stmt->bindValue(":des", $des, SQLITE3_TEXT );
-    $stmt->bindValue(":id", $UT_id, SQLITE3_INTEGER );
-
-    $stmt->execute();
-    $db->close();
+function deleteUserType($UT_id) {
+    global $CONN;
+    $stmt = $CONN->prepare("DELETE FROM USER_TYPES WHERE USER_TYPE_ID = :UT_id");
+    $stmt->execute([':UT_id' => $UT_id]);
+    return "success";
 }
 
-
-function deleteusert($UT_id)
-{
-    $db = db_connect();
-
-    $stmt = $db->prepare("DELETE FROM USER_TYPES WHERE USER_TYPE_ID = :UT_id");
-    $stmt->bindValue(":UT_id", $UT_id, SQLITE3_INTEGER);
-
-    if ($stmt->execute()) {
-        echo "success";
-    } else {
-        echo "failure" . $db->lastErrorMsg();
-    }
-    $db->close();
+// CATEGORIES
+function addCategory($Cname) {
+    global $CONN;
+    $stmt = $CONN->prepare("INSERT INTO CATEGORIES (CATEGORY_NAME) VALUES (:Cname)");
+    $stmt->execute([':Cname' => $Cname]);
+    return "Category created successfully!";
 }
 
- function viewUT($UT_id)
-    { 
-
-    $db = db_connect();
-    $query = "SELECT * FROM USER_TYPES WHERE USER_TYPE_ID = $UT_id ORDER BY USER_TYPE_ID DESC";
-    $result = $db->query($query);
-    while ($row = $result->fetchArray(SQLITE3_NUM)) {
-        $ut_d[] = $row;
-    }
-
-$db->close();
-return $ut_d;
-
- }
-
-
-  function addemiss( $C_id, $Aname, $co2)
-{
-    $db = db_connect();
-    $stmt = $db->prepare("INSERT INTO EMISSION_FACTORS ( CATAGORY_ID, ACTIVITY_NAME, CO2_PER_UNIT)
-                                    VALUES (:C_id, :Aname, :co2)");
-    
-    $stmt->bindValue(':C_id', $C_id, SQLITE3_INTEGER);
-    $stmt->bindValue(':Aname', $Aname, SQLITE3_TEXT);
-    $stmt->bindValue(':co2', $co2, SQLITE3_TEXT);
-   
- 
-    
-   
-
-    
-    if ($stmt->execute()) {
-        echo "A new record  created successfully!";
-    } else {
-        echo "Failed to create record.";
-    }
-
+function viewCategory($C_id) {
+    global $CONN;
+    $stmt = $CONN->prepare("SELECT * FROM CATEGORIES WHERE CATEGORY_ID = :id");
+    $stmt->execute([':id' => $C_id]);
+    return $stmt->fetchAll();
 }
 
-function viewemiss($F_id)
-{
-    $db = db_connect();
-
-    $stmt = $db->prepare("SELECT * FROM EMISSION_FACTORS WHERE FACTOR_ID = :id");
-    $stmt->bindValue(":id", $F_id, SQLITE3_INTEGER);
-
-    $result = $stmt->execute();
-
-    $ft_d = [];
-
-    while ($row = $result->fetchArray(SQLITE3_NUM)) {
-        $ft_d[] = $row;
-    }
-
-    $db->close();
-
-    return $ft_d;
+function viewC($C_id) {
+    return viewCategory($C_id);
 }
 
-
-function updateemiss($F_id, $C_id, $Aname, $co2)
-{
-    $db = db_connect();
-
-    $stmt = $db->prepare("
-    UPDATE EMISSION_FACTORS
-    SET CATAGORY_ID = :C_id,
-    ACTIVITY_NAME = :Aname,
-     CO2_PER_UNIT = :co2
-    WHERE FACTOR_ID = :id");
-
-    $stmt->bindValue(":C_id", $C_id, SQLITE3_INTEGER );
-    $stmt->bindValue(":Aname", $Aname, SQLITE3_TEXT );
-    $stmt->bindValue(":co2", $co2, SQLITE3_TEXT );
-    $stmt->bindValue(":id", $F_id, SQLITE3_INTEGER );
-
-    $stmt->execute();
-    $db->close();
+function updateCategory($C_id, $Cname) {
+    global $CONN;
+    $stmt = $CONN->prepare("UPDATE CATEGORIES SET CATEGORY_NAME = :Cname WHERE CATEGORY_ID = :id");
+    $stmt->execute([':Cname' => $Cname, ':id' => $C_id]);
+    return "success";
 }
 
-
-function deleteemiss($F_id)
-{
-    $db = db_connect();
-
-    $stmt = $db->prepare("DELETE FROM EMISSION_FACTORS WHERE FACTOR_ID = :F_id");
-    $stmt->bindValue(":F_id", $F_id, SQLITE3_INTEGER);
-
-    if ($stmt->execute()) {
-        echo "success";
-    } else {
-        echo "failure" . $db->lastErrorMsg();
-    }
-    $db->close();
+function deleteCategory($C_id) {
+    global $CONN;
+    $stmt = $CONN->prepare("DELETE FROM CATEGORIES WHERE CATEGORY_ID = :C_id");
+    $stmt->execute([':C_id' => $C_id]);
+    return "success";
 }
 
- function viewE($F_id)
-    { 
-
-    $db = db_connect();
-    $query = "SELECT * FROM EMISSION_FACTORS WHERE FACTOR_ID = $F_id ORDER BY FACTOR_ID DESC";
-    $result = $db->query($query);
-    while ($row = $result->fetchArray(SQLITE3_NUM)) {
-        $ft_d[] = $row;
-    }
-
-$db->close();
-return $ft_d;
-
- }
-
-
- function addgoal( $H_id, $co2, $Tmon)
-{
-    $db = db_connect();
-    $stmt = $db->prepare("INSERT INTO HOUSEHOLD_GOALS ( HOUSEHOLD_ID, TARGET_CO2_LIMIT, TARGET_MONTH)
-                                    VALUES (:H_id, :co2, :Tmon)");
-    
-    $stmt->bindValue(':H_id', $H_id, SQLITE3_INTEGER);
-    $stmt->bindValue(':co2', $co2, SQLITE3_TEXT);
-    $stmt->bindValue(':Tmon', $Tmon, SQLITE3_TEXT);
-   
- 
-    
-   
-
-    
-    if ($stmt->execute()) {
-        echo "A new record  created successfully!";
-    } else {
-        echo "Failed to create record.";
-    }
-
+// EMISSION FACTORS
+function addEmission($C_id, $Aname, $co2) {
+    global $CONN;
+    $stmt = $CONN->prepare("INSERT INTO EMISSION_FACTORS (CATEGORY_ID, ACTIVITY_NAME, CO2_PER_UNIT) VALUES (:C_id, :Aname, :co2)");
+    $stmt->execute([':C_id' => $C_id, ':Aname' => $Aname, ':co2' => $co2]);
+    return "Emission factor created successfully!";
 }
 
-function viewgoal($G_id)
-{
-    $db = db_connect();
-
-    $stmt = $db->prepare("SELECT * FROM HOUSEHOLD_GOALS WHERE GOAL_ID = :id");
-    $stmt->bindValue(":id", $G_id, SQLITE3_INTEGER);
-
-    $result = $stmt->execute();
-
-    $gl_d = [];
-
-    while ($row = $result->fetchArray(SQLITE3_NUM)) {
-        $gl_d[] = $row;
-    }
-
-    $db->close();
-
-    return $gl_d;
+function viewEmission($F_id) {
+    global $CONN;
+    $stmt = $CONN->prepare("SELECT * FROM EMISSION_FACTORS WHERE FACTOR_ID = :id");
+    $stmt->execute([':id' => $F_id]);
+    return $stmt->fetchAll();
 }
 
-
-function updategoal($G_id, $H_id, $co2, $Tmon)
-{
-    $db = db_connect();
-
-    $stmt = $db->prepare("
-    UPDATE HOUSEHOLD_GOALS
-    SET HOUSEHOLD_ID = :H_id,
-    TARGET_CO2_LIMIT = :co2,
-     TARGET_MONTH = :Tmon
-    WHERE GOAL_ID = :id");
-
-    $stmt->bindValue(":H_id", $H_id, SQLITE3_INTEGER );
-    $stmt->bindValue(":co2", $co2, SQLITE3_TEXT );
-    $stmt->bindValue(":Tmon", $Tmon, SQLITE3_TEXT );
-    $stmt->bindValue(":id", $G_id, SQLITE3_INTEGER );
-
-    $stmt->execute();
-    $db->close();
+function viewE($F_id) {
+    return viewEmission($F_id);
 }
 
-
-function deletegoal($G_id)
-{
-    $db = db_connect();
-
-    $stmt = $db->prepare("DELETE FROM HOUSEHOLD_GOALS WHERE GOAL_ID = :G_id");
-    $stmt->bindValue(":G_id", $G_id, SQLITE3_INTEGER);
-
-    if ($stmt->execute()) {
-        echo "success";
-    } else {
-        echo "failure" . $db->lastErrorMsg();
-    }
-    $db->close();
+function updateEmission($F_id, $C_id, $Aname, $co2) {
+    global $CONN;
+    $stmt = $CONN->prepare("UPDATE EMISSION_FACTORS SET CATEGORY_ID = :C_id, ACTIVITY_NAME = :Aname, CO2_PER_UNIT = :co2 WHERE FACTOR_ID = :id");
+    $stmt->execute([':C_id' => $C_id, ':Aname' => $Aname, ':co2' => $co2, ':id' => $F_id]);
+    return "success";
 }
 
- function viewG($G_id)
-    { 
-
-    $db = db_connect();
-    $query = "SELECT * FROM HOUSEHOLD_GOALS WHERE GOAL_ID = $G_id ORDER BY GOAL_ID DESC";
-    $result = $db->query($query);
-    while ($row = $result->fetchArray(SQLITE3_NUM)) {
-        $gl_d[] = $row;
-    }
-
-$db->close();
-return $gl_d;
-
- }
-
-   function addact( $U_id, $F_id, $Amot, $Drec)
-{
-    $db = db_connect();
-    $stmt = $db->prepare("INSERT INTO ACTIVITY_LOG ( USER_ID, FACTOR_ID, AMOUNT, DATE_RECORDED)
-                                    VALUES (:U_id, :F_id, :Amot, :Drec)");
-    
-    $stmt->bindValue(':U_id', $U_id, SQLITE3_INTEGER);
-    $stmt->bindValue(':F_id', $F_id, SQLITE3_INTEGER);
-    $stmt->bindValue(':Amot', $Amot, SQLITE3_TEXT);
-    $stmt->bindValue(':Drec', $Drec, SQLITE3_TEXT);
-   
- 
-    
-   
-
-    
-    if ($stmt->execute()) {
-        echo "A new record  created successfully!";
-    } else {
-        echo "Failed to create record.";
-    }
-
+function deleteEmission($F_id) {
+    global $CONN;
+    $stmt = $CONN->prepare("DELETE FROM EMISSION_FACTORS WHERE FACTOR_ID = :F_id");
+    $stmt->execute([':F_id' => $F_id]);
+    return "success";
 }
 
-
-function viewact($L_id)
-{
-    $db = db_connect();
-
-    $stmt = $db->prepare("SELECT * FROM ACTIVITY_LOG WHERE LOG_ID = :id");
-    $stmt->bindValue(":id", $L_id, SQLITE3_INTEGER);
-
-    $result = $stmt->execute();
-
-    $lg_d = [];
-
-    while ($row = $result->fetchArray(SQLITE3_NUM)) {
-        $lg_d[] = $row;
-    }
-
-    $db->close();
-
-    return $lg_d;
+// HOUSEHOLD GOALS
+function addGoal($H_id, $co2, $Tmon) {
+    global $CONN;
+    $stmt = $CONN->prepare("INSERT INTO HOUSEHOLD_GOALS (HOUSEHOLD_ID, TARGET_CO2_LIMIT, TARGET_MONTH) VALUES (:H_id, :co2, :Tmon)");
+    $stmt->execute([':H_id' => $H_id, ':co2' => $co2, ':Tmon' => $Tmon]);
+    return "Goal created successfully!";
 }
 
-
-function updateact($L_id, $U_id, $F_id, $Amot, $Drec)
-{
-    $db = db_connect();
-
-    $stmt = $db->prepare("
-    UPDATE ACTIVITY_LOG
-    SET USER_ID = :U_id,
-    FACTOR_ID = :F_id,
-     AMOUNT = :Amot,
-     DATE_RECORDED = :Drec
-    WHERE LOG_ID = :id");
-
-    $stmt->bindValue(":U_id", $U_id, SQLITE3_INTEGER );
-    $stmt->bindValue(":F_id", $F_id, SQLITE3_TEXT );
-    $stmt->bindValue(":Amot", $Amot, SQLITE3_TEXT );
-    $stmt->bindValue(":Drec", $Drec, SQLITE3_TEXT );
-    $stmt->bindValue(":id", $L_id, SQLITE3_INTEGER );
-
-    $stmt->execute();
-    $db->close();
+function viewGoal($G_id) {
+    global $CONN;
+    $stmt = $CONN->prepare("SELECT * FROM HOUSEHOLD_GOALS WHERE GOAL_ID = :id");
+    $stmt->execute([':id' => $G_id]);
+    return $stmt->fetchAll();
 }
 
-
-
-function deleteact($L_id)
-{
-    $db = db_connect();
-
-    $stmt = $db->prepare("DELETE FROM ACTIVITY_LOG WHERE LOG_ID = :L_id");
-    $stmt->bindValue(":L_id", $L_id, SQLITE3_INTEGER);
-
-    if ($stmt->execute()) {
-        echo "success";
-    } else {
-        echo "failure" . $db->lastErrorMsg();
-    }
-    $db->close();
+function viewG($G_id) {
+    return viewGoal($G_id);
 }
 
- function viewA($L_id)
-    { 
+function updateGoal($G_id, $H_id, $co2, $Tmon) {
+    global $CONN;
+    $stmt = $CONN->prepare("UPDATE HOUSEHOLD_GOALS SET HOUSEHOLD_ID = :H_id, TARGET_CO2_LIMIT = :co2, TARGET_MONTH = :Tmon WHERE GOAL_ID = :id");
+    $stmt->execute([':H_id' => $H_id, ':co2' => $co2, ':Tmon' => $Tmon, ':id' => $G_id]);
+    return "success";
+}
 
-    $db = db_connect();
-    $query = "SELECT * FROM ACTIVITY_LOG WHERE LOG_ID = $L_id ORDER BY LOG_ID DESC";
-    $result = $db->query($query);
-    while ($row = $result->fetchArray(SQLITE3_NUM)) {
-        $lg_d[] = $row;
-    }
+function deleteGoal($G_id) {
+    global $CONN;
+    $stmt = $CONN->prepare("DELETE FROM HOUSEHOLD_GOALS WHERE GOAL_ID = :G_id");
+    $stmt->execute([':G_id' => $G_id]);
+    return "success";
+}
 
-$db->close();
-return $lg_d;
+// ACTIVITY LOG
+function addActivity($U_id, $F_id, $Amot, $Drec) {
+    global $CONN;
+    $stmt = $CONN->prepare("INSERT INTO ACTIVITY_LOG (USER_ID, FACTOR_ID, AMOUNT, DATE_RECORDED) VALUES (:U_id, :F_id, :Amot, :Drec)");
+    $stmt->execute([':U_id' => $U_id, ':F_id' => $F_id, ':Amot' => $Amot, ':Drec' => $Drec]);
+    return "Activity created successfully!";
+}
 
- }
-?>
+function viewActivity($L_id) {
+    global $CONN;
+    $stmt = $CONN->prepare("SELECT * FROM ACTIVITY_LOG WHERE LOG_ID = :id");
+    $stmt->execute([':id' => $L_id]);
+    return $stmt->fetchAll();
+}
+
+function viewA($L_id) {
+    return viewActivity($L_id);
+}
+
+function updateActivity($L_id, $U_id, $F_id, $Amot, $Drec) {
+    global $CONN;
+    $stmt = $CONN->prepare("UPDATE ACTIVITY_LOG SET USER_ID = :U_id, FACTOR_ID = :F_id, AMOUNT = :Amot, DATE_RECORDED = :Drec WHERE LOG_ID = :id");
+    $stmt->execute([':U_id' => $U_id, ':F_id' => $F_id, ':Amot' => $Amot, ':Drec' => $Drec, ':id' => $L_id]);
+    return "success";
+}
+
+function deleteActivity($L_id) {
+    global $CONN;
+    $stmt = $CONN->prepare("DELETE FROM ACTIVITY_LOG WHERE LOG_ID = :L_id");
+    $stmt->execute([':L_id' => $L_id]);
+    return "success";
+}

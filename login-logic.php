@@ -36,7 +36,7 @@ try {
             setcookie('remembered_username', '', time() - 3600, '/');
         }
         
-        header('Location: dashboard.php');
+        header('Location: dashboard.php?loggedin=1');
         exit;
     } else {
         header('Location: index.php?error=invalid&tab=login');
