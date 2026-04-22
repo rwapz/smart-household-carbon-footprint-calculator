@@ -1,4 +1,4 @@
-# Smart Household Carbon Footprint Calculator 🦈
+# Smart Household Carbon Footprint Calculator 
 
 A web-based application designed to help households track and reduce their carbon footprint. Developed as part of the Computer Science curriculum at **Sheffield Hallam University**.
 
