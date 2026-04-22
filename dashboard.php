@@ -173,28 +173,25 @@ $isAdmin = $stmt->fetch() !== false;
             <div class="goal-options">
 <button class="goal-preset" onclick="document.getElementById('customGoalInput').value = 25">
                     <span class="preset-icon">🌱</span>
-                    <span class="preset-name">Eco Warrior</span>
+                    <span class="preset-name">Eco</span>
                     <span class="preset-value">25 kg</span>
                 </button>
-                <button class="goal-preset" onclick="document.getElementById('customGoalInput').value = 30">
+                <button class="goal-preset active" onclick="document.getElementById('customGoalInput').value = 30">
                     <span class="preset-icon">🌍</span>
                     <span class="preset-name">Balanced</span>
                     <span class="preset-value">30 kg</span>
                 </button>
                 <button class="goal-preset" onclick="document.getElementById('customGoalInput').value = 40">
                     <span class="preset-icon">🏠</span>
-                    <span class="preset-name">Comfortable</span>
+                    <span class="preset-name">Home</span>
                     <span class="preset-value">40 kg</span>
                 </button>
             </div>
 
             <div class="custom-goal">
-                <label for="customGoalInput">Custom target:</label>
-                <div class="input-row">
-                    <input type="number" id="customGoalInput" min="5" max="200" placeholder="35">
-                    <span class="input-unit">kg CO₂</span>
-                </div>
-                <button class="btn-primary" onclick="saveGoal()">Set Goal</button>
+                <input type="number" id="customGoalInput" min="5" max="200" placeholder="e.g. 30">
+                <span class="input-unit">kg</span>
+                <button class="btn-primary" onclick="saveGoal()">Save Goal</button>
             </div>
 
             <button class="modal-close" onclick="closeGoalModal()">✕</button>
