@@ -55,7 +55,7 @@ require_once 'connect.php';
                     <td style='padding: 12px 24px;'>$C_id</td>
                     <td style='padding: 12px 24px;'>$Cname</td>
                     <td style='padding: 12px 24px;'>
-                        <a href='updatecatagory.php?C_id=$C_id' class='btn btn-view' style='display: inline-block; padding: 6px 12px; font-size: 0.8rem;'>Edit</a>
+                        <a href='updatecategory.php?C_id=$C_id' class='btn btn-view' style='display: inline-block; padding: 6px 12px; font-size: 0.8rem;'>Edit</a>
                     </td>
                 </tr></tbody>";
                 }

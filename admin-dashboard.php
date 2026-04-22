@@ -84,8 +84,8 @@ require_once 'connect.php';
                     <h3>Categories</h3>
                     <p>Manage emission categories</p>
                     <div class="card-actions">
-                        <a href="viewcatagory.php" class="btn btn-view">View All</a>
-                        <a href="createcatagory.php" class="btn btn-create">Create</a>
+                        <a href="viewcategory.php" class="btn btn-view">View All</a>
+                        <a href="createcategory.php" class="btn btn-create">Create</a>
                     </div>
                 </div>
 
@@ -111,8 +111,8 @@ require_once 'connect.php';
                     <h3>User Types</h3>
                     <p>Manage user roles</p>
                     <div class="card-actions">
-                        <a href="viewusert.php" class="btn btn-view">View All</a>
-                        <a href="createusert.php" class="btn btn-create">Create</a>
+                        <a href="viewusertype.php" class="btn btn-view">View All</a>
+                        <a href="createusertype.php" class="btn btn-create">Create</a>
                     </div>
                 </div>
 

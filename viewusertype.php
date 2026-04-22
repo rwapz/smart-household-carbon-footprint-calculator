@@ -73,7 +73,7 @@ require_once 'connect.php';
                     <td style='padding: 12px 24px;'>$UTname</td>
                     <td style='padding: 12px 24px;'>$des</td>
                     <td style='padding: 12px 24px;'>
-                        <a href='updateusert.php?UT_id=$UT_id' class='btn btn-view' style='display: inline-block; padding: 6px 12px; font-size: 0.8rem;'>Edit</a>
+                        <a href='updateusertype.php?UT_id=$UT_id' class='btn btn-view' style='display: inline-block; padding: 6px 12px; font-size: 0.8rem;'>Edit</a>
                     </td>
                 </tr></tbody>";
                 }

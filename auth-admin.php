@@ -1,8 +1,5 @@
 <?php
-/**
- * Admin Authentication
- * Include this at the top of all admin pages
- */
+
 
 session_start();
 

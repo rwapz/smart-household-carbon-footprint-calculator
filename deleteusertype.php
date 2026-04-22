@@ -9,7 +9,7 @@ if (isset($_POST["deleteusert"])) {
     try {
         $stmt = $CONN->prepare("DELETE FROM USER_TYPES WHERE USER_TYPE_ID = :id");
         $stmt->execute([':id' => $UT_id]);
-        header("Location: viewusert.php");
+        header("Location: viewusertype.php");
         exit;
     } catch(PDOException $e) {
         $error = $e->getMessage();

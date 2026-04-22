@@ -4,22 +4,23 @@ require_once 'connect.php';
 
 $error = '';
 
-if (isset($_POST["deletecatagory"])) {
+if (isset($_POST["updatecatagory"])) {
     $C_id = $_POST["CATAGORY_ID"];
+    $Cname = $_POST["CATAGORY_NAME"];
     try {
-        $stmt = $CONN->prepare("DELETE FROM CATAGORIES WHERE CATAGORY_ID = :id");
-        $stmt->execute([':id' => $C_id]);
-        header("Location: viewcatagory.php");
+        $stmt = $CONN->prepare("UPDATE CATAGORIES SET CATAGORY_NAME = :Cname WHERE CATAGORY_ID = :id");
+        $stmt->execute([':Cname' => $Cname, ':id' => $C_id]);
+        header("Location: viewcategory.php");
         exit;
     } catch(PDOException $e) {
         $error = $e->getMessage();
     }
 }
 
-$C_id = $_GET["C_id"] ?? null;
-if ($C_id === null) {
-    die("Error: No category ID provided");
+if (!isset($_GET["C_id"]) || $_GET["C_id"] === "") {
+    die("No category ID given");
 }
+$C_id = (int)$_GET["C_id"];
 
 try {
     $stmt = $CONN->prepare("SELECT * FROM CATAGORIES WHERE CATAGORY_ID = :id");
@@ -37,7 +38,7 @@ try {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Delete Category | Admin</title>
+    <title>Update Category | Admin</title>
     <link rel="stylesheet" href="stylesheets/admin-style.css">
     <link rel="stylesheet" href="stylesheets/accessibility-global.css">
     <script src="scripts/init-accessibility.js"></script>
@@ -46,7 +47,7 @@ try {
 <body>
     <header class="admin-header">
         <div class="header-left">
-            <h1>Delete Category</h1>
+            <h1>Update Category</h1>
         </div>
         <div class="header-right">
             <a href="admin-dashboard.php" class="header-btn">← Back to Admin</a>
@@ -60,12 +61,12 @@ try {
         <?php if (!empty($error)) { echo "<div class='alert alert-error'>Error: " . htmlspecialchars($error) . "</div>"; } ?>
         <div class="form-card">
             <form method="post">
-                <p class="confirm-text">Are you sure you want to delete this category?</p>
                 <input type="hidden" name="CATAGORY_ID" value="<?php echo htmlspecialchars($cat['CATAGORY_ID']); ?>">
-                <div class="confirm-info">
-                    <p><strong>Category Name:</strong> <?php echo htmlspecialchars($cat['CATAGORY_NAME']); ?></p>
+                <div class="form-group">
+                    <label for="CATAGORY_NAME">Category Name</label>
+                    <input type="text" name="CATAGORY_NAME" value="<?php echo htmlspecialchars($cat['CATAGORY_NAME']); ?>" required>
                 </div>
-                <button type="submit" name="deletecatagory" class="btn btn-danger">Delete Category</button>
+                <button type="submit" name="updatecatagory" class="btn btn-primary">Update Category</button>
             </form>
         </div>
     </main>

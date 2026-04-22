@@ -12,7 +12,7 @@ if (isset($_POST["updateusert"])) {
     try {
         $stmt = $CONN->prepare("UPDATE USER_TYPES SET USER_ID = :U_id, USER_TYPE_NAME = :UTname, DESCRIPTION = :des WHERE USER_TYPE_ID = :id");
         $stmt->execute([':U_id' => $U_id, ':UTname' => $UTname, ':des' => $des, ':id' => $UT_id]);
-        header("Location: viewusert.php");
+        header("Location: viewusertype.php");
         exit;
     } catch(PDOException $e) {
         $error = $e->getMessage();

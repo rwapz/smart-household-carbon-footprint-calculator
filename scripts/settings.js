@@ -1,76 +1,46 @@
-// ============ DOM READY ============
 document.addEventListener('DOMContentLoaded', function() {
-    console.log('✓ Settings page loaded');
-    
-    // Initialize password toggles
     initPasswordToggles();
-    
-    // Initialize password strength
     initPasswordStrength();
-    
-    // Initialize modal handlers
     initModals();
-    
-    // Initialize form handlers
     initFormHandlers();
 });
-
-// ============ PASSWORD TOGGLE ============
 function initPasswordToggles() {
     document.querySelectorAll('.toggle-password').forEach(button => {
         button.addEventListener('click', function(e) {
             e.preventDefault();
-            
             const wrapper = this.closest('.password-input-wrapper');
             if (!wrapper) return;
-            
             const input = wrapper.querySelector('input');
             if (!input) return;
-            
             const isPassword = input.type === 'password';
             input.type = isPassword ? 'text' : 'password';
             this.textContent = isPassword ? '🙈' : '👁️';
         });
     });
-    
-    console.log('✓ Password toggles initialized');
 }
-
-// ============ PASSWORD STRENGTH ============
 function initPasswordStrength() {
     const newPasswordInput = document.getElementById('new_password');
     if (!newPasswordInput) return;
-    
     newPasswordInput.addEventListener('input', function() {
         updatePasswordStrength(this.value);
     });
-    
-    console.log('✓ Password strength initialized');
 }
-
 function calculatePasswordStrength(password) {
     let strength = 0;
-    
     // Check minimum length
     if (password.length >= 6) strength += 20;
     if (password.length >= 8) strength += 10;
     if (password.length >= 12) strength += 10;
-    
     // Check for uppercase
     if (/[A-Z]/.test(password)) strength += 15;
-    
     // Check for lowercase
     if (/[a-z]/.test(password)) strength += 15;
-    
     // Check for numbers
     if (/[0-9]/.test(password)) strength += 15;
-    
     // Check for special characters
     if (/[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/.test(password)) strength += 15;
-    
     return Math.min(strength, 100);
 }
-
 function getStrengthLevel(strength) {
     if (strength < 20) return 'Weak';
     if (strength < 40) return 'Fair';
@@ -78,7 +48,6 @@ function getStrengthLevel(strength) {
     if (strength < 80) return 'Strong';
     return 'Very Strong';
 }
-
 function getStrengthColor(strength) {
     if (strength < 20) return '#ef4444'; // red
     if (strength < 40) return '#f97316'; // orange
@@ -86,26 +55,19 @@ function getStrengthColor(strength) {
     if (strength < 80) return '#3b82f6'; // blue
     return '#10b981'; // green
 }
-
 function updatePasswordStrength(password) {
     const strengthContainer = document.querySelector('.password-strength');
     if (!strengthContainer) return;
-    
     const fill = strengthContainer.querySelector('.strength-fill');
     const text = strengthContainer.querySelector('.strength-text');
-    
     if (!fill || !text) return;
-    
     const strength = calculatePasswordStrength(password);
     const level = getStrengthLevel(strength);
     const color = getStrengthColor(strength);
-    
     fill.style.width = strength + '%';
     fill.style.backgroundColor = color;
     text.innerHTML = `Strength: <strong>${level}</strong>`;
 }
-
-// ============ MODALS ============
 function initModals() {
     // Delete account confirmation
     const deleteBtn = document.getElementById('delete-account-btn');
@@ -115,7 +77,6 @@ function initModals() {
             showModal('deleteModal');
         });
     }
-    
     // Clear history confirmation
     const clearBtn = document.getElementById('clear-history-btn');
     if (clearBtn) {
@@ -124,7 +85,6 @@ function initModals() {
             showModal('historyModal');
         });
     }
-    
     // Close buttons on modals
     document.querySelectorAll('.modal').forEach(modal => {
         // Close on background click
@@ -134,15 +94,11 @@ function initModals() {
             }
         });
     });
-    
     // Confirm buttons
     document.getElementById('confirm-household')?.addEventListener('click', confirmHouseholdChange);
     document.getElementById('confirm-delete')?.addEventListener('click', confirmDeleteAccount);
     document.getElementById('confirm-history')?.addEventListener('click', confirmClearHistory);
-    
-    console.log('✓ Modals initialized');
 }
-
 function showModal(modalId) {
     closeAllModals();
     const modal = document.getElementById(modalId);
@@ -150,28 +106,22 @@ function showModal(modalId) {
         modal.classList.add('active');
     }
 }
-
 function closeAllModals() {
     document.querySelectorAll('.modal').forEach(modal => {
         modal.classList.remove('active');
     });
 }
-
 function confirmHouseholdChange() {
     closeAllModals();
-    
     const householdId = document.getElementById('household_id').value;
-    
     if (!householdId) {
         showMessage('Please select a household', 'error', 'change-household-form');
         return;
     }
-    
     // AJAX submission
     const formData = new FormData();
     formData.append('action', 'update_household');
     formData.append('household_id', householdId);
-    
     fetch('settings.php', {
         method: 'POST',
         body: formData
@@ -192,23 +142,18 @@ function confirmHouseholdChange() {
         showMessage('An error occurred', 'error', 'change-household-form');
     });
 }
-
 function confirmDeleteAccount() {
     closeAllModals();
-    
     const usernameInput = document.getElementById('delete-username');
     const username = usernameInput?.value || '';
-    
     if (!username) {
         showMessage('Please confirm by typing your username', 'error', 'account-info');
         return;
     }
-    
     // AJAX deletion
     const formData = new FormData();
     formData.append('action', 'delete_account');
     formData.append('username_confirmation', username);
-    
     fetch('settings.php', {
         method: 'POST',
         body: formData
@@ -229,14 +174,11 @@ function confirmDeleteAccount() {
         showMessage('An error occurred', 'error', 'account-info');
     });
 }
-
 function confirmClearHistory() {
     closeAllModals();
-    
     // AJAX history clear
     const formData = new FormData();
     formData.append('action', 'clear_history');
-    
     fetch('settings.php', {
         method: 'POST',
         body: formData
@@ -257,21 +199,17 @@ function confirmClearHistory() {
         showMessage('An error occurred', 'error', 'account-info');
     });
 }
-
-// ============ FORM HANDLERS ============
 function initFormHandlers() {
     // Username change
     const usernameForm = document.getElementById('change-username-form');
     if (usernameForm) {
         usernameForm.addEventListener('submit', handleUsernameChange);
     }
-    
     // Password change
     const passwordForm = document.getElementById('change-password-form');
     if (passwordForm) {
         passwordForm.addEventListener('submit', handlePasswordChange);
     }
-    
     // Household change - show modal on submit
     const householdForm = document.getElementById('change-household-form');
     if (householdForm) {
@@ -280,26 +218,19 @@ function initFormHandlers() {
             showModal('householdModal');
         });
     }
-    
-    console.log('✓ Form handlers initialized');
 }
-
 function handleUsernameChange(e) {
     e.preventDefault();
-    
     const newUsername = document.getElementById('new_username').value.trim();
-    
     // Validation
     if (!newUsername || newUsername.length < 3) {
         showMessage('Username must be at least 3 characters', 'error', 'change-username-form');
         return;
     }
-    
     // AJAX submission
     const formData = new FormData();
     formData.append('action', 'update_username');
     formData.append('new_username', newUsername);
-    
     fetch('settings.php', {
         method: 'POST',
         body: formData
@@ -321,41 +252,33 @@ function handleUsernameChange(e) {
         showMessage('An error occurred', 'error', 'change-username-form');
     });
 }
-
 function handlePasswordChange(e) {
     e.preventDefault();
-    
     const currentPassword = document.getElementById('current_password').value;
     const newPassword = document.getElementById('new_password').value;
     const confirmPassword = document.getElementById('confirm_new_password').value;
-    
     // Validation
     if (!currentPassword) {
         showMessage('Current password is required', 'error', 'change-password-form');
         return;
     }
-    
     if (!newPassword || newPassword.length < 6) {
         showMessage('New password must be at least 6 characters', 'error', 'change-password-form');
         return;
     }
-    
     if (newPassword !== confirmPassword) {
         showMessage('Passwords do not match', 'error', 'change-password-form');
         return;
     }
-    
     if (currentPassword === newPassword) {
         showMessage('New password must be different from current password', 'error', 'change-password-form');
         return;
     }
-    
     // AJAX submission
     const formData = new FormData();
     formData.append('action', 'update_password');
     formData.append('current_password', currentPassword);
     formData.append('new_password', newPassword);
-    
     fetch('settings.php', {
         method: 'POST',
         body: formData
@@ -376,8 +299,6 @@ function handlePasswordChange(e) {
         showMessage('An error occurred', 'error', 'change-password-form');
     });
 }
-
-// ============ MESSAGE DISPLAY ============
 function showMessage(message, type, formId) {
     // Find the form or section
     let container = document.getElementById(formId);
@@ -385,7 +306,6 @@ function showMessage(message, type, formId) {
         container = document.querySelector('.settings-section');
     }
     if (!container) return;
-    
     let msgElement = container.querySelector('.message');
     if (!msgElement) {
         msgElement = document.createElement('div');
@@ -393,14 +313,11 @@ function showMessage(message, type, formId) {
         // Insert at the end of the form or section
         container.appendChild(msgElement);
     }
-    
     msgElement.textContent = message;
     msgElement.className = `message ${type}`;
     msgElement.style.display = 'block';
-    
     // Scroll to message
     msgElement.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-    
     // Auto-hide after 5 seconds if success
     if (type === 'success') {
         setTimeout(() => {
@@ -408,5 +325,3 @@ function showMessage(message, type, formId) {
         }, 5000);
     }
 }
-
-console.log('✓ Settings script ready');
