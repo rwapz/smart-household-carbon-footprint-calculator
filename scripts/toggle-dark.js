@@ -12,7 +12,7 @@ function toggleDarkMode() {
     if (btn) btn.textContent = isDark ? '🌙' : '☀️';
     
     // Save to DB
-    fetch('api-settings.php?action=save', {
+    fetch('user-preferences.php?action=save', {
         method: 'POST',
         headers: {'Content-Type': 'application/json'},
         body: JSON.stringify({theme: newTheme})
@@ -25,7 +25,7 @@ function toggleContrast() {
     document.documentElement.setAttribute('data-contrast', newContrast);
     localStorage.setItem('eco-contrast', isHigh ? 'false' : 'true');
     
-    fetch('api-settings.php?action=save', {
+    fetch('user-preferences.php?action=save', {
         method: 'POST',
         headers: {'Content-Type': 'application/json'},
         body: JSON.stringify({contrast: newContrast})
@@ -37,7 +37,7 @@ function setFontSize(size) {
     document.documentElement.style.fontSize = map[size] || '16px';
     localStorage.setItem('eco-fontsize', size);
     
-    fetch('api-settings.php?action=save', {
+    fetch('user-preferences.php?action=save', {
         method: 'POST',
         headers: {'Content-Type': 'application/json'},
         body: JSON.stringify({font: size})

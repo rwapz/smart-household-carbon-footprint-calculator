@@ -23,7 +23,7 @@ const EcoAccess = {
     saveSettings(settings) {
         clearTimeout(this.saveTimer);
         this.saveTimer = setTimeout(() => {
-            fetch('api-settings.php?action=save', {
+            fetch('user-preferences.php?action=save', {
                 method: 'POST',
                 headers: {'Content-Type': 'application/json'},
                 body: JSON.stringify(settings)

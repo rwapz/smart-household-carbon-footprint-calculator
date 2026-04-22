@@ -14,7 +14,7 @@
     document.documentElement.style.fontSize = fontMap[savedFont] || '16px';
     
     // Then sync with DB (if logged in)
-    fetch('api-settings.php?action=get')
+    fetch('user-preferences.php?action=get')
         .then(r => r.ok ? r.json() : null)
         .then(s => {
             if (s && !s.error) {
