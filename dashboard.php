@@ -171,17 +171,17 @@ $isAdmin = $stmt->fetch() !== false;
             <p>Choose a target for your carbon footprint.</p>
             
             <div class="goal-options">
-                <button class="goal-preset" onclick="setGoal(25)">
+<button class="goal-preset" onclick="document.getElementById('customGoalInput').value = 25">
                     <span class="preset-icon">🌱</span>
                     <span class="preset-name">Eco Warrior</span>
                     <span class="preset-value">25 kg</span>
                 </button>
-                <button class="goal-preset active" onclick="setGoal(30)">
+                <button class="goal-preset" onclick="document.getElementById('customGoalInput').value = 30">
                     <span class="preset-icon">🌍</span>
                     <span class="preset-name">Balanced</span>
                     <span class="preset-value">30 kg</span>
                 </button>
-                <button class="goal-preset" onclick="setGoal(40)">
+                <button class="goal-preset" onclick="document.getElementById('customGoalInput').value = 40">
                     <span class="preset-icon">🏠</span>
                     <span class="preset-name">Comfortable</span>
                     <span class="preset-value">40 kg</span>
@@ -194,10 +194,10 @@ $isAdmin = $stmt->fetch() !== false;
                     <input type="number" id="customGoalInput" min="5" max="200" placeholder="35">
                     <span class="input-unit">kg CO₂</span>
                 </div>
-                <button class="btn-primary" onclick="setCustomGoal()">Set Goal</button>
+                <button class="btn-primary" onclick="saveGoal()">Set Goal</button>
             </div>
 
-            <button class="modal-close" onclick="closeGoalModal()" aria-label="Close">✕</button>
+            <button class="modal-close" onclick="closeGoalModal()">✕</button>
         </div>
     </div>
 
