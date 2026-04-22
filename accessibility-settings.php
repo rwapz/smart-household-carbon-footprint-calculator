@@ -19,6 +19,7 @@
             document.documentElement.style.fontSize = fontMap[font] || '16px';
         })();
     </script>
+    <script src="scripts/toggle-dark.js"></script>
 </head>
 <body>
 
@@ -51,6 +52,7 @@
     <a href="dashboard.php" class="back-link">← Back to Dashboard</a>
 </div>
 
+<script src="scripts/init-accessibility.js"></script>
 <script src="scripts/accessibility.js"></script>
 <script src="scripts/accessibility-settings.js"></script>
 </body>

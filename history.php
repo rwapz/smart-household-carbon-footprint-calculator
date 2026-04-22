@@ -91,17 +91,8 @@ $chartColors = json_encode(['#2b8ad9', '#10b981', '#f59e0b', '#ef4444', '#8b5cf6
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&display=swap">
     <link rel="stylesheet" href="stylesheets/history-style.css">
     <link rel="stylesheet" href="stylesheets/accessibility-global.css">
-    <script>
-        (function() {
-            const theme = localStorage.getItem('eco-theme') || 'light';
-            const contrast = localStorage.getItem('eco-contrast') === 'true' ? 'high' : 'normal';
-            const font = localStorage.getItem('eco-fontsize') || 'normal';
-            const fontMap = { small: '14px', normal: '16px', large: '19px' };
-            document.documentElement.setAttribute('data-theme', theme);
-            document.documentElement.setAttribute('data-contrast', contrast);
-            document.documentElement.style.fontSize = fontMap[font] || '16px';
-        })();
-    </script>
+    <script src="scripts/init-accessibility.js"></script>
+    <script src="scripts/toggle-dark.js"></script>
 </head>
 <body>
 
@@ -114,6 +105,7 @@ $chartColors = json_encode(['#2b8ad9', '#10b981', '#f59e0b', '#ef4444', '#8b5cf6
                 <p>Your carbon footprint over time</p>
             </div>
             <div class="header-actions">
+                <button id="dark-btn" class="btn-create" onclick="toggleDarkMode()" title="Toggle dark mode">🌙</button>
                 <a href="activity-log.php" class="btn-create">+ Add Activity</a>
                 <a href="graph.php" class="btn-create" style="background: #10b981;">📊 Graph</a>
                 <a href="dashboard.php" class="btn-create" style="background: #64748b;">Dashboard</a>

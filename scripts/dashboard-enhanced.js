@@ -80,4 +80,11 @@ function saveGoal() {
 }
 
 document.addEventListener('click', e => { if (e.target.id === 'goalModal') closeGoalModal(); });
+// Load user settings from database
+fetch('api-settings.php?action=get').then(r=>r.json()).then(s=>{
+    if(s.theme) document.documentElement.setAttribute('data-theme', s.theme);
+    if(s.font) document.documentElement.style.fontSize = {small:'14px',normal:'16px',large:'19px'}[s.font]||'16px';
+    if(s.contrast) document.documentElement.setAttribute('data-contrast', s.contrast);
+}).catch(()=>{});
+
 document.addEventListener('DOMContentLoaded', loadDashboardData);

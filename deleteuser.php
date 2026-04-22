@@ -40,17 +40,8 @@ try {
     <title>Delete User | Admin</title>
     <link rel="stylesheet" href="stylesheets/admin-style.css">
     <link rel="stylesheet" href="stylesheets/accessibility-global.css">
-    <script>
-        (function() {
-            const theme = localStorage.getItem('eco-theme') || 'light';
-            const contrast = localStorage.getItem('eco-contrast') === 'true' ? 'high' : 'normal';
-            const font = localStorage.getItem('eco-fontsize') || 'normal';
-            const fontMap = { small: '14px', normal: '16px', large: '19px' };
-            document.documentElement.setAttribute('data-theme', theme);
-            document.documentElement.setAttribute('data-contrast', contrast);
-            document.documentElement.style.fontSize = fontMap[font] || '16px';
-        })();
-    </script>
+    <script src="scripts/init-accessibility.js"></script>
+    <script src="scripts/toggle-dark.js"></script>
 </head>
 <body>
     <header class="admin-header">
@@ -60,9 +51,11 @@ try {
         <div class="header-right">
             <a href="admin-dashboard.php" class="header-btn">← Back to Admin</a>
             <a href="dashboard.php" class="header-btn">Dashboard</a>
-            <a href="logout.php" class="header-btn logout">Logout</a>
+<a href="logout.php" class="header-btn logout">Logout</a>
+            <button id="dark-btn" class="header-btn" onclick="toggleDarkMode()" title="Toggle dark mode">🌙</button>
         </div>
     </header>
+
     <main class="admin-container">
         <?php if (!empty($error)) { echo "<div class='alert alert-error'>Error: " . htmlspecialchars($error) . "</div>"; } ?>
         <div class="form-card">

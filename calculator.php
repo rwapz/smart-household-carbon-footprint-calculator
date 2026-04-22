@@ -9,75 +9,8 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
-    <!-- Apply saved theme BEFORE paint to prevent flash -->
-    <script>
-        (function() {
-            const theme    = localStorage.getItem('eco-theme')    || 'light';
-            const contrast = localStorage.getItem('eco-contrast') === 'true' ? 'high' : 'normal';
-            const font     = localStorage.getItem('eco-fontsize') || 'normal';
-            const fontMap  = { small: '14px', normal: '16px', large: '19px' };
-            document.documentElement.setAttribute('data-theme', theme);
-            document.documentElement.setAttribute('data-contrast', contrast);
-            document.documentElement.style.fontSize = fontMap[font] || '16px';
-        })();
-    </script>
-
-    <style>
-        /*
-         * INLINE CRITICAL STYLES
-         * These are here intentionally so they cannot be overridden
-         * by any external stylesheet, browser extension, or dark-mode injection.
-         */
-
-        /* 1. APP SHELL */
-        html, body { height: 100%; overflow: hidden; }
-        .app-wrapper { display: flex; flex-direction: column; height: 100vh; }
-
-        /* 2. TWO-COLUMN LAYOUT — the one rule that kept getting broken */
-        .content-grid {
-            display: grid;
-            grid-template-columns: 1fr 1.4fr;   /* left narrower, right wider = matches prototype */
-            height: calc(100vh - 60px);
-            overflow: hidden;
-        }
-
-        /* 3. LEFT PANEL */
-        .content-grid > section:first-child {
-            overflow-y: auto;
-            height: 100%;
-            padding: 24px 28px;
-            border-right: 1px solid var(--border, #e2e8f0);
-            background: var(--bg, #f8fafc);
-        }
-
-        /* 4. RIGHT PANEL */
-        #output-side {
-            overflow-y: auto;
-            height: 100%;
-            padding: 40px 32px;
-            background: var(--bg, #f8fafc);
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: flex-start;
-        }
-
-        #calc-display { width: 100%; text-align: center; }
-
-        /* 5. SVG RING — fill:none hardcoded here, permanently */
-        .progress-ring circle { fill: none; }
-        .ring-bg   { fill: none; stroke: var(--ring-track, #e2e8f0); stroke-width: 8; }
-        .ring-fill { fill: none; stroke: #10b981; stroke-width: 8; stroke-linecap: round;
-                     transition: stroke-dashoffset 0.6s ease, stroke 0.3s; }
-
-        /* 6. DARK MODE — only recolour, never change display/grid */
-        [data-theme="dark"] .content-grid > section:first-child {
-            background: var(--bg, #0f172a);
-            border-right-color: var(--border, #1f2a3d);
-        }
-        [data-theme="dark"] #output-side { background: var(--bg, #0f172a); }
-        [data-theme="dark"] .main-header { background: linear-gradient(90deg, #0f1d35, #111c3f); border-bottom-color: var(--border, #1f2a3d); }
-    </style>
+<script src="scripts/init-accessibility.js"></script>
+    <script src="scripts/toggle-dark.js"></script>
 </head>
 <body>
 

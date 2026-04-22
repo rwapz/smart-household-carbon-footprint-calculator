@@ -47,12 +47,8 @@ $dateData = json_encode(array_values($byDate));
     <title>Results Graph | Smart Household</title>
     <link rel="stylesheet" href="stylesheets/graph-style.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script>
-        (function() {
-            const theme = localStorage.getItem('eco-theme') || 'light';
-            document.documentElement.setAttribute('data-theme', theme);
-        })();
-    </script>
+    <script src="scripts/init-accessibility.js"></script>
+    <script src="scripts/toggle-dark.js"></script>
 </head>
 <body>
     <div class="container">
@@ -63,9 +59,10 @@ $dateData = json_encode(array_values($byDate));
                     <p>Calculator results over time</p>
                 </div>
                 <div class="header-actions">
-                    <a href="history.php" class="btn-create">← History</a>
-                    <a href="dashboard.php" class="btn-create" style="background: #64748b;">Dashboard</a>
-                </div>
+                <button id="dark-btn" class="btn-create" onclick="toggleDarkMode()" title="Toggle dark mode">🌙</button>
+                <a href="history.php" class="btn-create">← History</a>
+                <a href="dashboard.php" class="btn-create" style="background: #64748b;">Dashboard</a>
+            </div>
             </div>
             
             <div class="summary">

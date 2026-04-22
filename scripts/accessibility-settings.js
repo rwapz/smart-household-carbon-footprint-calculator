@@ -29,20 +29,18 @@ function setFont(size) {
 }
 
 function syncUI() {
-    // Dark mode button
-    const dark = EcoAccess.darkMode;
+    const dark = localStorage.getItem('eco-theme') === 'dark';
+    const isHigh = localStorage.getItem('eco-contrast') === 'true';
+    const savedFont = localStorage.getItem('eco-fontsize') || 'normal';
+    
     const darkBtn = document.getElementById('btn-dark');
     darkBtn.classList.toggle('off', !dark);
     document.getElementById('ind-dark').textContent = dark ? 'ON' : 'OFF';
 
-    // Contrast button
-    const isHigh = document.documentElement.getAttribute('data-contrast') === 'high';
     const contrastBtn = document.getElementById('btn-contrast');
     contrastBtn.classList.toggle('off', !isHigh);
     document.getElementById('ind-contrast').textContent = isHigh ? 'ON' : 'OFF';
 
-    // Font size buttons
-    const savedFont = localStorage.getItem('eco-fontsize') || 'normal';
     ['small', 'normal', 'large'].forEach(s => {
         const el = document.getElementById('fs-' + s);
         if (el) el.classList.toggle('active', s === savedFont);

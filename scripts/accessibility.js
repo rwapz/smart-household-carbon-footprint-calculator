@@ -1,81 +1,67 @@
-
-
 const EcoAccess = {
-
-    darkMode: false,
-
+    saveTimer: null,
+    
     setDark(on) {
         this.darkMode = on;
         document.documentElement.setAttribute('data-theme', on ? 'dark' : 'light');
         const btn = document.getElementById('dark-btn');
         if (btn) btn.textContent = on ? '☀️ Light' : '🌙 Dark';
-        localStorage.setItem('eco-theme', on ? 'dark' : 'light');
+        this.saveSettings({theme: on ? 'dark' : 'light'});
     },
 
     setFontSize(size) {
-        // size: 'small' | 'normal' | 'large'
         const map = { small: '14px', normal: '16px', large: '19px' };
         document.documentElement.style.fontSize = map[size] || '16px';
-        localStorage.setItem('eco-fontsize', size);
+        this.saveSettings({font: size});
     },
 
     setContrast(on) {
         document.documentElement.setAttribute('data-contrast', on ? 'high' : 'normal');
-        localStorage.setItem('eco-contrast', on);
+        this.saveSettings({contrast: on ? 'high' : 'normal'});
     },
 
-    help() {
-        console.log(`
-%cEcoTracker Console Commands
-%ceco('/darkmode')       — toggle dark mode
-eco('/darkmode on')    — force dark
-eco('/darkmode off')   — force light
-eco('/fontsize large') — bigger text (small | normal | large)
-eco('/contrast')       — toggle high contrast
-eco('/reset')          — reset all accessibility settings
-eco('/help')           — show this list
-        `, 'font-weight:bold;color:#10b981;font-size:14px;', 'color:#aaa;');
+    saveSettings(settings) {
+        clearTimeout(this.saveTimer);
+        this.saveTimer = setTimeout(() => {
+            fetch('api-settings.php?action=save', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify(settings)
+            });
+        }, 500);
     },
 
     reset() {
         this.setDark(false);
         this.setFontSize('normal');
         this.setContrast(false);
-        console.log('%cAccessibility settings reset.', 'color:#10b981;');
     },
 
-    // Restore saved prefs on load
-    init() {
-        const savedTheme = localStorage.getItem('eco-theme');
-        const dark = savedTheme ? savedTheme === 'dark' : false; /* default light for screenshot style */
-        const font = localStorage.getItem('eco-fontsize') || 'normal';
-        const contrast = localStorage.getItem('eco-contrast') === 'true';
-        this.setDark(dark);
-        if (font !== 'normal') this.setFontSize(font);
-        if (contrast) this.setContrast(true);
-        console.log('%cEcoTracker accessibility loaded. Type eco(\'/help\') for commands.', 'color:#10b981;');
+    init(settings) {
+        if (settings) {
+            this.setDark(settings.theme === 'dark');
+            if (settings.font) this.setFontSize(settings.font);
+            if (settings.contrast === 'high') this.setContrast(true);
+        }
     }
 };
 
-// Global console command function
 window.eco = function(cmd) {
     if (!cmd) return EcoAccess.help();
     const [command, arg] = cmd.split(' ');
     switch (command) {
-        case '/darkmode':
-            if (arg === 'on')       EcoAccess.setDark(true);
-            else if (arg === 'off') EcoAccess.setDark(false);
-            else                    EcoAccess.setDark(!EcoAccess.darkMode);
-            break;
-        case '/fontsize':   EcoAccess.setFontSize(arg || 'normal'); break;
-        case '/contrast':   EcoAccess.setContrast(!document.documentElement.getAttribute('data-contrast') === 'high'); break;
-        case '/reset':      EcoAccess.reset(); break;
-        case '/help':       EcoAccess.help(); break;
-        default: console.warn(`Unknown command: ${cmd}. Try eco('/help')`);
+        case '/darkmode': EcoAccess.setDark(arg === 'on' ? true : (arg === 'off' ? false : !EcoAccess.darkMode)); break;
+        case '/fontsize': if (arg) EcoAccess.setFontSize(arg); break;
+        case '/contrast': EcoAccess.setContrast(arg === 'on'); break;
+        case '/reset': EcoAccess.reset(); break;
+        default: console.log('Commands: /darkmode [on|off], /fontsize [small|normal|large], /contrast [on|off], /reset');
     }
 };
 
-// Also wire up the dark mode button in the header
-window.toggleDarkMode = () => EcoAccess.setDark(!EcoAccess.darkMode);
-
-document.addEventListener('DOMContentLoaded', () => EcoAccess.init());
+EcoAccess.help = function() {
+    console.log('%cAccessibility Commands', 'font-weight:bold');
+    console.log('/darkmode - toggle dark mode');
+    console.log('/fontsize [size] - set font size');
+    console.log('/contrast - toggle high contrast');
+    console.log('/reset - reset to defaults');
+};

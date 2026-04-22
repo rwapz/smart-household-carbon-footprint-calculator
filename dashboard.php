@@ -22,17 +22,8 @@ $isAdmin = $stmt->fetch() !== false;
     <title>Dashboard | Smart Household</title>
     <link rel="stylesheet" href="stylesheets/dashboard-style.css">
     <link rel="stylesheet" href="stylesheets/accessibility-global.css">
-    <script>
-        (function() {
-            const theme = localStorage.getItem('eco-theme') || 'light';
-            const contrast = localStorage.getItem('eco-contrast') === 'true' ? 'high' : 'normal';
-            const font = localStorage.getItem('eco-fontsize') || 'normal';
-            const fontMap = { small: '14px', normal: '16px', large: '19px' };
-            document.documentElement.setAttribute('data-theme', theme);
-            document.documentElement.setAttribute('data-contrast', contrast);
-            document.documentElement.style.fontSize = fontMap[font] || '16px';
-        })();
-    </script>
+    <script src="scripts/init-accessibility.js"></script>
+    <script src="scripts/toggle-dark.js"></script>
 </head>
 <body>
     <header class="dashboard-header">
