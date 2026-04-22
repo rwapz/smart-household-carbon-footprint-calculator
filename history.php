@@ -169,7 +169,7 @@ $chartColors = json_encode(['#2b8ad9', '#10b981', '#f59e0b', '#ef4444', '#8b5cf6
         </table>
 
         <?php if ($calcResults): ?>
-        <h3 class="section-title" style="margin-top:32px;">📊 Calculator Results</h3>
+        <h3 class="section-title">📊 Calculator Results</h3>
         <table class="activity-table">
             <thead>
                 <tr>
